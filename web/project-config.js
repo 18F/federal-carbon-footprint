@@ -16,5 +16,5 @@ module.exports = {
   // Data dir should point to a local directory with transformed data.
   // For now, just point to raw data, as transformations have not been
   // scaffolded in yet.
-  DATA_DIR: join(PROJECT_ROOT, '..', 'data', '.cache'),
+  DATA_DIR: join(PROJECT_ROOT, '../data/elt/.cache'),
 };

@@ -4,8 +4,10 @@
   "author": "",
   "license": "CC0-1.0",
   "scripts": {
-    "build:ui": "cd web && npm install && npm run build && cd ../..",
-    "federalist": "npm run build:ui && npm run link:ui",
+    "build:data": "cd data && $HOME/.poetry/bin/poetry install && python -m elt extract && cd ..",
+    "build:ui": "cd web && npm install && npm run build && cd ..",
+    "install:poetry": "curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -",
+    "federalist": "npm run install:poetry && npm run build:data && npm run build:ui && npm run link:ui",
     "link:ui": "ln -sf ./web/build _site"
   }
 }

@@ -15,3 +15,4 @@ We are tracking the work for the on-going Phase Two on our [project board](https
 ## Findings
 
 - [Data sources](./docs/data-inventory.md)
+- [Architectural Decision Records](./docs/adr)

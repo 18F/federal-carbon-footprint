@@ -16,7 +16,7 @@
     /* paths - import rewriting/resolving */
     "paths": {
       // If you configured any Snowpack aliases, add them here.
-      "@footprint/*": [
+      "@web/*": [
         "src/*"
       ],
       // Add this line to get types for streaming imports (packageOptions.source="remote"):

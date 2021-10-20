@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useAppContext } from '../hooks/app-context';
-import { getBranchTreeUrl } from '@footprint/github';
+import { getBranchTreeUrl } from '@web/github';
 
 export const Footer = () => {
   const { baseUrl, githubRepository } = useAppContext();

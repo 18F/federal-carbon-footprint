@@ -4,8 +4,8 @@
   "author": "",
   "license": "CC0-1.0",
   "scripts": {
-    "build:ui": "cd src/web && npm install && npm run build && cd ../..",
+    "build:ui": "cd web && npm install && npm run build && cd ../..",
     "federalist": "npm run build:ui && npm run link:ui",
-    "link:ui": "ln -sf ./src/web/build _site"
+    "link:ui": "ln -sf ./web/build _site"
   }
 }

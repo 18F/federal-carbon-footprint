@@ -9,8 +9,8 @@
 //$theme-color-primary-darker: 'green-80v';
 
 $theme-show-notifications: false;
-$theme-font-path: '../../../uswds/fonts';
-$theme-image-path: '../../../uswds/img';
+$theme-font-path: '../../node_modules/uswds/dist/fonts';
+$theme-image-path: '../../node_modules/uswds/dist/img';
 
 $theme-banner-max-width: 'widescreen';
 $theme-footer-max-width: 'widescreen';

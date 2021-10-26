@@ -1,12 +1,20 @@
 const autoprefixer = require('autoprefixer');
 const cssnano = require('cssnano');
 const purgecss = require('@fullhuman/postcss-purgecss');
+const postcssImport = require('postcss-import');
+const postcssUrl = require('postcss-url');
 
 const mode = process.env.NODE_ENV;
 const dev = mode === 'development';
 
 const config = {
   plugins: [
+    postcssImport,
+    postcssUrl({
+      copy: {
+        useHash: true,
+      },
+    }),
     !dev && autoprefixer(),
     !dev &&
       purgecss({

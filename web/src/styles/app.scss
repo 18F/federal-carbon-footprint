@@ -16,3 +16,7 @@
     margin-right: auto;
   }
 }
+
+#svelte-announcer {
+  @include sr-only();
+}

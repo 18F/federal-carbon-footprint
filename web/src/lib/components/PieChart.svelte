@@ -1,9 +1,7 @@
 <script lang="ts">
-  import { arc as d3Arc, pie as d3Pie, PieArcDatum } from 'd3-shape';
+  import { arc, pie, PieArcDatum } from 'd3-shape';
   import { scaleSequential } from 'd3-scale';
   import { interpolateCool } from 'd3-scale-chromatic';
-  import { select } from 'd3-selection';
-  import { onMount } from 'svelte';
 
   //import { fuelUsageData } from '$lib/stores/fuel-type-usage';
   //import { validateFuelTypeUsageSet } from '$lib/data';
@@ -20,78 +18,30 @@
     { label: 'Other', value: 2.6, trillionBtu: 22.3 },
   ];
 
-  const margin = {
-    top: 50,
-    right: 50,
-    bottom: 50,
-    left: 50,
-  };
+  const margin = { top: 50, right: 50, bottom: 50, left: 50 };
   const innerRadius = 0;
   const outerRadius = 200;
-
   const width = 2 * outerRadius + margin.left + margin.right;
   const height = 2 * outerRadius + margin.top + margin.bottom;
 
   const colorScale = scaleSequential()
     .interpolator(interpolateCool)
     .domain([0, data.length]);
-
-  const createPie = d3Pie<FuelTypeDatum>()
+  const createPie = pie<FuelTypeDatum>()
     .padAngle(0)
-    .value((d) => d.value);
-
-  const createArc = d3Arc<PieArcDatum<FuelTypeDatum>>()
+    .value((datum) => datum.value);
+  const pieArc = arc<PieArcDatum<FuelTypeDatum>>()
     .innerRadius(innerRadius)
     .outerRadius(outerRadius);
-
-  const pieArcs = createPie(data);
-
-  function drawChart() {
-    // Remove the old svg
-    select('#pie-container').select('svg').remove();
-
-    // Create new svg
-    const svg = select('#pie-container')
-      .append('svg')
-      .attr('width', width)
-      .attr('height', height)
-      .append('g')
-      .attr('transform', `translate(${width / 2}, ${height / 2})`);
-
-    const arc = svg.selectAll().data(pieArcs).enter();
-
-    // Append arcs
-    arc
-      .append('path')
-      .attr('d', createArc)
-      .style('fill', (_, i) => colorScale(i))
-      .style('stroke', '#ffffff')
-      .style('stroke-width', 0);
-
-    // Append text labels
-    arc
-      .append('text')
-      .attr('text-anchor', 'middle')
-      .attr('alignment-baseline', 'middle')
-      .text((d) => d.data.label)
-      .style('fill', (_, i) => colorScale(data.length - i))
-      .attr('transform', (d) => {
-        const [x, y] = createArc.centroid(d);
-        return `translate(${x}, ${y})`;
-      });
-  }
-
-  onMount(drawChart);
+  const pieArcData = createPie(data);
 </script>
 
-<div id="pie-container" style="background-color: lightgray;" />
-
-<div id="pie-container-svelte">
+<div id="pie-container">
   <svg {width} {height}>
     <g transform={`translate(${width / 2}, ${height / 2})`}>
-      {#each pieArcs as datum, index}
+      {#each pieArcData as datum, index}
         <path
-          d={createArc(datum)}
+          d={pieArc(datum)}
           fill={colorScale(index)}
           stroke={'#ffffff'}
           stroke-width="0"
@@ -99,9 +49,9 @@
         <text
           text-anchor="middle"
           alignment-baseline="middle"
-          style={`fill: ${colorScale(data.length - 1)}`}
+          style={`fill: ${colorScale(data.length - index - 1)}`}
           transform={(() => {
-            const [x, y] = createArc.centroid(datum);
+            const [x, y] = pieArc.centroid(datum);
             return `translate(${x}, ${y})`;
           })()}
         >
@@ -111,28 +61,3 @@
     </g>
   </svg>
 </div>
-
-<!--
-<svg
-  {width}
-  {height}
-  viewBox={`${-width / 2} ${-height / 2} ${width}, ${height}`}
-  style="max-width: 100%; height: auto; height: intrinsic;"
->
-  <g {stroke} stroke-width={strokeWidth} stroke-linejoin={strokeLinejoin}>
-    {#each $fuelUsageData as row, index}
-      <path d="" fill="green">
-        <title>{row.fuelType}\n{row.percentage}%\n{row.trillionBTU} BTU</title>
-      </path>
-    {/each}
-  </g>
-  <g font-family="sans-serif" font-size="10" text-anchor="middle">
-    {#each $fuelUsageData as row, index}
-      <text>
-        <tspan>some text</tspan>
-        <tspan>some text2</tspan>
-      </text>
-    {/each}
-  </g>
-</svg>
--->

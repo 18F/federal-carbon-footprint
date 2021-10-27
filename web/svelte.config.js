@@ -31,12 +31,6 @@ const config = {
     // hydrate the <div id="svelte"> element in src/app.html
     target: '#app',
   },
-  vite: {
-    assetsInclude: [
-      './node_modules/uswds/dist/img',
-      './node_modules/uswds/dist/fonts',
-    ],
-  },
 };
 
 export default config;

@@ -5,6 +5,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
 
+  import PieChart from '$lib/components/PieChart.svelte';
   import {
     initFuelTypeUsageData,
     fuelUsageData,
@@ -22,9 +23,11 @@
     Federal Government Total Energy Consumption by Fuel Type (Trillion Btu)
   </h1>
   <ul>
+    <PieChart />
     {#each $fuelUsageData as row}
       <li>
         {row.fuelType}: {row.percentage}% - {row.trillionBTU} trillion BTU
-      </li>{/each}
+      </li>
+    {/each}
   </ul>
 </div>

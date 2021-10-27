@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
 
 import { getFuelUsageData } from '$lib/services';
-import type { FuelTypeUsageSet } from '$lib/data';
+import type { FuelTypeUsageSet } from '$data';
 
 export const fuelUsageData = writable<FuelTypeUsageSet>([]);
 

@@ -3,9 +3,9 @@
   const toggleBanner = () => {
     bannerOpen = !bannerOpen;
   };
-  import iconDotGov from '../../../node_modules/uswds/src/img/icon-dot-gov.svg';
-  import iconHttps from '../../../node_modules/uswds/src/img/icon-https.svg';
-  import usFlagSmall from '../../../node_modules/uswds/src/img/us_flag_small.png';
+  import iconDotGov from '../../node_modules/uswds/src/img/icon-dot-gov.svg';
+  import iconHttps from '../../node_modules/uswds/src/img/icon-https.svg';
+  import usFlagSmall from '../../node_modules/uswds/src/img/us_flag_small.png';
 </script>
 
 <section class="usa-banner z-500" aria-label="Official government website">

@@ -1,10 +1,10 @@
 <script lang="ts">
-  import '../styles/app.scss';
   import { base } from '$app/paths';
-  import BetaBanner from '$lib/components/BetaBanner.svelte';
-  import Banner from '$lib/components/Banner.svelte';
-  import Header from '$lib/components/Header.svelte';
-  import Footer from '$lib/components/Footer.svelte';
+  import '$styles/app.scss';
+  import BetaBanner from '$components/BetaBanner.svelte';
+  import Banner from '$components/Banner.svelte';
+  import Header from '$components/Header.svelte';
+  import Footer from '$components/Footer.svelte';
 </script>
 
 <svelte:head>

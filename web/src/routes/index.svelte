@@ -5,7 +5,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
 
-  import PieChart from '$lib/components/PieChart.svelte';
+  import PieChart from '$components/PieChart.svelte';
   import {
     initFuelTypeUsageData,
     fuelUsageData,

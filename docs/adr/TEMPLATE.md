@@ -1,6 +1,6 @@
 # N. Title
 
-Date: YYYY-MM-DD
+Created: YYYY-MM-DD
 
 ## Status
 

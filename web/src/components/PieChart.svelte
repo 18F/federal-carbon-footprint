@@ -4,7 +4,7 @@
   import { interpolateCool } from 'd3-scale-chromatic';
 
   //import { fuelUsageData } from '$lib/stores/fuel-type-usage';
-  //import { validateFuelTypeUsageSet } from '$lib/data';
+  //import { validateFuelTypeUsageSet } from '$data';
 
   type FuelTypeDatum = { label: string; value: number; trillionBtu: number };
   const data: FuelTypeDatum[] = [

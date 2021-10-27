@@ -1,6 +1,6 @@
 # 1. Record architecture decisions
 
-Date: 2021-10-20
+Created: 2021-10-20
 
 ## Status
 

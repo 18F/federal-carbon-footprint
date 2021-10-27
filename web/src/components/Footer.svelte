@@ -1,5 +1,5 @@
 <script lang="ts">
-  import logoImg from '../../../node_modules/uswds/src/img/logo-img.png';
+  import logoImg from '../../node_modules/uswds/src/img/logo-img.png';
   import { GITHUB_REPO } from '$lib/context';
   import { getBranchTreeUrl } from '$lib/github';
 </script>

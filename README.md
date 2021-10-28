@@ -19,4 +19,4 @@ We are tracking the work for the on-going Phase Two on our [project board](https
 
 ## Developer documentation
 
-Developer documentation is available [CONTRIBUTING.md](./CONTRIBUTING.md).
+Developer documentation is available in [CONTRIBUTING.md](./CONTRIBUTING.md).

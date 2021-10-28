@@ -12,22 +12,30 @@ This project is built with [SvelteKit](https://kit.svelte.dev/).
 
 ## Developing
 
-Once you've installed dependencies with `npm install`, start a development server:
+Install dependencies:
+
+```bash
+npm install
+```
+
+Next, start a development server:
 
 ```bash
 npm run dev
 
-# or start the server and open the app in a new browser tab
+# ... or start the server and open the app in a new browser tab
 npm run dev -- --open
 ```
 
 ## Building
 
+To produce a production build?
+
 ```bash
 npm run build
 ```
 
-> You can preview the built app locally with `npm run preview`:
+You can also preview the production build locally:
 
 ```bash
 npm run preview

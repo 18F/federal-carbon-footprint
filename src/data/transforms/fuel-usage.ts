@@ -1,3 +1,4 @@
+import { DataFrame } from 'data-forge';
 import { fold } from 'fp-ts/lib/Either.js';
 import { pipe } from 'fp-ts/lib/function.js';
 import * as t from 'io-ts';
@@ -9,6 +10,7 @@ const FuelTypeUsage = t.type({
   percentage: t.number,
   trillionBTU: t.number,
 });
+type FuelTypeUsage = t.TypeOf<typeof FuelTypeUsage>;
 const FuelTypeUsageSet = t.array(FuelTypeUsage);
 export type FuelTypeUsageSet = t.TypeOf<typeof FuelTypeUsageSet>;
 
@@ -33,4 +35,9 @@ export const getFuelUsage = async () => {
       };
     }),
   );
+};
+
+export const getFuelUsageDataFrame = async () => {
+  const fuelTypeUsage = await getFuelUsage();
+  return new DataFrame<number, FuelTypeUsage>(fuelTypeUsage);
 };

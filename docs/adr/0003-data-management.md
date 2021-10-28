@@ -20,7 +20,7 @@ Due to the diversity of Python-based data analytical tooling, integrating flexib
 
 The web codebase needs easy access to the underlying data, so it may include JSON (and perhaps CSV, TSV, etc) versions in its static-compiled, CDN-deployable build. In the interest of removing mismatches between the frontend expectations and the data management ones, producing JSON and other formats with the same Typescript typings used by the frontend would be helpful.
 
-node.js also has a Pandas-like dataframe library called [danfo.js](https://danfo.jsdata.org/). If data processing and exploration is limited to something that can easily be managed with dataframes, usage of danfo.js would simplify the codebase by removing Python usage and the need for Python/Typescript data sharing.
+node.js also has a Pandas-like dataframe libraries. If data processing and exploration is limited to something that can easily be managed with dataframes, usage of such a library would simplify the codebase by removing Python usage and the need for Python/Typescript data sharing.
 
 ## Decision
 
@@ -38,7 +38,7 @@ The data extraction module will store local copies of source data in format suit
 
 Jupyter notebooks will be utilized as a method of exploring and analyzing the aquired raw data. The notebooks will serve as documentation of the data sources that were explored, and as functional examples for other users.
 
-[danfo.js](https://danfo.jsdata.org/) will be utilized for any exploration or aggregate calculations.
+A dataframe library will be utilized for any exploration or aggregate calculations, if necessary.
 
 ### Data transformation
 

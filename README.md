@@ -16,3 +16,7 @@ We are tracking the work for the on-going Phase Two on our [project board](https
 
 - [Data sources](./docs/data-inventory.md)
 - [Architectural Decision Records](./docs/adr)
+
+## Developer documentation
+
+Developer documentation is available in [CONTRIBUTING.md](./CONTRIBUTING.md).

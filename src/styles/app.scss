@@ -1,0 +1,44 @@
+@import '../../node_modules/uswds/dist/scss/theme/uswds-theme-general';
+@import '../../node_modules/uswds/dist/scss/theme/uswds-theme-typography';
+@import '../../node_modules/uswds/dist/scss/theme/uswds-theme-spacing';
+@import '../../node_modules/uswds/dist/scss/theme/uswds-theme-color';
+@import '../../node_modules/uswds/dist/scss/theme/uswds-theme-utilities';
+@import './uswds-theme-overrides';
+@import '../../node_modules/uswds/dist/scss/uswds.scss';
+
+.beta-banner {
+  background-color: color('green-10v');
+  color: color('ink');
+  margin: auto 0;
+  padding: 0.1rem 0;
+  p {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@mixin sr-only($focus: false) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+  @if ($focus == true) {
+    &:focus,
+    &:active {
+      position: static;
+      width: auto;
+      height: auto;
+      margin: 0;
+      overflow: visible;
+      clip: auto;
+    }
+  }
+}
+
+#svelte-announcer {
+  @include sr-only(true);
+}

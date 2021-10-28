@@ -19,7 +19,7 @@ const config = {
     !dev &&
       purgecss({
         content: ['src/**/*.svelte', 'src/app.html'],
-        safelist: ['body'],
+        safelist: ['body', 'svelte-announcer'],
         keyframes: true,
         defaultExtractor(content) {
           const contentWithoutStyleBlocks = content.replace(

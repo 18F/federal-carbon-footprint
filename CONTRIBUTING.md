@@ -29,7 +29,7 @@ npm run dev -- --open
 
 ## Building
 
-To produce a production build?
+To produce a production build:
 
 ```bash
 npm run build

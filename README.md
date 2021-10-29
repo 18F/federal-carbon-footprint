@@ -15,8 +15,10 @@ We are tracking the work for the on-going Phase Two on our [project board](https
 ## Findings
 
 - [Data sources](./docs/data-inventory.md)
-- [Architectural Decision Records](./docs/adr)
+- [Potential use cases](./docs/use-cases.md)
 
 ## Developer documentation
+
+[Architectural Decision Records](./docs/adr) of core design decisions are maintained.
 
 Developer documentation is available in [CONTRIBUTING.md](./CONTRIBUTING.md).

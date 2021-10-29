@@ -26,20 +26,28 @@ Documented here are data sources that have been identified as potentially useful
 
 ### Federal Procurement Data System
 
-Purchasing data.
-
 [https://www.fpds.gov/](https://www.fpds.gov/)
 
-Based on attributes of purchase data, an economic input/output life cycle assessment model may be applied to infer greenhouse gas impact. GSA's Federal Acquisition Services, Office of Policy and Compliance, applies such a model in their GSA dashboard Excel document.
+Purchasing data; FPDS is the system of record for usaspending.gov.
+
+### usaspending.gov
+
+[[usaspending.gov](https://www.usaspending.gov/)](https://www.usaspending.gov/)
+
+Provides a user-friendly view into spending data, as well as an API. FPDS is the system of record for usaspending.gov.
 
 ### System for Award Management (SAM)
 
 Some of the FPDS reports (above) have been migrated to [https://sam.gov/](https://sam.gov/).
+
+Assistance Listings (CFDA) on sam.gov are federal programs that issue grants and other forms of assistance.
 
 ## Analytic methods
 
 ### Economic Input-Output Life Cycle Assessment (EIO-LCA)
 
 Carnegie Mellon hosts an online tool to estimate emissions impact using the EIO-LCA method: [http://www.eiolca.net/](http://www.eiolca.net/)
+
+Based on attributes of purchase data, an economic input/output life cycle assessment model may be applied to infer greenhouse gas impact. GSA's Federal Acquisition Services, Office of Policy and Compliance, applies such a model in their GSA dashboard Excel document.
 
 Given an [NAICS](https://www.census.gov/naics/) sector ID, various impacts (including greenhouse gas emissions) may be estimated per unit of economic activity.

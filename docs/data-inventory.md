@@ -32,7 +32,7 @@ Purchasing data; FPDS is the system of record for usaspending.gov.
 
 ### usaspending.gov
 
-[[usaspending.gov](https://www.usaspending.gov/)](https://www.usaspending.gov/)
+[https://www.usaspending.gov/](https://www.usaspending.gov/)
 
 Provides a user-friendly view into spending data, as well as an API. FPDS is the system of record for usaspending.gov.
 
@@ -42,12 +42,14 @@ Some of the FPDS reports (above) have been migrated to [https://sam.gov/](https:
 
 Assistance Listings (CFDA) on sam.gov are federal programs that issue grants and other forms of assistance.
 
-## Analytic methods
+### US Environmentally-Extended Input-Output (USEEIO) Model
+
+[EPA USEEIO](https://www.epa.gov/land-research/us-environmentally-extended-input-output-useeio-models) was developed as part of EPA's [Sustainable Materials Management Program](https://www.epa.gov/smm).
+
+The [SMM Prioritization Tools](https://www.epa.gov/smm/sustainable-materials-management-prioritization-tools) utilize USEEIO to visualize environmental impact for specified [NAICS](https://www.census.gov/naics/) sectors.
 
 ### Economic Input-Output Life Cycle Assessment (EIO-LCA)
 
 Carnegie Mellon hosts an online tool to estimate emissions impact using the EIO-LCA method: [http://www.eiolca.net/](http://www.eiolca.net/)
-
-Based on attributes of purchase data, an economic input/output life cycle assessment model may be applied to infer greenhouse gas impact. GSA's Federal Acquisition Services, Office of Policy and Compliance, applies such a model in their GSA dashboard Excel document.
 
 Given an [NAICS](https://www.census.gov/naics/) sector ID, various impacts (including greenhouse gas emissions) may be estimated per unit of economic activity.

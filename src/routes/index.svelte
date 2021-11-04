@@ -10,8 +10,12 @@
     initFuelTypeUsageData,
     fuelUsageData,
   } from '$lib/stores/fuel-type-usage';
+  import { getTestData } from '../data/transforms/spending';
 
-  onMount(initFuelTypeUsageData);
+  onMount(async () => {
+    const ghgImpact = await getTestData();
+    console.log(ghgImpact);
+  });
 </script>
 
 <svelte:head>

@@ -40,3 +40,28 @@ You can also preview the production build locally:
 ```bash
 npm run preview
 ```
+
+## Using notebooks
+
+Jupyter notebooks are available in the [./notebooks](./notebooks) directory. To use, you must install the Python dependencies and the [tslab](https://github.com/yunabe/tslab) Jupyter kernel.
+
+Install Python dependencies using [Poetry](https://python-poetry.org/):
+
+```bash
+poetry install
+```
+
+To register the tslab kernel with Jupyter:
+
+```bash
+npx tslab install --python=`poetry run which python`
+
+# To confirm that tslab is available, run:
+poetry run jupyter kernelspec list
+```
+
+Finally, to run a local Jupyter server:
+
+```bash
+poetry run jupyter notebook
+```

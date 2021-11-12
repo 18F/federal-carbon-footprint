@@ -7,15 +7,10 @@
 
   import PieChart from '$components/PieChart.svelte';
   import {
-    initFuelTypeUsageData,
     fuelUsageData,
   } from '$lib/stores/fuel-type-usage';
-  import { getTestData } from '../data/transforms/spending';
 
-  onMount(async () => {
-    const ghgImpact = await getTestData();
-    console.log(ghgImpact);
-  });
+  onMount(async () => {});
 </script>
 
 <svelte:head>

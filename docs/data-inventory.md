@@ -10,7 +10,8 @@ This document is a work-in-progress data inventory for understanding the federal
 
 ## Data Sources
 
-Documented here are data sources that have been identified as potentially useful for understanding the GHG impact of federal activity.
+Documented here are data sources and models that have been identified as potentially useful for understanding the GHG impact of federal activity.
+
 ### Federal Energy Management Program
 
 - [FEMP EISA 432 Compliance Tracking System](https://ctsedwweb.ee.doe.gov/CTSDataAnalysis/DataAnalysisTool/DataAnalysisTool.aspx)
@@ -53,3 +54,25 @@ The [SMM Prioritization Tools](https://www.epa.gov/smm/sustainable-materials-man
 Carnegie Mellon hosts an online tool to estimate emissions impact using the EIO-LCA method: [http://www.eiolca.net/](http://www.eiolca.net/)
 
 Given an [NAICS](https://www.census.gov/naics/) sector ID, various impacts (including greenhouse gas emissions) may be estimated per unit of economic activity.
+
+### EPA Greenhouse Gas Reporting Program (GHGRP)
+
+https://www.epa.gov/ghgreporting
+
+Mandatory emissions reporting for large-scale private sector emissions, grouped by these sectors:
+
+- Electrical Equipment
+- Electronics Manufacturing
+- Fluorinated Chemicals
+- Metals
+- Minerals
+- Miscellaneous Combustion
+- Natural Gas and Natural Gas Liquids
+- Non-Fluorinated Chemicals
+- Petroleum and Natural Gas Systems
+- Petroleum Products
+- Power Plants
+- Pulp and Paper
+- selected="">Refineries
+- Underground Coal Mines
+- Waste

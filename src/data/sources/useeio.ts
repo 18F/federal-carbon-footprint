@@ -1,3 +1,6 @@
+import type { number } from 'fp-ts';
+import { fetch } from '../context';
+
 const BASE_URL = 'https://api.edap-cluster.com/useeio/api';
 const API_KEY = import.meta.env.VITE_USEEIO_API_KEY.toString();
 const MODEL_NAME = 'USEEIOv1.2';
@@ -13,11 +16,24 @@ const fetchServiceData = <T>(
   endpoint: string,
   jsonPayload?: object,
 ): Promise<T> => {
+  const body = JSON.stringify(jsonPayload);
   return fetch(`${BASE_URL}/${modelName}/${endpoint}`, {
     method: jsonPayload ? 'POST' : 'GET',
     headers: API_HEADERS,
-    body: JSON.stringify(jsonPayload),
-  }).then((response) => response.json() as Promise<T>);
+    body,
+  }).then((response) => {
+    if (response.status !== 200) {
+      const error = {
+        status: response.status,
+        message: response.statusText,
+        url: response.url,
+        body,
+      };
+      console.error(error);
+      return Promise.reject(error);
+    }
+    return response.json() as Promise<T>;
+  });
 };
 
 type ModelSector = {
@@ -28,21 +44,34 @@ type ModelSector = {
   location: string;
   description: string;
 };
+export const getModelSectors = async () => {
+  const models = await fetchServiceData<ModelSector[]>(MODEL_NAME, 'sectors');
+  return models.reduce<Record<string, ModelSector>>(
+    (modelSectorsById, current) => {
+      modelSectorsById[current.code] = current;
+      return modelSectorsById;
+    },
+    {},
+  );
+};
+
 type CalculateResult = {
   indicators: string[];
   sectors: string[];
   data: number[][];
   totals: number[];
 };
-export const getSectorCO2Equivalents = async (dollars: number = 1_000_000) => {
-  const sectors = await fetchServiceData<ModelSector[]>(MODEL_NAME, 'sectors');
+export const getSectorCO2Equivalents = async (
+  sectors: string[],
+  dollars: number = 1,
+) => {
   const result = await fetchServiceData<CalculateResult>(
     MODEL_NAME,
     'calculate',
     {
       demand: sectors.map((sector) => {
         return {
-          sector: sector.id,
+          sector: sector,
           amount: dollars,
         };
       }),

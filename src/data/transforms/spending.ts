@@ -1,15 +1,15 @@
-import { getSpendingByNaics } from '../sources/usaspending';
-import { getModelSectors, getSectorCO2Equivalents } from '../sources/useeio';
+//import { getSpendingByNaics } from '../sources/usaspending';
+import * as useeio from '../sources/useeio';
 
-export const getSpendingImpact = async () => {
+export const getSpendingImpact = async (ctx: useeio.Context) => {
+  // Get more detailed sector metadata from the USEEIO api.
+  const modelSectors = await useeio.getModelSectors(ctx);
+  return modelSectors;
+  /*
   const spendingByNaics = await getSpendingByNaics({
     naicsCodes: ['1119'],
     fiscalYear: 2021,
   });
-
-  // Get more detailed sector metadata from the USEEIO api.
-  const modelSectors = await getModelSectors();
-  console.log(modelSectors);
   const co2PerDollar = Promise.all(
     spendingByNaics.map((item) => {
       console.log(spendingByNaics);
@@ -26,4 +26,5 @@ export const getSpendingImpact = async () => {
       name: modelSectors[item.code].name,
     };
   });
+  */
 };

@@ -5,3 +5,5 @@ build/
 .DS_Store
 *.code-workspace
 _site
+.env
+NOTES.md

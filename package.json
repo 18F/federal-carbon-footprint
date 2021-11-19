@@ -19,14 +19,16 @@
     "@sveltejs/kit": "next",
     "@types/cookie": "^0.4.1",
     "@types/d3": "^7.1.0",
-    "@types/make-fetch-happen": "^9.0.1",
+    "@types/jest": "^27.0.3",
     "@typescript-eslint/eslint-plugin": "^4.31.1",
     "@typescript-eslint/parser": "^4.31.1",
     "autoprefixer": "^10.3.7",
     "cssnano": "^5.0.8",
+    "dotenv": "^10.0.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-svelte3": "^3.2.1",
+    "jest": "^27.3.1",
     "postcss": "^8.3.9",
     "postcss-import": "^14.0.2",
     "postcss-load-config": "^3.1.0",
@@ -37,9 +39,11 @@
     "svelte": "^3.34.0",
     "svelte-check": "^2.2.6",
     "svelte-preprocess": "^4.9.8",
+    "ts-jest": "^27.0.7",
     "tslab": "^1.0.15",
     "tslib": "^2.3.1",
-    "typescript": "^4.4.3"
+    "typescript": "^4.4.3",
+    "whatwg-fetch": "^3.6.2"
   },
   "type": "module",
   "dependencies": {
@@ -50,7 +54,6 @@
     "data-forge": "^1.8.20",
     "fp-ts": "^2.11.5",
     "io-ts": "^2.2.16",
-    "make-fetch-happen": "^9.1.0",
     "useeio": "github:USEPA/useeio.js",
     "uswds": "^2.12.1"
   }

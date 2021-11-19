@@ -9,8 +9,18 @@
   import {
     fuelUsageData,
   } from '$lib/stores/fuel-type-usage';
+  import {
+    initFuelTypeUsageData,
+    spendingImpact,
+  } from '$lib/stores/spending';
+  import { USEEIO_API_KEY } from './_context';
 
-  onMount(async () => {});
+  onMount(async () => {
+    await initFuelTypeUsageData({
+      fetch: window.fetch.bind(window),
+      USEEIO_API_KEY
+    })
+  });
 </script>
 
 <svelte:head>
@@ -22,6 +32,7 @@
     Federal Government Total Energy Consumption by Fuel Type (Trillion Btu)
   </h1>
   <ul>
+    <code><pre>{JSON.stringify($spendingImpact, null, 4)}</pre></code>
     <PieChart />
     {#each $fuelUsageData as row}
       <li>

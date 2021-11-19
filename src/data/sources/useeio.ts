@@ -1,39 +1,40 @@
-import type { number } from 'fp-ts';
-import { fetch } from '../context';
-
 const BASE_URL = 'https://api.edap-cluster.com/useeio/api';
-const API_KEY = import.meta.env.VITE_USEEIO_API_KEY.toString();
 const MODEL_NAME = 'USEEIOv1.2';
 
-// An optional application key may be added to each request.
-const API_HEADERS = {
-  'Content-Type': 'application/json',
-  'x-api-key': API_KEY,
+export type Context = {
+  USEEIO_API_KEY: string;
+  fetch: typeof fetch;
 };
 
 const fetchServiceData = <T>(
+  ctx: Context,
   modelName: string,
   endpoint: string,
   jsonPayload?: object,
 ): Promise<T> => {
   const body = JSON.stringify(jsonPayload);
-  return fetch(`${BASE_URL}/${modelName}/${endpoint}`, {
-    method: jsonPayload ? 'POST' : 'GET',
-    headers: API_HEADERS,
-    body,
-  }).then((response) => {
-    if (response.status !== 200) {
-      const error = {
-        status: response.status,
-        message: response.statusText,
-        url: response.url,
-        body,
-      };
-      console.error(error);
-      return Promise.reject(error);
-    }
-    return response.json() as Promise<T>;
-  });
+  return ctx
+    .fetch(`${BASE_URL}/${modelName}/${endpoint}`, {
+      method: jsonPayload ? 'POST' : 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': ctx.USEEIO_API_KEY,
+      },
+      body,
+    })
+    .then((response) => {
+      if (response.status !== 200) {
+        const error = {
+          status: response.status,
+          message: response.statusText,
+          url: response.url,
+          body,
+        };
+        console.error(error);
+        return Promise.reject(error);
+      }
+      return response.json() as Promise<T>;
+    });
 };
 
 type ModelSector = {
@@ -44,8 +45,12 @@ type ModelSector = {
   location: string;
   description: string;
 };
-export const getModelSectors = async () => {
-  const models = await fetchServiceData<ModelSector[]>(MODEL_NAME, 'sectors');
+export const getModelSectors = async (ctx: Context) => {
+  const models = await fetchServiceData<ModelSector[]>(
+    ctx,
+    MODEL_NAME,
+    'sectors',
+  );
   return models.reduce<Record<string, ModelSector>>(
     (modelSectorsById, current) => {
       modelSectorsById[current.code] = current;
@@ -62,10 +67,12 @@ type CalculateResult = {
   totals: number[];
 };
 export const getSectorCO2Equivalents = async (
+  ctx: Context,
   sectors: string[],
   dollars: number = 1,
 ) => {
   const result = await fetchServiceData<CalculateResult>(
+    ctx,
     MODEL_NAME,
     'calculate',
     {

@@ -2,6 +2,10 @@
 
 This document is a work-in-progress data inventory for understanding the federal government's carbon footprint.
 
+## Reporting standards
+
+[The Greenhouse Gas Protocol: A Corporate Accounting and Reporting Standard](https://ghgprotocol.org/sites/default/files/standards/ghg-protocol-revised.pdf)
+
 ## Emission types
 
 - Scope 1 - direct emission; eg burning fuel

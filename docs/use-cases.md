@@ -16,7 +16,7 @@ Questions for us:
 
 Technical work:
 
-- Comsume data
+- Consume data
 - Cross-walk
 
 Other general, high-level questions:
@@ -32,7 +32,7 @@ Help decision makers make high-impact purchasing decisions.
 Relevant potential data sources:
 
 - [Federal Procurement Data System](./data-inventory.md#federal-procurement-data-system) includes historical purchasing information
-- [Federal Energy Management Program](./data-inventory.md#federal-energy-management-program) may be used to compare agencies and visualize long-term trends
+- [usaspending.gov](./data-inventory.md#usaspending.gov) API for FPDS data
 
 ## Non-Governmental Organizations
 

@@ -23,11 +23,17 @@
 		"allowJs": true,
 		"checkJs": true,
 		"paths": {
-			"$lib": [
-				"src/lib"
+			"$components": [
+				"src/components"
+			],
+			"$data": [
+				"src/data"
 			],
 			"$lib/*": [
 				"src/lib/*"
+			],
+			"$routes": [
+				"src/routes"
 			]
 		}
 	},

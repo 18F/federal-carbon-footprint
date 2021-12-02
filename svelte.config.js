@@ -38,8 +38,8 @@ const config = {
         alias: {
           $components: path.resolve('./src/components'),
           $data: path.resolve('./src/data'),
-          $stores: path.resolve('./src/stores'),
-          $services: path.resolve('./src/services'),
+          $lib: path.resolve('./src/lib'),
+          $routes: path.resolve('./src/styles'),
           $styles: path.resolve('./src/styles'),
         },
       },

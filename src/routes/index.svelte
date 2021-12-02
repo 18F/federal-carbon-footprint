@@ -1,17 +1,32 @@
 <script context="module" lang="ts">
+  import type { LoadInput } from '@sveltejs/kit';
+
+  import PieChart from '$components/PieChart.svelte';
+  import Sankey from '$components/Sankey.svelte';
+  import type { get as getData } from './index.json';
+
   export const prerender = true;
+
+  export const load = async ({ page, fetch }: LoadInput) => {
+    const data = await fetch('index.json').then((response) => response.json());
+    if (data) {
+      return {
+        props: {
+          data,
+        },
+      };
+    }
+
+    return {
+      status: 404,
+      error: new Error(`Could not load spending impact`),
+    };
+  };
 </script>
 
 <script lang="ts">
-  import { onMount } from 'svelte';
-
-  import PieChart from '$components/PieChart.svelte';
-  import {
-    initFuelTypeUsageData,
-    fuelUsageData,
-  } from '$lib/stores/fuel-type-usage';
-
-  onMount(initFuelTypeUsageData);
+  export let data: ReturnType<typeof getData>;
+  import { base } from '$app/paths';
 </script>
 
 <svelte:head>
@@ -19,15 +34,16 @@
 </svelte:head>
 
 <div class="grid-container">
+  <div class="text-italic margin-top-1">NOTE: All data in these visualizations are for test purposes only.</div>
+  <h1>Sample Sankey Diagram</h1>
+  <Sankey />
   <h1>
     Federal Government Total Energy Consumption by Fuel Type (Trillion Btu)
   </h1>
+  <PieChart />
+  <h1>Agengies</h1>
   <ul>
-    <PieChart />
-    {#each $fuelUsageData as row}
-      <li>
-        {row.fuelType}: {row.percentage}% - {row.trillionBTU} trillion BTU
-      </li>
-    {/each}
+    <li><a href="{base}/agencies/usgs">USGS Agency Page</a></li>
+    <li><a href="{base}/agencies/cms">CMS Agency Page</a></li>
   </ul>
 </div>

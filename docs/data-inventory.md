@@ -8,9 +8,16 @@ This document is a work-in-progress data inventory for understanding the federal
 
 ## Emission types
 
-- Scope 1 - direct emission; eg burning fuel
-- Scope 2 - indirect emissions, financially responsibility; eg electricity
-- Scope 3 - more indirect; eg business travel, contractor waste water treatment
+### Scope 1
+
+Direct emission; eg burning fuel
+
+### Scope 2
+
+Indirect emissions, financially responsibility; eg electricity
+### Scope 3
+
+[Scope 3 Calculation Guidance](https://ghgprotocol.org/scope-3-technical-calculation-guidance)
 
 ## Data Sources
 
@@ -80,3 +87,42 @@ Mandatory emissions reporting for large-scale private sector emissions, grouped 
 - selected="">Refineries
 - Underground Coal Mines
 - Waste
+
+## Ecolabel programs
+
+Labelling programs don't give direct insight into emission impact, but could be integrated into an exploratory tool to suggest green products within given categories.
+
+### Electronic Product Environmental Assessment Tool (EPEAT)
+
+EPEAT may be relevant when shedding light on scope 3 emissions from product purchases.
+
+https://www.epa.gov/greenerproducts/electronic-product-environmental-assessment-tool-epeat
+
+EPEAT covers the following product categories:
+
+Computers & Displays
+Imaging Equipment
+Mobile Phones
+Photovoltaic Modules and Inverters (PVMI)
+Televisions
+Servers
+
+### Energy Star
+
+Energy efficient product label.
+
+https://www.energystar.gov/
+
+### SmartWay
+
+EPA’s SmartWay program helps companies advance supply chain sustainability by measuring, benchmarking, and improving freight transportation efficiency.
+
+https://www.epa.gov/smartway
+
+### WaterSense
+
+https://www.epa.gov/watersense
+
+### Safer Choice
+
+https://www.epa.gov/saferchoice

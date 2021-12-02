@@ -79,6 +79,15 @@
     console.log(value);
     return value;
   }
+
+  // The Typescript type of link nodes is:
+  //  `string & (string | number | d3Sankey.SankeyNode<NodeExtra, LinkExtra>`
+  // This comes from the source and target types in `LinkExtra`, which are
+  // set as string IDs for convenience. This casts to the node
+  // type in a manner that can be used inside the Svelte markup.
+  const castSankeyNode = (node) => {
+    return node as d3Sankey.SankeyNode<NodeExtra, LinkExtra>;
+  }
 </script>
 
 <svg
@@ -107,12 +116,12 @@
         <linearGradient
           id={`link-${index}`}
           gradientUnits={'userSpaceOnUse'}
-          x1={link.source.x1}
-          x2={link.target.x0}
+          x1={castSankeyNode(link.source).x1}
+          x2={castSankeyNode(link.target).x0}
         >
           <title>{debug(link)}</title>
-          <stop offset={'0%'} stop-color={color(nodeGroups[link.source.index])} />
-          <stop offset={'100%'} stop-color={color(nodeGroups[link.target.index])} />
+          <stop offset={'0%'} stop-color={color(nodeGroups[castSankeyNode(link.source).index])} />
+          <stop offset={'100%'} stop-color={color(nodeGroups[castSankeyNode(link.target).index])} />
         </linearGradient>
       {/if}
       <path

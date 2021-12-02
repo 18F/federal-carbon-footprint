@@ -8,20 +8,19 @@
   export const prerender = true;
 
   export const load = async ({ page, fetch }: LoadInput) => {
-    const data = await fetch('index.json')
-      .then(response => response.json());
-		if (data) {
-			return {
-				props: {
-          data
-				}
-			};
-		}
+    const data = await fetch('index.json').then((response) => response.json());
+    if (data) {
+      return {
+        props: {
+          data,
+        },
+      };
+    }
 
-		return {
-			status: 404,
-			error: new Error(`Could not load spending impact`)
-		};
+    return {
+      status: 404,
+      error: new Error(`Could not load spending impact`),
+    };
   };
 </script>
 
@@ -35,9 +34,8 @@
 </svelte:head>
 
 <div class="grid-container">
-  <h1>
-    Sample Sankey Diagram
-  </h1>
+  <div class="text-italic margin-top-1">NOTE: All data in these visualizations are for test purposes only.</div>
+  <h1>Sample Sankey Diagram</h1>
   <Sankey />
   <h1>
     Federal Government Total Energy Consumption by Fuel Type (Trillion Btu)

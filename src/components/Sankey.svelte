@@ -75,11 +75,6 @@
   const linkStrokeOpacity = 0.5;
   const linkColor = 'source-target';
 
-  const debug = (value) => {
-    console.log(value);
-    return value;
-  }
-
   // The Typescript type of link nodes is:
   //  `string & (string | number | d3Sankey.SankeyNode<NodeExtra, LinkExtra>`
   // This comes from the source and target types in `LinkExtra`, which are
@@ -119,7 +114,7 @@
           x1={castSankeyNode(link.source).x1}
           x2={castSankeyNode(link.target).x0}
         >
-          <title>{debug(link)}</title>
+          <title>{link}</title>
           <stop offset={'0%'} stop-color={color(nodeGroups[castSankeyNode(link.source).index])} />
           <stop offset={'100%'} stop-color={color(nodeGroups[castSankeyNode(link.target).index])} />
         </linearGradient>

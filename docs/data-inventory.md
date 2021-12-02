@@ -2,9 +2,11 @@
 
 This document is a work-in-progress data inventory for understanding the federal government's carbon footprint.
 
-## Reporting standards
+## Reporting guidance
 
 [The Greenhouse Gas Protocol: A Corporate Accounting and Reporting Standard](https://ghgprotocol.org/sites/default/files/standards/ghg-protocol-revised.pdf)
+
+Council on Environmental Quality: [Federal Greenhouse Gas Accounting and Reporting Guidance](https://www.sustainability.gov/pdfs/federal_ghg%20accounting_reporting-guidance.pdf)
 
 ## Emission types
 

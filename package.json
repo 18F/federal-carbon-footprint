@@ -21,6 +21,7 @@
     "@types/d3": "^7.1.0",
     "@types/d3-sankey": "^0.11.2",
     "@types/jest": "^27.0.3",
+    "@types/memoizee": "^0.4.6",
     "@typescript-eslint/eslint-plugin": "^4.31.1",
     "@typescript-eslint/parser": "^4.31.1",
     "autoprefixer": "^10.3.7",
@@ -56,6 +57,7 @@
     "data-forge": "^1.8.20",
     "fp-ts": "^2.11.5",
     "io-ts": "^2.2.16",
+    "memoizee": "^0.4.15",
     "useeio": "github:USEPA/useeio.js",
     "uswds": "^2.12.1"
   }

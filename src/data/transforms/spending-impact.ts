@@ -1,5 +1,12 @@
-//import { getSpendingByNaics } from '../sources/usaspending';
+import * as usaSpending from '../sources/usaspending';
 import * as useeio from '../sources/useeio';
+
+export const getSpendingImpactByAgency = async (ctx: useeio.Context) => {
+  const [impactBySector, agenncySpendBySector] = await Promise.all([
+    useeio.getGhgImpactBySectorId(ctx),
+    usaSpending.getAgencySpendBySector(ctx),
+  ]);
+};
 
 export const getSpendingImpact = async (ctx: useeio.Context) => {
   // Get more detailed sector metadata from the USEEIO api.

@@ -1,23 +1,30 @@
-import { fetch } from '../context';
+import memoizee from 'memoizee';
 
 const API_BASE = 'https://api.usaspending.gov/api/v2';
 
+export type Context = {
+  fetch: typeof fetch;
+};
+
 export const fetchServiceData = <T>(
+  ctx: Context,
   endpoint: string,
   payload?: object,
 ): Promise<T> => {
-  return fetch(`${API_BASE}${endpoint}`, {
-    method: payload ? 'POST' : 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(payload),
-  }).then((response) => response.json() as Promise<T>);
+  return ctx
+    .fetch(`${API_BASE}${endpoint}`, {
+      method: payload ? 'POST' : 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
+    .then((response) => response.json() as Promise<T>);
 };
 
-export const getSpending = () => {
+export const getSpending = (ctx: Context) => {
   // https://github.com/fedspendingtransparency/usaspending-api/blob/master/usaspending_api/api_contracts/contracts/v2/spending.md
-  return fetchServiceData('/spending/', {
+  return fetchServiceData(ctx, '/spending/', {
     // federal_account, object_class, recipient, award, budget_function,
     // budget_subfunction, agency, program_activity
     type: 'agency',
@@ -29,11 +36,11 @@ export const getSpending = () => {
   });
 };
 
-export const getNaics = (parent?: string) => {
+export const getNaics = (ctx: Context, parent?: string) => {
   if (parent) {
-    return fetchServiceData(`/references/naics/${parent}`);
+    return fetchServiceData(ctx, `/references/naics/${parent}`);
   } else {
-    return fetchServiceData('/references/naics/');
+    return fetchServiceData(ctx, '/references/naics/');
   }
 };
 
@@ -47,25 +54,26 @@ const rangeForFiscalYear = (fiscalYear: number) => {
 type Awaited<T> = T extends PromiseLike<infer U> ? Awaited<U> : T;
 
 const getAllPages =
-  <T extends (...args: any) => any>(getPage: T) =>
-  async (opts: Parameters<T>[0]) => {
+  <T extends (ctx: Context, ...args: any) => any>(getPage: T) =>
+  async (ctx: Context, opts: Parameters<T>[1]) => {
     let response: Awaited<ReturnType<T>>;
     const results: typeof response['results'] = [];
     let page = 0;
     do {
       page++;
-      response = await getPage(opts, page);
+      response = await getPage(ctx, opts, page);
       results.push(...response.results);
     } while (response.page_metadata.hasNext);
     return results;
   };
 
-type SpendingByCategoryOptions = {
-  naicsCodes: string[];
+type AgencySpendingByCategoryOptions = {
+  agency: string;
   fiscalYear: number;
 };
-const getSpendingByNaicsPage = (
-  opts: SpendingByCategoryOptions,
+export const getAgencySpendBySectorPage = (
+  ctx: Context,
+  opts: AgencySpendingByCategoryOptions,
   page: number,
 ) => {
   // https://github.com/fedspendingtransparency/usaspending-api/blob/master/usaspending_api/api_contracts/contracts/v2/search/spending_by_category/naics.md
@@ -86,17 +94,17 @@ const getSpendingByNaicsPage = (
       id: any;
       name: string;
     }[];
-  }>('/search/spending_by_category/naics/', {
+  }>(ctx, '/search/spending_by_category/naics/', {
     filters: {
-      /*agencies: [
+      agencies: [
         {
-          type: null,
-          tier: null,
-          name: null,
+          type: 'funding',
+          tier: 'toptier',
+          name: opts.agency,
         },
-      ],*/
+      ],
       time_period: [rangeForFiscalYear(opts.fiscalYear)],
-      naics_codes: opts.naicsCodes,
+      //naics_codes: opts.naicsCodes,
     },
     limit: 100,
     page,
@@ -104,9 +112,6 @@ const getSpendingByNaicsPage = (
   });
 };
 
-export const getSpendingByNaics = getAllPages<typeof getSpendingByNaicsPage>(
-  getSpendingByNaicsPage,
-);
-
-export const getTest = () =>
-  getSpendingByNaics({ naicsCodes: ['1119'], fiscalYear: 2021 });
+export const getAgencySpendBySector = getAllPages<
+  typeof getAgencySpendBySectorPage
+>(getAgencySpendBySectorPage);

@@ -1,6 +1,6 @@
 import type { RequestHandler } from '@sveltejs/kit';
 
-import { getSpendingImpact } from '$data/transforms/spending';
+import { getSpendingImpact } from '$data/transforms/spending-impact';
 import * as ctx from './_context';
 
 export const get: RequestHandler = async ({ params }) => {

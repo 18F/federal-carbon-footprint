@@ -1,3 +1,5 @@
+import memoizee from 'memoizee';
+
 const BASE_URL = 'https://api.edap-cluster.com/useeio/api';
 const MODEL_NAME = 'USEEIOv1.2';
 
@@ -45,76 +47,55 @@ type ModelSector = {
   location: string;
   description: string;
 };
-export const getModelSectors = async (ctx: Context) => {
-  const models = await fetchServiceData<ModelSector[]>(
-    ctx,
-    MODEL_NAME,
-    'sectors',
-  );
-  return models.reduce<Record<string, ModelSector>>(
+export const getModelSectors = memoizee(async (ctx: Context) => {
+  return fetchServiceData<ModelSector[]>(ctx, MODEL_NAME, 'sectors');
+  /*return models.reduce<Record<string, ModelSector>>(
     (modelSectorsById, current) => {
       modelSectorsById[current.code] = current;
       return modelSectorsById;
     },
     {},
-  );
-};
+  );*/
+});
 
-type CalculateResult = {
-  indicators: string[];
-  sectors: string[];
-  data: number[][];
-  totals: number[];
+type ModelIndicator = {
+  id: string;
+  index: number;
+  name: string;
+  code: string;
+  unit: string;
 };
-export const getSectorCO2Equivalents = async (
-  ctx: Context,
-  sectors: string[],
-  dollars: number = 1,
-) => {
-  const result = await fetchServiceData<CalculateResult>(
+export const getModelIndicators = memoizee(async (ctx: Context) => {
+  const indicators = await fetchServiceData<ModelIndicator[]>(
     ctx,
     MODEL_NAME,
-    'calculate',
-    {
-      demand: sectors.map((sector) => {
-        return {
-          sector: sector,
-          amount: dollars,
-        };
-      }),
-      perspective: 'final',
-    },
+    'indicators',
   );
-  const ghgIndex = result.indicators.indexOf('GHG');
-  const kgCO2Equilvalent = result.totals[ghgIndex];
-  return kgCO2Equilvalent;
-};
+  return indicators.reduce<Record<string, ModelIndicator>>(
+    (modelIndicatorsById, current) => {
+      modelIndicatorsById[current.code] = current;
+      return modelIndicatorsById;
+    },
+    {},
+  );
+});
 
-/**
- * @see https://www.epa.gov/chemical-research/tool-reduction-and-assessment-chemicals-and-other-environmental-impacts-traci
- * @param demand Array of sector spend amounts.
- * @returns TRACI - kg CO2-equivalent
- */
-/*
-import * as useeio from 'useeio';
+export const getMatrixD = memoizee(async (ctx: Context) => {
+  return fetchServiceData<number[][]>(ctx, MODEL_NAME, 'matrix/D');
+});
 
-const BASE_URL = 'https://api.edap-cluster.com/useeio/api';
-const API_KEY = 'lySopVteG11Ru0m5ucnRharYBWco1CIGWlxKvro0';
-const MODEL_NAME = 'USEEIOv1.2';
-
-export const getCO2Equivalent = async (demand: useeio.DemandEntry[]) => {
-  const model = useeio.modelOf({
-    endpoint: BASE_URL,
-    model: MODEL_NAME,
-    apikey: API_KEY,
-    asJsonFiles: false,
-  });
-  const result = await model.calculate({
-    // "direct" | "intermediate" | "final"
-    perspective: 'final',
-    // {sector: string; amount: number;}[]
-    demand: demand,
-  });
-  const ghgIndex = result.indicators.indexOf('GHG');
-  return result.totals[ghgIndex];
-};*/
+export const getGhgImpactBySectorId = memoizee(async (ctx: Context) => {
+  const [indicators, sectors, rows] = await Promise.all([
+    getModelIndicators(ctx),
+    getModelSectors(ctx),
+    getMatrixD(ctx),
+  ]);
+  const sectorGhgImpactVector = rows[indicators['GHG'].index];
+  return sectors.reduce<Record<string, number>>(
+    (ghgImpactBySectorId, sector) => {
+      ghgImpactBySectorId[sector.code] = sectorGhgImpactVector[sector.index];
+      return ghgImpactBySectorId;
+    },
+    {},
+  );
+});

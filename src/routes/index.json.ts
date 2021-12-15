@@ -1,13 +1,20 @@
 import type { RequestHandler } from '@sveltejs/kit';
 
-import { getSpendingImpact } from '$data/transforms/spending-impact';
+import { getSpendingImpactByAgency } from '$data/transforms/spending-impact';
 import * as ctx from './_context';
 
+type Awaited<T> = T extends PromiseLike<infer U> ? Awaited<U> : T;
+
 export const get: RequestHandler = async ({ params }) => {
-  const spendingImpact = await getSpendingImpact({ ...ctx, fetch });
-  if (spendingImpact) {
+  const body = await getSpendingImpactByAgency({
+    ...ctx,
+    fetch,
+  });
+  if (body) {
     return {
-      body: spendingImpact,
+      body,
     };
   }
 };
+
+export type Data = Awaited<ReturnType<typeof getSpendingImpactByAgency>>;

@@ -3,29 +3,33 @@
 
   import PieChart from '$components/PieChart.svelte';
   import Sankey from '$components/Sankey.svelte';
-  import type { get as getData } from './index.json';
+  import type { Data } from './index.json';
 
   export const prerender = true;
 
+  import { writable } from 'svelte/store';
+  export const spendingImpact = writable<Data>({});
+
   export const load = async ({ page, fetch }: LoadInput) => {
-    const data = await fetch('index.json').then((response) => response.json());
-    if (data) {
+    const response = await fetch('index.json');
+
+    if (response.ok) {
+      spendingImpact.set(await response.json());
       return {
         props: {
-          data,
+          status: 'loaded',
         },
       };
     }
 
     return {
       status: 404,
-      error: new Error(`Could not load spending impact`),
+      error: new Error(`Could not load data`),
     };
   };
 </script>
 
 <script lang="ts">
-  export let data: ReturnType<typeof getData>;
   import { base } from '$app/paths';
 </script>
 
@@ -36,7 +40,7 @@
 <div class="grid-container">
   <div class="text-italic margin-top-1">NOTE: All data in these visualizations are for test purposes only.</div>
   <h1>Sample Sankey Diagram</h1>
-  <Sankey />
+  <Sankey data={$spendingImpact} />
   <h1>
     Federal Government Total Energy Consumption by Fuel Type (Trillion Btu)
   </h1>

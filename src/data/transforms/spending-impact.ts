@@ -2,11 +2,48 @@ import * as usaSpending from '../sources/usaspending';
 import * as useeio from '../sources/useeio';
 
 export const getSpendingImpactByAgency = async (ctx: useeio.Context) => {
-  const [impactBySector, agenncySpendBySector] = await Promise.all([
-    useeio.getGhgImpactBySectorId(ctx),
-    usaSpending.getAgencySpendBySector(ctx),
-  ]);
+  const [impactBySector, agency1SpendBySector, agency2SpendBySector] =
+    await Promise.all([
+      useeio.getGhgImpactBySectorId(ctx),
+      usaSpending.getAgencySpendBySector(ctx, {
+        agency: 'Securities and Exchange Commission',
+        fiscalYear: 2021,
+      }),
+      usaSpending.getAgencySpendBySector(ctx, {
+        agency: 'U.S. Agency for Global Media',
+        fiscalYear: 2021,
+      }),
+    ]);
+  return {
+    agencies: [
+      {
+        name: 'Securities and Exchange Commission',
+        sectors: agency1SpendBySector.map((sectorSpend) => {
+          return {
+            amount: sectorSpend.amount,
+            code: sectorSpend.code,
+            name: sectorSpend.name,
+            kgC02Eq: impactBySector[sectorSpend.code] * sectorSpend.amount,
+          };
+        }),
+      },
+      {
+        name: 'U.S. Agency for Global Media',
+        sectors: agency1SpendBySector.map((sectorSpend) => {
+          return {
+            amount: sectorSpend.amount,
+            code: sectorSpend.code,
+            name: sectorSpend.name,
+            kgC02Eq: impactBySector[sectorSpend.code] * sectorSpend.amount,
+          };
+        }),
+      },
+    ],
+  };
 };
+export type SpendingImpactByAgency = ReturnType<
+  typeof getSpendingImpactByAgency
+>;
 
 export const getSpendingImpact = async (ctx: useeio.Context) => {
   // Get more detailed sector metadata from the USEEIO api.

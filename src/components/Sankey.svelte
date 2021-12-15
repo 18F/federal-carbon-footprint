@@ -2,6 +2,10 @@
   import * as d3 from 'd3';
   import * as d3Sankey from 'd3-sankey';
 
+  import type { SpendingImpactByAgency } from '$data/transforms/spending-impact';
+
+  export let data: SpendingImpactByAgency;
+
   interface NodeExtra {
     id: string;
   }
@@ -49,16 +53,17 @@
     return sankeyLayout({ nodes, links });
   };
 
-  const sankeyLayout = createSankeyLayout([
-    { source: 'USGS', target: 'Small electronics', value: 20 },
-    { source: 'USGS', target: 'Transportation', value: 100 },
-    { source: 'EPA', target: 'Concrete', value: 30 },
-    { source: 'EPA', target: 'Small electronics', value: 70 },
-    { source: 'Small electronics', target: 'Coffee makers', value: 60 },
-    { source: 'Small electronics', target: 'Hair dryers', value: 30 },
-    { source: 'Transportation', target: 'SUVs', value: 80 },
-    { source: 'Transportation', target: 'Freight', value: 20 },
-  ]);
+  const sankeyData = (data.agencies).flatMap(agency => {
+    return agency.sectors.map(sector => {
+      return {
+        source: agency.name,
+        target: sector.name,
+        value: sector.kgC02Eq,
+      };
+    });
+  });
+
+  const sankeyLayout = createSankeyLayout(sankeyData);
   const nodeIds = sankeyLayout.nodes.map((n) => n.id);
   const format = d3.format(',');
   const nodeGroups = d3.map(sankeyLayout.nodes, (n) => n.id);

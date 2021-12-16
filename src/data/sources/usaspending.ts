@@ -121,20 +121,24 @@ export const getAgencySpendBySector = getAllPages<
 export const getAgencies = (ctx: Context) => {
   return fetchServiceData<
     {
-      id: number;
-      subtier_agency: {
-        abbreviation: null;
-        name: string;
-      };
-      toptier_agency: {
-        abbreviation: string;
-        name: string;
-        toptier_code: string;
-      };
-      toptier_flag: boolean;
+      agency_id: number;
+      toptier_code: string;
+      abbreviation: string;
+      agency_name: string;
+      congressional_justification_url: string;
+      active_fy: string;
+      active_fq: string;
+      outlay_amount: number;
+      obligated_amount: number;
+      budget_authority_amount: number;
+      current_total_budget_authority_amount: number;
+      percentage_of_total_budget_authority: number;
+      agency_slug: string;
     }[]
-  >(ctx, `/autocomplete/funding_agency/`, {
-    limit: 1000,
-    search_text: 'defense',
-  });
+  >(
+    ctx,
+    // This is the sort order used by here: https://www.usaspending.gov/agency
+    // For speed purposes, use it, because the server appears to cache results.
+    '/references/toptier_agencies/?sort=percentage_of_total_budget_authority&order=desc',
+  );
 };

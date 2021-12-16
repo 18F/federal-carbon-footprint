@@ -19,6 +19,6 @@ describe('usaspending.gov service integration', () => {
     const data = await usaspending.getAgencies({
       fetch: window.fetch.bind(window),
     });
-    expect(data).toBe({});
+    expect(data).not.toBe(null);
   });
 });

@@ -53,7 +53,7 @@
     return sankeyLayout({ nodes, links });
   };
 
-  const sankeyData = (data.agencies || []).flatMap(agency => {
+  const sankeyData = (data.agencies).flatMap(agency => {
     return agency.sectors.map(sector => {
       return {
         source: agency.name,

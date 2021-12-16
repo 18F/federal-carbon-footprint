@@ -1,3 +1,6 @@
+import * as t from 'io-ts';
+import { fold } from 'fp-ts/lib/Either.js';
+import { pipe } from 'fp-ts/lib/function.js';
 import memoizee from 'memoizee';
 
 const BASE_URL = 'https://api.edap-cluster.com/useeio/api';
@@ -39,50 +42,92 @@ const fetchServiceData = <T>(
     });
 };
 
-type ModelSector = {
-  id: string;
-  index: number;
-  name: string;
-  code: string;
-  location: string;
-  description: string;
-};
+const ModelSectorList = t.array(
+  t.type({
+    id: t.string,
+    index: t.number,
+    name: t.string,
+    code: t.string,
+    location: t.string,
+    description: t.string,
+  }),
+);
+type ModelSectorList = t.TypeOf<typeof ModelSectorList>;
+
 export const getModelSectors = memoizee(async (ctx: Context) => {
-  return fetchServiceData<ModelSector[]>(ctx, MODEL_NAME, 'sectors');
-  /*return models.reduce<Record<string, ModelSector>>(
-    (modelSectorsById, current) => {
-      modelSectorsById[current.code] = current;
-      return modelSectorsById;
-    },
-    {},
-  );*/
+  return fetchServiceData<ModelSectorList>(ctx, MODEL_NAME, 'sectors');
 });
 
-type ModelIndicator = {
-  id: string;
-  index: number;
-  name: string;
-  code: string;
-  unit: string;
+export const validateModelSectors = (data: unknown): ModelSectorList => {
+  return pipe(
+    ModelSectorList.decode(data),
+    fold(
+      (errors) => {
+        const msg = errors.map((error) =>
+          error.context.map(({ key }) => key).join('.'),
+        );
+        throw new Error(`Error decoding service response ${msg}`);
+      },
+      (value) => value,
+    ),
+  );
 };
+
+const ModelIndicatorList = t.array(
+  t.type({
+    id: t.string,
+    index: t.number,
+    name: t.string,
+    code: t.string,
+    unit: t.string,
+  }),
+);
+type ModelIndicatorList = t.TypeOf<typeof ModelIndicatorList>;
+
 export const getModelIndicators = memoizee(async (ctx: Context) => {
-  const indicators = await fetchServiceData<ModelIndicator[]>(
+  return await fetchServiceData<ModelIndicatorList>(
     ctx,
     MODEL_NAME,
     'indicators',
   );
-  return indicators.reduce<Record<string, ModelIndicator>>(
-    (modelIndicatorsById, current) => {
-      modelIndicatorsById[current.code] = current;
-      return modelIndicatorsById;
-    },
-    {},
-  );
 });
 
+export const validateModelIndicators = (data: unknown): ModelIndicatorList => {
+  return pipe(
+    ModelIndicatorList.decode(data),
+    fold(
+      (errors) => {
+        const msg = errors.map((error) =>
+          error.context.map(({ key }) => key).join('.'),
+        );
+        throw new Error(`Error decoding service response ${msg}`);
+      },
+      (value) => value,
+    ),
+  );
+};
+
+const MatrixD = t.array(t.array(t.number));
+type MatrixD = t.TypeOf<typeof MatrixD>;
+
 export const getMatrixD = memoizee(async (ctx: Context) => {
-  return fetchServiceData<number[][]>(ctx, MODEL_NAME, 'matrix/D');
+  return fetchServiceData<MatrixD>(ctx, MODEL_NAME, 'matrix/D');
 });
+
+export const validateMatrixD = (data: unknown): MatrixD => {
+  return pipe(
+    MatrixD.decode(data),
+    fold(
+      (errors) => {
+        const msg = errors.map((error) =>
+          error.context.map(({ key }) => key).join('.'),
+        );
+        throw new Error(`Error decoding service response ${msg}`);
+      },
+      (value) => value,
+    ),
+  );
+};
 
 export const getGhgImpactBySectorId = memoizee(async (ctx: Context) => {
   const [indicators, sectors, rows] = await Promise.all([
@@ -90,7 +135,8 @@ export const getGhgImpactBySectorId = memoizee(async (ctx: Context) => {
     getModelSectors(ctx),
     getMatrixD(ctx),
   ]);
-  const sectorGhgImpactVector = rows[indicators['GHG'].index];
+  const ghgIndicator = indicators.find((indicator) => indicator.code === 'GHG');
+  const sectorGhgImpactVector = rows[ghgIndicator.index];
   return sectors.reduce<Record<string, number>>(
     (ghgImpactBySectorId, sector) => {
       ghgImpactBySectorId[sector.code] = sectorGhgImpactVector[sector.index];

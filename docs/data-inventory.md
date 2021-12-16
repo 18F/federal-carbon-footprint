@@ -17,6 +17,7 @@ Direct emission; eg burning fuel
 ### Scope 2
 
 Indirect emissions, financially responsibility; eg electricity
+
 ### Scope 3
 
 [Scope 3 Calculation Guidance](https://ghgprotocol.org/scope-3-technical-calculation-guidance)
@@ -30,13 +31,13 @@ Documented here are data sources and models that have been identified as potenti
 - [FEMP EISA 432 Compliance Tracking System](https://ctsedwweb.ee.doe.gov/CTSDataAnalysis/DataAnalysisTool/DataAnalysisTool.aspx)
 
 - [Federal Facility Reporting Requirements and Performance Data](https://www.energy.gov/eere/femp/federal-facility-reporting-requirements-and-performance-data)
-    - [Federal Comprehensive Annual Energy Performance Data](https://www.energy.gov/eere/femp/federal-comprehensive-annual-energy-performance-data)
-      - [Annual Report](https://ctsedwweb.ee.doe.gov/Annual/Report/Report.aspx)
-      - [Comprehensive Greenhouse Gas GHG Inventories by Agency and Fiscal Year](https://ctsedwweb.ee.doe.gov/Annual/Report/ComprehensiveGreenhouseGasGHGInventoriesByAgencyAndFiscalYear.aspx)
-        - [Tableau view](https://ctsedwweb.ee.doe.gov/Annual/Report/TableauView.aspx?id=3)
-      - [Total Scope 1 and 2 GHG Emissions Subject To Reduction Targets Compared To FY 2008](https://ctsedwweb.ee.doe.gov/Annual/Report/TotalScope1And2GHGEmissionsSubjectToReductionTargetsComparedToFY2008.aspx)
-      - [Scope 1 and 2 GHG Emissions Subject To Reduction Targets By Category Compared To FY 2008](https://ctsedwweb.ee.doe.gov/Annual/Report/Scope1And2GHGEmissionsSubjectToReductionTargetsByCategoryComparedToFY2008.aspx)
-        - [Tableau view](https://ctsedwweb.ee.doe.gov/Annual/Report/TableauView.aspx?id=5)
+  - [Federal Comprehensive Annual Energy Performance Data](https://www.energy.gov/eere/femp/federal-comprehensive-annual-energy-performance-data)
+    - [Annual Report](https://ctsedwweb.ee.doe.gov/Annual/Report/Report.aspx)
+    - [Comprehensive Greenhouse Gas GHG Inventories by Agency and Fiscal Year](https://ctsedwweb.ee.doe.gov/Annual/Report/ComprehensiveGreenhouseGasGHGInventoriesByAgencyAndFiscalYear.aspx)
+      - [Tableau view](https://ctsedwweb.ee.doe.gov/Annual/Report/TableauView.aspx?id=3)
+    - [Total Scope 1 and 2 GHG Emissions Subject To Reduction Targets Compared To FY 2008](https://ctsedwweb.ee.doe.gov/Annual/Report/TotalScope1And2GHGEmissionsSubjectToReductionTargetsComparedToFY2008.aspx)
+    - [Scope 1 and 2 GHG Emissions Subject To Reduction Targets By Category Compared To FY 2008](https://ctsedwweb.ee.doe.gov/Annual/Report/Scope1And2GHGEmissionsSubjectToReductionTargetsByCategoryComparedToFY2008.aspx)
+      - [Tableau view](https://ctsedwweb.ee.doe.gov/Annual/Report/TableauView.aspx?id=5)
 
 ### Federal Procurement Data System
 

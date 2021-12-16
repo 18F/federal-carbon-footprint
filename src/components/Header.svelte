@@ -12,7 +12,8 @@
 
 <div
   on:click|preventDefault={() => (isOpen ? toggleOpen() : '')}
-  class="usa-overlay {visible}" />
+  class="usa-overlay {visible}"
+/>
 
 <header class="usa-header usa-header--basic">
   <div class="usa-nav-container">
@@ -34,13 +35,28 @@
       </button>
       <ul class="usa-nav__primary usa-accordion">
         <li class="usa-nav__primary-item">
-          <a class="usa-nav__link" class:usa-current={$page.path === '/'} sveltekit:prefetch href={`${base}/`}>Home</a>
+          <a
+            class="usa-nav__link"
+            class:usa-current={$page.path === '/'}
+            sveltekit:prefetch
+            href={`${base}/`}>Home</a
+          >
         </li>
         <li class="usa-nav__primary-item">
-          <a class="usa-nav__link" class:usa-current={$page.path === '/about'} sveltekit:prefetch href={`${base}/about`}>About this site</a>
+          <a
+            class="usa-nav__link"
+            class:usa-current={$page.path === '/about'}
+            sveltekit:prefetch
+            href={`${base}/about`}>About this site</a
+          >
         </li>
         <li class="usa-nav__primary-item">
-          <a class="usa-nav__link" class:usa-current={$page.path === '/api/v1'} sveltekit:prefetch href={`${base}/api/v1`}>Data</a>
+          <a
+            class="usa-nav__link"
+            class:usa-current={$page.path === '/api/v1'}
+            sveltekit:prefetch
+            href={`${base}/api/v1`}>Data</a
+          >
         </li>
       </ul>
     </nav>

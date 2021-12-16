@@ -4,9 +4,7 @@ import { getSpendingImpactByAgency } from '$data/transforms/spending-impact';
 
 import ctx from './_context';
 
-type Awaited<T> = T extends PromiseLike<infer U> ? Awaited<U> : T;
-
-export const get: RequestHandler = async ({ params }) => {
+export const get: RequestHandler = async () => {
   const body = await getSpendingImpactByAgency(ctx);
   if (body) {
     return {

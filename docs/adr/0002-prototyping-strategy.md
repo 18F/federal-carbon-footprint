@@ -14,6 +14,7 @@ In order to incrementally prototype while conducting research, a strategy for ho
 ## Decision
 
 ### View layer
+
 https://www.nytimes.com/interactive/2021/us/dane-wisconsin-covid-cases.html
 The project will start with a SvelteKit-managed frontend codebase. For this project, the primary benefits of Svelte with SvelteKit are:
 

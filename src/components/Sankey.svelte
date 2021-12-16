@@ -4,7 +4,7 @@
 
   import type { SpendingImpactByAgency } from '$data/transforms/spending-impact';
 
-  export let data: SpendingImpactByAgency;
+  export let data: Awaited<SpendingImpactByAgency>;
 
   interface NodeExtra {
     id: string;
@@ -53,8 +53,8 @@
     return sankeyLayout({ nodes, links });
   };
 
-  const sankeyData = (data.agencies).flatMap(agency => {
-    return agency.sectors.map(sector => {
+  const sankeyData = data.agencies.flatMap((agency) => {
+    return agency.sectors.map((sector) => {
       return {
         source: agency.name,
         target: sector.name,
@@ -85,9 +85,9 @@
   // This comes from the source and target types in `LinkExtra`, which are
   // set as string IDs for convenience. This casts to the node
   // type in a manner that can be used inside the Svelte markup.
-  const castSankeyNode = (node) => {
+  const castSankeyNode = (node: unknown) => {
     return node as d3Sankey.SankeyNode<NodeExtra, LinkExtra>;
-  }
+  };
 </script>
 
 <svg
@@ -105,8 +105,8 @@
         width={node.x1 - node.x0}
         fill={color(nodeGroups[index])}
       >
-      <title>{nodeTitles[index]}</title>
-    </rect>
+        <title>{nodeTitles[index]}</title>
+      </rect>
     {/each}
   </g>
   <g fill="none" stroke-opacity={linkStrokeOpacity}>
@@ -120,8 +120,14 @@
           x2={castSankeyNode(link.target).x0}
         >
           <title>{link}</title>
-          <stop offset={'0%'} stop-color={color(nodeGroups[castSankeyNode(link.source).index])} />
-          <stop offset={'100%'} stop-color={color(nodeGroups[castSankeyNode(link.target).index])} />
+          <stop
+            offset={'0%'}
+            stop-color={color(nodeGroups[castSankeyNode(link.source).index])}
+          />
+          <stop
+            offset={'100%'}
+            stop-color={color(nodeGroups[castSankeyNode(link.target).index])}
+          />
         </linearGradient>
       {/if}
       <path

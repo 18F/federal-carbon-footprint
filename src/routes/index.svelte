@@ -8,9 +8,9 @@
   export const prerender = true;
 
   import { writable } from 'svelte/store';
-  export const spendingImpact = writable<Data>({});
+  export const spendingImpact = writable<Data>({ agencies: [] });
 
-  export const load = async ({ page, fetch }: LoadInput) => {
+  export const load = async ({ fetch }: LoadInput) => {
     const response = await fetch('index.json');
 
     if (response.ok) {
@@ -38,7 +38,9 @@
 </svelte:head>
 
 <div class="grid-container">
-  <div class="text-italic margin-top-1">NOTE: All data in these visualizations are for test purposes only.</div>
+  <div class="text-italic margin-top-1">
+    NOTE: All data in these visualizations are for test purposes only.
+  </div>
   <h1>Sample Sankey Diagram</h1>
   <Sankey data={$spendingImpact} />
   <h1>

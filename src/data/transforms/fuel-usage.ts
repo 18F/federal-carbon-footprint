@@ -14,7 +14,7 @@ type FuelTypeUsage = t.TypeOf<typeof FuelTypeUsage>;
 const FuelTypeUsageSet = t.array(FuelTypeUsage);
 export type FuelTypeUsageSet = t.TypeOf<typeof FuelTypeUsageSet>;
 
-const validateFuelTypeUsageSet = (input: any): FuelTypeUsageSet | null => {
+const validateFuelTypeUsageSet = (input: unknown): FuelTypeUsageSet | null => {
   return pipe(
     FuelTypeUsageSet.decode(input),
     fold(

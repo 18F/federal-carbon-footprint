@@ -3,7 +3,7 @@ import * as usaspending from './usaspending';
 describe('usaspending.gov service integration', () => {
   it('getAgencySpendBySector returns data', async () => {
     // Fetch data from an agency with only one page of results.
-    const test = await usaspending.getAgencySpendBySector(
+    const data = await usaspending.getAgencySpendBySector(
       {
         fetch: window.fetch.bind(window),
       },
@@ -12,6 +12,13 @@ describe('usaspending.gov service integration', () => {
         fiscalYear: 2021,
       },
     );
-    expect(test).toBe({});
+    expect(data).not.toBe(null);
+  });
+
+  it('getAgencies returns data', async () => {
+    const data = await usaspending.getAgencies({
+      fetch: window.fetch.bind(window),
+    });
+    expect(data).toBe({});
   });
 });

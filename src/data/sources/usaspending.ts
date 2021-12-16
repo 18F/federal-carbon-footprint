@@ -19,7 +19,9 @@ export const fetchServiceData = <T>(
       },
       body: JSON.stringify(payload),
     })
-    .then((response) => response.json() as Promise<T>);
+    .then((response) => {
+      return response.json() as Promise<T>;
+    });
 };
 
 export const getSpending = (ctx: Context) => {
@@ -115,3 +117,24 @@ export const getAgencySpendBySectorPage = (
 export const getAgencySpendBySector = getAllPages<
   typeof getAgencySpendBySectorPage
 >(getAgencySpendBySectorPage);
+
+export const getAgencies = (ctx: Context) => {
+  return fetchServiceData<
+    {
+      id: number;
+      subtier_agency: {
+        abbreviation: null;
+        name: string;
+      };
+      toptier_agency: {
+        abbreviation: string;
+        name: string;
+        toptier_code: string;
+      };
+      toptier_flag: boolean;
+    }[]
+  >(ctx, `/autocomplete/funding_agency/`, {
+    limit: 1000,
+    search_text: 'defense',
+  });
+};

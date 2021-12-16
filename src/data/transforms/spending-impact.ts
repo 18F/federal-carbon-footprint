@@ -2,23 +2,29 @@ import * as usaSpending from '../sources/usaspending';
 import * as useeio from '../sources/useeio';
 
 export const getSpendingImpactByAgency = async (ctx: useeio.Context) => {
-  const [impactBySector, agency1SpendBySector, agency2SpendBySector] =
-    await Promise.all([
-      useeio.getGhgImpactBySectorId(ctx),
-      usaSpending.getAgencySpendBySector(ctx, {
-        agency: 'Securities and Exchange Commission',
+  const agencyNames = [
+    'Securities and Exchange Commission',
+    'U.S. Agency for Global Media',
+    'Corporation for National and Community Service',
+    'Department of Veterans Affairs',
+    'Social Security Administration',
+    'Department of Education',
+    'Department of Agriculture',
+  ];
+  const [impactBySector, ...agencySpendsBySector] = await Promise.all([
+    useeio.getGhgImpactBySectorId(ctx),
+    ...agencyNames.map((agencyName) => {
+      return usaSpending.getAgencySpendBySector(ctx, {
+        agency: agencyName,
         fiscalYear: 2021,
-      }),
-      usaSpending.getAgencySpendBySector(ctx, {
-        agency: 'U.S. Agency for Global Media',
-        fiscalYear: 2021,
-      }),
-    ]);
+      });
+    }),
+  ]);
   return {
-    agencies: [
-      {
-        name: 'Securities and Exchange Commission',
-        sectors: agency1SpendBySector.map((sectorSpend) => {
+    agencies: agencySpendsBySector.map((agencySpendBySector, index) => {
+      return {
+        name: agencyNames[index],
+        sectors: agencySpendBySector.map((sectorSpend) => {
           return {
             amount: sectorSpend.amount,
             code: sectorSpend.code,
@@ -26,19 +32,8 @@ export const getSpendingImpactByAgency = async (ctx: useeio.Context) => {
             kgC02Eq: impactBySector[sectorSpend.code] * sectorSpend.amount,
           };
         }),
-      },
-      {
-        name: 'U.S. Agency for Global Media',
-        sectors: agency1SpendBySector.map((sectorSpend) => {
-          return {
-            amount: sectorSpend.amount,
-            code: sectorSpend.code,
-            name: sectorSpend.name,
-            kgC02Eq: impactBySector[sectorSpend.code] * sectorSpend.amount,
-          };
-        }),
-      },
-    ],
+      };
+    }),
   };
 };
 export type SpendingImpactByAgency = ReturnType<

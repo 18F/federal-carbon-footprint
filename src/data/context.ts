@@ -17,7 +17,6 @@ export const fetch: typeof global.fetch = (
   ...args: Parameters<typeof global.fetch>
 ) => {
   return global.fetch(...args).then((response) => {
-    console.log(response.body);
     return response;
   });
 };

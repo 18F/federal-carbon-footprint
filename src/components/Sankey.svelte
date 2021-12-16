@@ -22,8 +22,8 @@
     links: SLink[];
   }
 
-  const width = 640;
-  const height = 400;
+  const width = 800;
+  const height = 3000;
   const marginTop = 5;
   const marginRight = 1;
   const marginBottom = 5;
@@ -53,7 +53,7 @@
     return sankeyLayout({ nodes, links });
   };
 
-  const sankeyData = (data.agencies).flatMap(agency => {
+  const sankeyData = (data.agencies || []).flatMap(agency => {
     return agency.sectors.map(sector => {
       return {
         source: agency.name,

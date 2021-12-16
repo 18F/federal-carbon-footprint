@@ -2,17 +2,11 @@ import * as usaSpending from '../sources/usaspending';
 import * as useeio from '../sources/useeio';
 
 export const getSpendingImpactByAgency = async (ctx: useeio.Context) => {
-  const agencyNames = [
-    'Securities and Exchange Commission',
-    'U.S. Agency for Global Media',
-    'Corporation for National and Community Service',
-    'Department of Veterans Affairs',
-    'Social Security Administration',
-    'Department of Education',
-    'Department of Agriculture',
-  ];
+  const impactBySectorPromise = useeio.getGhgImpactBySectorId(ctx);
+  const agencyResults = await usaSpending.getAgencies(ctx);
+  const agencyNames = agencyResults.results.map((agency) => agency.agency_name);
   const [impactBySector, ...agencySpendsBySector] = await Promise.all([
-    useeio.getGhgImpactBySectorId(ctx),
+    impactBySectorPromise,
     ...agencyNames.map((agencyName) => {
       return usaSpending.getAgencySpendBySector(ctx, {
         agency: agencyName,
@@ -20,6 +14,7 @@ export const getSpendingImpactByAgency = async (ctx: useeio.Context) => {
       });
     }),
   ]);
+
   return {
     agencies: agencySpendsBySector.map((agencySpendBySector, index) => {
       return {

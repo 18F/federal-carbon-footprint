@@ -143,39 +143,48 @@ export const getAgencySpendBySector = getAllPages<
   typeof getSpendingByNaicsCategoryPage
 >(getSpendingByNaicsCategoryPage);
 
-const UsaSpendingAgencyList = t.array(
-  t.type({
-    agency_id: t.number,
-    toptier_code: t.string,
-    abbreviation: t.string,
-    agency_name: t.string,
-    congressional_justification_url: t.string,
-    active_fy: t.string,
-    active_fq: t.string,
-    outlay_amount: t.number,
-    obligated_amount: t.number,
-    budget_authority_amount: t.number,
-    current_total_budget_authority_amount: t.number,
-    percentage_of_total_budget_authority: t.number,
-    agency_slug: t.string,
-  }),
-);
-type UsaSpendingAgencyList = t.TypeOf<typeof UsaSpendingAgencyList>;
+const UsaSpendingAgencyResults = t.type({
+  results: t.array(
+    t.type({
+      agency_id: t.number,
+      toptier_code: t.string,
+      abbreviation: t.string,
+      agency_name: t.string,
+      congressional_justification_url: t.union([t.string, t.null]),
+      active_fy: t.string,
+      active_fq: t.string,
+      outlay_amount: t.number,
+      obligated_amount: t.number,
+      budget_authority_amount: t.number,
+      current_total_budget_authority_amount: t.number,
+      percentage_of_total_budget_authority: t.number,
+      agency_slug: t.string,
+    }),
+  ),
+});
+type UsaSpendingAgencyResults = t.TypeOf<typeof UsaSpendingAgencyResults>;
 
 export const validateAgencies = (
   agencies: unknown,
-): UsaSpendingAgencyList | null => {
+): UsaSpendingAgencyResults => {
   return pipe(
-    UsaSpendingAgencyList.decode(agencies),
+    UsaSpendingAgencyResults.decode(agencies),
     fold(
-      () => null,
+      (errors) => {
+        const msg = errors.map((error) =>
+          error.context.map(({ key }) => key).join('.'),
+        );
+        throw new Error(`Error decoding service response ${msg}`);
+      },
       (value) => value,
     ),
   );
 };
 
-export const getAgencies = (ctx: Context): Promise<UsaSpendingAgencyList> => {
-  return fetchServiceData<UsaSpendingAgencyList>(
+export const getAgencies = (
+  ctx: Context,
+): Promise<UsaSpendingAgencyResults> => {
+  return fetchServiceData<UsaSpendingAgencyResults>(
     ctx,
     // This is the sort order used by here: https://www.usaspending.gov/agency
     // For speed purposes, use it, because the server appears to cache results.

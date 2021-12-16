@@ -49,7 +49,6 @@
         [marginLeft, marginTop],
         [width - marginRight, height - marginBottom],
       ]);
-
     return sankeyLayout({ nodes, links });
   };
 
@@ -57,12 +56,11 @@
     return agency.sectors.map((sector) => {
       return {
         source: agency.name,
-        target: sector.name,
+        target: sector.name || sector.code,
         value: sector.kgC02Eq,
       };
     });
   });
-
   const sankeyLayout = createSankeyLayout(sankeyData);
   const nodeIds = sankeyLayout.nodes.map((n) => n.id);
   const format = d3.format(',');

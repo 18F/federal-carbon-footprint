@@ -9,7 +9,7 @@
 
 import { base } from '$app/paths';
 
-import * as github from '$lib/github';
+import * as github from '$lib/domain/github';
 
 // expose SvelteKit exports on the context
 export * as env from '$app/env';

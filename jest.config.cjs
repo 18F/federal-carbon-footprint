@@ -8,7 +8,6 @@ module.exports = {
   moduleFileExtensions: ['js', 'ts'],
   setupFiles: ['<rootDir>/jest-setup.js', 'dotenv/config'],
   moduleNameMapper: {
-    '^\\$data(.*)$': '<rootDir>/src/data$1',
     '^\\$lib(.*)$': '<rootDir>/src/lib$1',
   },
 };

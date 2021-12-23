@@ -1,4 +1,4 @@
-import { NaicsSectorList } from '$data/domain/naics';
+import { NaicsSectorList } from '$lib/domain/naics';
 import reporter from 'io-ts-reporters';
 
 import * as usaspending from './usaspending';

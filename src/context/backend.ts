@@ -6,9 +6,10 @@
 
 import makeFetchHappen from 'make-fetch-happen';
 
-import { GetSpendingImpactByAgency } from '$data/services/spending-impact';
-import * as usaSpending from '$data/adapters/usaspending';
-import * as useeio from '$data/adapters/useeio';
+import { getNaics } from '$lib/adapters/naics';
+import * as usaSpending from '$lib/adapters/usaspending';
+import * as useeio from '$lib/adapters/useeio';
+import { GetSpendingImpactByAgency } from '$lib/services/spending-impact';
 
 const USEEIO_API_KEY = import.meta.env.VITE_USEEIO_API_KEY.toString();
 
@@ -18,7 +19,7 @@ const fetch = makeFetchHappen.defaults({
 }) as unknown as typeof global.fetch;
 
 export const getSpendingImpactByAgency = GetSpendingImpactByAgency({
-  getNaics: usaSpending.UsaSpendingGetNaics({ fetch }),
+  getNaics,
   getGhgImpactBySectorId: useeio.GetGhgImpactBySectorId({
     fetch,
     USEEIO_API_KEY,

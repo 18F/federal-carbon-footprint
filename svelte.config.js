@@ -38,7 +38,6 @@ const config = {
         alias: {
           $components: path.resolve('./src/components'),
           $context: path.resolve('./src/context'),
-          $data: path.resolve('./src/data'),
           $lib: path.resolve('./src/lib'),
           $routes: path.resolve('./src/routes'),
           $styles: path.resolve('./src/styles'),

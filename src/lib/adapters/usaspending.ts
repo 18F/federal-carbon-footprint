@@ -2,7 +2,7 @@ import * as t from 'io-ts';
 import { fold } from 'fp-ts/lib/Either.js';
 import { pipe } from 'fp-ts/lib/function.js';
 
-import type { GetNaics } from '$data/domain/naics';
+import { GetNaics, NaicsCode } from '$lib/domain/naics';
 
 const API_BASE = 'https://api.usaspending.gov/api/v2';
 
@@ -47,7 +47,7 @@ export const getSpending = (ctx: Context) => () => {
 const NaicsReference = t.type({
   results: t.array(
     t.type({
-      naics: t.string,
+      naics: NaicsCode,
       naics_description: t.string,
       count: t.number,
     }),
@@ -64,10 +64,14 @@ export const UsaSpendingGetNaics =
           return {
             code: result.naics,
             description: result.naics_description,
-            parentCode:
+            /*parentCode:
               result.naics.length > 2
-                ? result.naics.slice(0, result.naics.length)
-                : null,
+                ? (result.naics.slice(
+                    0,
+                    result.naics.length,
+                  ) as unknown as NaicsCode)
+                : null,*/
+            parentCode: null,
           };
         });
       },
@@ -82,7 +86,6 @@ export const validateNaics = (data: unknown): NaicsReference => {
         const msg = errors.map((error) =>
           error.context.map(({ key }) => key).join('.'),
         );
-        console.log(errors[0].context[0].actual[0]);
         throw new Error(`Error decoding service response ${msg}`);
       },
       (value) => value,

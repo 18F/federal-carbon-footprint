@@ -1,4 +1,4 @@
-import type { GetNaics } from '$data/domain/naics';
+import type { GetNaics } from '$lib/domain/naics';
 
 import type * as usaSpending from '../adapters/usaspending';
 import type * as useeio from '../adapters/useeio';

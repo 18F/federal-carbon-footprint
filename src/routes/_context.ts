@@ -1,6 +1,6 @@
 import makeFetchHappen from 'make-fetch-happen';
 
-import { GetSpendingImpactByAgency } from '$data/transforms/spending-impact';
+import { GetSpendingImpactByAgency } from '$data/services/spending-impact';
 import * as usaSpending from '$data/adapters/usaspending';
 import * as useeio from '$data/adapters/useeio';
 

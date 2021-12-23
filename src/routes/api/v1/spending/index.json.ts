@@ -1,6 +1,6 @@
 import type { RequestHandler } from '@sveltejs/kit';
 
-import { getSpendingImpact } from '$data/transforms/spending-impact';
+import { getSpendingImpact } from '$data/services/spending-impact';
 
 import ctx from '../../../_context';
 

@@ -2,7 +2,7 @@
   import * as d3 from 'd3';
   import * as d3Sankey from 'd3-sankey';
 
-  import type { SpendingImpactByAgency } from '$data/transforms/spending-impact';
+  import type { SpendingImpactByAgency } from '$data/services/spending-impact';
 
   export let data: Awaited<SpendingImpactByAgency>;
 

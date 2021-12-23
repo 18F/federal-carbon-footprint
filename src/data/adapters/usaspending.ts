@@ -2,6 +2,8 @@ import * as t from 'io-ts';
 import { fold } from 'fp-ts/lib/Either.js';
 import { pipe } from 'fp-ts/lib/function.js';
 
+import type { GetNaics } from '$data/domain/naics';
+
 const API_BASE = 'https://api.usaspending.gov/api/v2';
 
 export type Context = {
@@ -26,7 +28,7 @@ export const fetchServiceData = <T>(
     });
 };
 
-export const getSpending = (ctx: Context) => {
+export const getSpending = (ctx: Context) => () => {
   // https://github.com/fedspendingtransparency/usaspending-api/blob/master/usaspending_api/api_contracts/contracts/v2/spending.md
   return fetchServiceData(ctx, '/spending/', {
     // federal_account, object_class, recipient, award, budget_function,
@@ -37,15 +39,55 @@ export const getSpending = (ctx: Context) => {
       fy: '2020',
       quarter: 4,
     },
+  }).then((data) => {
+    return data;
   });
 };
 
-export const getNaics = (ctx: Context, parent?: string) => {
-  if (parent) {
-    return fetchServiceData(ctx, `/references/naics/${parent}`);
-  } else {
-    return fetchServiceData(ctx, '/references/naics/');
-  }
+const NaicsReference = t.type({
+  results: t.array(
+    t.type({
+      naics: t.string,
+      naics_description: t.string,
+      count: t.number,
+    }),
+  ),
+});
+type NaicsReference = t.TypeOf<typeof NaicsReference>;
+
+export const UsaSpendingGetNaics =
+  (ctx: Context): GetNaics =>
+  () => {
+    return fetchServiceData<NaicsReference>(ctx, '/references/naics/').then(
+      (results) => {
+        return results.results.map((result) => {
+          return {
+            code: result.naics,
+            description: result.naics_description,
+            parentCode:
+              result.naics.length > 2
+                ? result.naics.slice(0, result.naics.length)
+                : null,
+          };
+        });
+      },
+    );
+  };
+
+export const validateNaics = (data: unknown): NaicsReference => {
+  return pipe(
+    NaicsReference.decode(data),
+    fold(
+      (errors) => {
+        const msg = errors.map((error) =>
+          error.context.map(({ key }) => key).join('.'),
+        );
+        console.log(errors[0].context[0].actual[0]);
+        throw new Error(`Error decoding service response ${msg}`);
+      },
+      (value) => value,
+    ),
+  );
 };
 
 const rangeForFiscalYear = (fiscalYear: number) => {
@@ -55,9 +97,10 @@ const rangeForFiscalYear = (fiscalYear: number) => {
   };
 };
 
-const getAllPages =
+const GetAllPages =
+  (ctx: Context) =>
   <T extends (ctx: Context, ...args: unknown[]) => any>(getPage: T) =>
-  async (ctx: Context, opts: Parameters<T>[1]) => {
+  async (opts: Parameters<T>[1]) => {
     let response: Awaited<ReturnType<T>>;
     const results: typeof response['results'] = [];
     let page = 0;
@@ -139,9 +182,10 @@ export const validateSpendingByNaicsCategoryPage = (
   );
 };
 
-export const getAgencySpendBySector = getAllPages<
-  typeof getSpendingByNaicsCategoryPage
->(getSpendingByNaicsCategoryPage);
+export const GetAgencySpendBySector = (ctx: Context) =>
+  GetAllPages(ctx)<typeof getSpendingByNaicsCategoryPage>(
+    getSpendingByNaicsCategoryPage,
+  );
 
 const UsaSpendingAgencyResults = t.type({
   results: t.array(
@@ -181,13 +225,12 @@ export const validateAgencies = (
   );
 };
 
-export const getAgencies = (
-  ctx: Context,
-): Promise<UsaSpendingAgencyResults> => {
-  return fetchServiceData<UsaSpendingAgencyResults>(
-    ctx,
-    // This is the sort order used by here: https://www.usaspending.gov/agency
-    // For speed purposes, use it, because the server appears to cache results.
-    '/references/toptier_agencies/?sort=percentage_of_total_budget_authority&order=desc',
-  );
-};
+export const GetAgencies =
+  (ctx: Context) => (): Promise<UsaSpendingAgencyResults> => {
+    return fetchServiceData<UsaSpendingAgencyResults>(
+      ctx,
+      // This is the sort order used by here: https://www.usaspending.gov/agency
+      // For speed purposes, use it, because the server appears to cache results.
+      '/references/toptier_agencies/?sort=percentage_of_total_budget_authority&order=desc',
+    );
+  };

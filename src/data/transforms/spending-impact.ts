@@ -1,64 +1,58 @@
-import * as usaSpending from '../sources/usaspending';
-import * as useeio from '../sources/useeio';
+import type { GetNaics } from '$data/domain/naics';
 
-export const getSpendingImpactByAgency = async (ctx: useeio.Context) => {
-  const impactBySectorPromise = useeio.getGhgImpactBySectorId(ctx);
-  const agencyResults = await usaSpending.getAgencies(ctx);
-  const agencyNames = agencyResults.results.map((agency) => agency.agency_name);
-  const [impactBySector, ...agencySpendsBySector] = await Promise.all([
-    impactBySectorPromise,
-    ...agencyNames.map((agencyName) => {
-      return usaSpending.getAgencySpendBySector(ctx, {
-        agency: agencyName,
-        fiscalYear: 2021,
-      });
-    }),
-  ]);
+import type * as usaSpending from '../adapters/usaspending';
+import type * as useeio from '../adapters/useeio';
 
-  return {
-    agencies: agencySpendsBySector.map((agencySpendBySector, index) => {
-      return {
-        name: agencyNames[index],
-        sectors: agencySpendBySector.map((sectorSpend) => {
-          return {
-            amount: sectorSpend.amount,
-            code: sectorSpend.code,
-            name: sectorSpend.name,
-            kgC02Eq: impactBySector[sectorSpend.code] * sectorSpend.amount,
-          };
-        }),
-      };
-    }),
-  };
+type Context = {
+  getNaics: GetNaics;
+  getGhgImpactBySectorId: ReturnType<typeof useeio.GetGhgImpactBySectorId>;
+  getAgencies: ReturnType<typeof usaSpending.GetAgencies>;
+  getAgencySpendBySector: ReturnType<typeof usaSpending.GetAgencySpendBySector>;
 };
-export type SpendingImpactByAgency = ReturnType<
-  typeof getSpendingImpactByAgency
->;
 
-export const getSpendingImpact = async (ctx: useeio.Context) => {
-  // Get more detailed sector metadata from the USEEIO api.
-  const modelSectors = await useeio.getModelSectors(ctx);
-  return modelSectors;
-  /*
-  const spendingByNaics = await getSpendingByNaics({
-    naicsCodes: ['1119'],
-    fiscalYear: 2021,
-  });
-  const co2PerDollar = Promise.all(
-    spendingByNaics.map((item) => {
-      console.log(spendingByNaics);
-      return getSectorCO2Equivalents([modelSectors[item.code].id]);
-    }),
-  );
+export type SpendingImpactByAgency = {
+  agencies: {
+    name: string;
+    sectors: {
+      amount: number;
+      code: string;
+      name: string;
+      kgC02Eq: number;
+    }[];
+  }[];
+};
 
-  return spendingByNaics.map((item, index) => {
+export const GetSpendingImpactByAgency =
+  (ctx: Context) => async (): Promise<SpendingImpactByAgency> => {
+    const naicsCodes = ctx.getNaics();
+    const impactBySectorPromise = ctx.getGhgImpactBySectorId();
+    const agencyResults = await ctx.getAgencies();
+    const agencyNames = agencyResults.results.map(
+      (agency) => agency.agency_name,
+    );
+    const [impactBySector, ...agencySpendsBySector] = await Promise.all([
+      impactBySectorPromise,
+      ...agencyNames.map((agencyName) => {
+        return ctx.getAgencySpendBySector({
+          agency: agencyName,
+          fiscalYear: 2021,
+        });
+      }),
+    ]);
+
     return {
-      code: item.code,
-      co2Equivalents: item.amount * co2PerDollar[index],
-      description: modelSectors[item.code].description,
-      location: modelSectors[item.code].location,
-      name: modelSectors[item.code].name,
+      agencies: agencySpendsBySector.map((agencySpendBySector, index) => {
+        return {
+          name: agencyNames[index],
+          sectors: agencySpendBySector.map((sectorSpend) => {
+            return {
+              amount: sectorSpend.amount,
+              code: sectorSpend.code,
+              name: sectorSpend.name,
+              kgC02Eq: impactBySector[sectorSpend.code] * sectorSpend.amount,
+            };
+          }),
+        };
+      }),
     };
-  });
-  */
-};
+  };

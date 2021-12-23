@@ -21,11 +21,11 @@ describe('useeio service integration', () => {
   });
 
   it('getMatrixD returns data', async () => {
-    const modelIndicators = await useeio.getMatrixD({
+    const matrixD = await useeio.getMatrixD({
       fetch: window.fetch.bind(window),
       USEEIO_API_KEY,
     });
     // Validate shape of data.
-    useeio.validateMatrixD(modelIndicators);
+    useeio.validateMatrixD(matrixD);
   });
 });

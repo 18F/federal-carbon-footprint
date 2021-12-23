@@ -129,19 +129,22 @@ export const validateMatrixD = (data: unknown): MatrixD => {
   );
 };
 
-export const getGhgImpactBySectorId = memoizee(async (ctx: Context) => {
-  const [indicators, sectors, rows] = await Promise.all([
-    getModelIndicators(ctx),
-    getModelSectors(ctx),
-    getMatrixD(ctx),
-  ]);
-  const ghgIndicator = indicators.find((indicator) => indicator.code === 'GHG');
-  const sectorGhgImpactVector = rows[ghgIndicator.index];
-  return sectors.reduce<Record<string, number>>(
-    (ghgImpactBySectorId, sector) => {
-      ghgImpactBySectorId[sector.code] = sectorGhgImpactVector[sector.index];
-      return ghgImpactBySectorId;
-    },
-    {},
-  );
-});
+export const GetGhgImpactBySectorId = (ctx: Context) =>
+  memoizee(async () => {
+    const [indicators, sectors, rows] = await Promise.all([
+      getModelIndicators(ctx),
+      getModelSectors(ctx),
+      getMatrixD(ctx),
+    ]);
+    const ghgIndicator = indicators.find(
+      (indicator) => indicator.code === 'GHG',
+    );
+    const sectorGhgImpactVector = rows[ghgIndicator.index];
+    return sectors.reduce<Record<string, number>>(
+      (ghgImpactBySectorId, sector) => {
+        ghgImpactBySectorId[sector.code] = sectorGhgImpactVector[sector.index];
+        return ghgImpactBySectorId;
+      },
+      {},
+    );
+  });

@@ -3,7 +3,7 @@ import { fold } from 'fp-ts/lib/Either.js';
 import { pipe } from 'fp-ts/lib/function.js';
 import * as t from 'io-ts';
 
-import { getRawFuelUsageData } from '$data/sources/fuel-usage';
+import { getRawFuelUsageData } from '$data/domain/fuel-usage';
 
 const FuelTypeUsage = t.type({
   fuelType: t.string,

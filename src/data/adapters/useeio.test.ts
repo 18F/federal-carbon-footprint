@@ -6,6 +6,6 @@ describe('useeio', () => {
       fetch: window.fetch.bind(window),
       USEEIO_API_KEY,
     });*/
-    expect(useeio.getGhgImpactBySectorId).not.toBe(null);
+    expect(useeio.GetGhgImpactBySectorId).not.toBe(null);
   });
 });

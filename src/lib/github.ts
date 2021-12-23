@@ -11,11 +11,16 @@ export const DEFAULT_REPOSITORY: GithubRepository = {
 };
 
 export const getBranchTreeUrl = (
-  github: GithubRepository,
+  github: GithubRepository = DEFAULT_REPOSITORY,
   useDefaultShortForm = true,
 ) => {
-  if (useDefaultShortForm && github.branch === DEFAULT_REPOSITORY.branch) {
-    return `https://github.com/${github.owner}/${github.repository}`;
+  const repo = {
+    owner: github.owner || DEFAULT_REPOSITORY.owner,
+    repository: github.repository || DEFAULT_REPOSITORY.repository,
+    branch: github.branch || DEFAULT_REPOSITORY.branch,
+  };
+  if (useDefaultShortForm && repo.branch === DEFAULT_REPOSITORY.branch) {
+    return `https://github.com/${repo.owner}/${repo.repository}`;
   }
-  return `https://github.com/${github.owner}/${github.repository}/tree/${github.branch}`;
+  return `https://github.com/${repo.owner}/${repo.repository}/tree/${repo.branch}`;
 };

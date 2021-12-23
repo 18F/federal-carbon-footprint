@@ -1,11 +1,9 @@
 import type { RequestHandler } from '@sveltejs/kit';
 
-import { getSpendingImpact } from '$data/services/spending-impact';
-
-import ctx from '../../../_context';
+import ctx from '$context/backend';
 
 export const get: RequestHandler = async () => {
-  const spendingImpact = await getSpendingImpact(ctx);
+  const spendingImpact = await ctx.getSpendingImpactByAgency();
   if (spendingImpact) {
     return {
       body: spendingImpact,

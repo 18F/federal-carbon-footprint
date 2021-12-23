@@ -1,3 +1,9 @@
+/**
+ * This application context is to be used for service endpoints.
+ * It should should include dependencies that can only run during the build
+ * process; ie, services that return transformed source data.
+ */
+
 import makeFetchHappen from 'make-fetch-happen';
 
 import { GetSpendingImpactByAgency } from '$data/services/spending-impact';

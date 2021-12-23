@@ -5,6 +5,8 @@
   import Banner from '$components/Banner.svelte';
   import Header from '$components/Header.svelte';
   import Footer from '$components/Footer.svelte';
+
+  import ctx from '$context/frontend';
 </script>
 
 <svelte:head>
@@ -17,4 +19,4 @@
 <main>
   <slot />
 </main>
-<Footer />
+<Footer githubBranchTreeUrl={ctx.githubBranchTreeUrl} />

@@ -1,7 +1,7 @@
 <script lang="ts">
   import logoImg from '../../node_modules/uswds/src/img/logo-img.png';
-  import { GITHUB_REPO } from '$lib/context';
-  import { getBranchTreeUrl } from '$lib/github';
+
+  export let githubBranchTreeUrl = '#';
 </script>
 
 <footer class="usa-footer usa-footer--slim">
@@ -25,7 +25,7 @@
             >
               <a
                 class="usa-footer__primary-link"
-                href={getBranchTreeUrl(GITHUB_REPO)}
+                href={githubBranchTreeUrl}
               >
                 Source code
               </a>

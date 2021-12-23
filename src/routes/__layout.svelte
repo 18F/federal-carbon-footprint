@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { base } from '$app/paths';
   import '$styles/app.scss';
   import BetaBanner from '$components/BetaBanner.svelte';
   import Banner from '$components/Banner.svelte';
@@ -10,7 +9,7 @@
 </script>
 
 <svelte:head>
-  <link rel="icon" href={`${base}/favicon.ico`} />
+  <link rel="icon" href={ctx.getUrl('/favicon.ico')} />
 </svelte:head>
 
 <BetaBanner />

@@ -1,5 +1,7 @@
 <script context="module">
-  import { browser, dev } from '$app/env';
+  import ctx from '$context/frontend';
+
+  const { browser, dev } = ctx.env;
 
   // we don't need any JS on this page, though we'll load
   // it in dev so that we get hot module replacement...

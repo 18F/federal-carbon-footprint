@@ -30,7 +30,7 @@
 </script>
 
 <script lang="ts">
-  import { base } from '$app/paths';
+  import ctx from '$context/frontend';
 </script>
 
 <svelte:head>
@@ -49,7 +49,7 @@
   <PieChart />
   <h1>Agengies</h1>
   <ul>
-    <li><a href="{base}/agencies/usgs">USGS Agency Page</a></li>
-    <li><a href="{base}/agencies/cms">CMS Agency Page</a></li>
+    <li><a href={ctx.getUrl('/agencies/usgs')}>USGS Agency Page</a></li>
+    <li><a href={ctx.getUrl('/agencies/cms')}>CMS Agency Page</a></li>
   </ul>
 </div>

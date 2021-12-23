@@ -1,13 +1,13 @@
 <script lang="ts">
   import closeSvg from '../../node_modules/uswds/src/img/usa-icons/close.svg';
-  import { base } from '$app/paths';
-  import { page } from '$app/stores';
+  import ctx from '$context/frontend';
 
   let isOpen = false;
   const toggleOpen = () => {
     isOpen = !isOpen;
   };
   $: visible = isOpen ? 'is-visible' : '';
+  const { page } = ctx.stores;
 </script>
 
 <div
@@ -20,7 +20,7 @@
     <div class="usa-navbar">
       <div class="usa-logo" id="basic-logo">
         <em class="usa-logo__text">
-          <a href={`${base}/`} title="Federal Carbon Footprint">
+          <a href={ctx.getUrl('/')} title="Federal Carbon Footprint">
             Federal Carbon Footprint
           </a>
         </em>
@@ -39,7 +39,7 @@
             class="usa-nav__link"
             class:usa-current={$page.path === '/'}
             sveltekit:prefetch
-            href={`${base}/`}>Home</a
+            href={ctx.getUrl('/')}>Home</a
           >
         </li>
         <li class="usa-nav__primary-item">
@@ -47,7 +47,7 @@
             class="usa-nav__link"
             class:usa-current={$page.path === '/about'}
             sveltekit:prefetch
-            href={`${base}/about`}>About this site</a
+            href={ctx.getUrl('/about')}>About this site</a
           >
         </li>
         <li class="usa-nav__primary-item">
@@ -55,7 +55,7 @@
             class="usa-nav__link"
             class:usa-current={$page.path === '/api/v1'}
             sveltekit:prefetch
-            href={`${base}/api/v1`}>Data</a
+            href={ctx.getUrl('/api/v1')}>Data</a
           >
         </li>
       </ul>

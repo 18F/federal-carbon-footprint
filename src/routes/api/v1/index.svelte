@@ -1,6 +1,7 @@
-<script context="module">
-  import { browser, dev } from '$app/env';
-  import { base } from '$app/paths';
+<script context="module">;
+  import ctx from '$context/frontend';
+
+  const { browser, dev } = ctx.env;
   export const hydrate = dev;
   export const router = browser;
   export const prerender = true;

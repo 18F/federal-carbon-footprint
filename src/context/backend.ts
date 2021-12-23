@@ -17,18 +17,12 @@ const fetch = makeFetchHappen.defaults({
   cachePath: './fetch-cache',
 }) as unknown as typeof global.fetch;
 
-export default {
-  getSpendingImpactByAgency: GetSpendingImpactByAgency({
-    getNaics: usaSpending.UsaSpendingGetNaics({ fetch }),
-    getGhgImpactBySectorId: useeio.GetGhgImpactBySectorId({
-      fetch,
-      USEEIO_API_KEY,
-    }),
-    getAgencies: usaSpending.GetAgencies({ fetch }),
-    getAgencySpendBySector: usaSpending.GetAgencySpendBySector({ fetch }),
+export const getSpendingImpactByAgency = GetSpendingImpactByAgency({
+  getNaics: usaSpending.UsaSpendingGetNaics({ fetch }),
+  getGhgImpactBySectorId: useeio.GetGhgImpactBySectorId({
+    fetch,
+    USEEIO_API_KEY,
   }),
-  fetch: makeFetchHappen.defaults({
-    cachePath: './fetch-cache',
-  }) as unknown as typeof global.fetch,
-  USEEIO_API_KEY: import.meta.env.VITE_USEEIO_API_KEY.toString(),
-};
+  getAgencies: usaSpending.GetAgencies({ fetch }),
+  getAgencySpendBySector: usaSpending.GetAgencySpendBySector({ fetch }),
+});

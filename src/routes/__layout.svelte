@@ -5,11 +5,11 @@
   import Header from '$components/Header.svelte';
   import Footer from '$components/Footer.svelte';
 
-  import ctx from '$context/frontend';
+  import { getUrl, githubBranchTreeUrl } from '$context/frontend';
 </script>
 
 <svelte:head>
-  <link rel="icon" href={ctx.getUrl('/favicon.ico')} />
+  <link rel="icon" href={getUrl('/favicon.ico')} />
 </svelte:head>
 
 <BetaBanner />
@@ -18,4 +18,4 @@
 <main>
   <slot />
 </main>
-<Footer githubBranchTreeUrl={ctx.githubBranchTreeUrl} />
+<Footer githubBranchTreeUrl={githubBranchTreeUrl} />

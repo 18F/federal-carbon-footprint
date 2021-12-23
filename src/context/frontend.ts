@@ -7,25 +7,20 @@
  * and potentially retire usage of in favor of a custom build system.
  */
 
-import * as env from '$app/env';
 import { base } from '$app/paths';
-import * as stores from '$app/stores';
 
 import * as github from '$lib/github';
 
-export default {
-  githubBranchTreeUrl: github.getBranchTreeUrl({
-    owner: import.meta.env.OWNER?.toString(),
-    repository: import.meta.env.REPOSITORY?.toString(),
-    branch: import.meta.env.BRANCH?.toString(),
-  }),
-  getUrl: (path: `/${string}`) => {
-    return `${base}${path}`;
-  },
+// expose SvelteKit exports on the context
+export * as env from '$app/env';
+export * as stores from '$app/stores';
 
-  // expose the SvelteKit environment booleans
-  env,
+export const githubBranchTreeUrl = github.getBranchTreeUrl({
+  owner: import.meta.env.OWNER?.toString(),
+  repository: import.meta.env.REPOSITORY?.toString(),
+  branch: import.meta.env.BRANCH?.toString(),
+});
 
-  // expose the SvelteKit stores on the context
-  stores,
+export const getUrl = (path: `/${string}`) => {
+  return `${base}${path}`;
 };

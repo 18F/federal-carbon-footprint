@@ -1,9 +1,8 @@
 <script context="module">;
-  import ctx from '$context/frontend';
+  import { env } from '$context/frontend';
 
-  const { browser, dev } = ctx.env;
-  export const hydrate = dev;
-  export const router = browser;
+  export const hydrate = env.dev;
+  export const router = env.browser;
   export const prerender = true;
 </script>
 

@@ -2,9 +2,9 @@
   import * as d3 from 'd3';
   import * as d3Sankey from 'd3-sankey';
 
-  import type { SpendingImpactByAgency } from '$lib/services/spending-impact';
+  import type { AgencySectorImpacts } from '$lib/services/spending-impact';
 
-  export let data: Awaited<SpendingImpactByAgency>;
+  export let data: AgencySectorImpacts[];
 
   interface NodeExtra {
     id: string;
@@ -52,11 +52,11 @@
     return sankeyLayout({ nodes, links });
   };
 
-  const sankeyData = data.agencies.flatMap((agency) => {
+  const sankeyData = data.flatMap((agency) => {
     return agency.sectors.map((sector) => {
       return {
         source: agency.name,
-        target: sector.name || sector.code,
+        target: sector.name || sector.sector,
         value: sector.kgC02Eq,
       };
     });

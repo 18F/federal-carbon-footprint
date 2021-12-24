@@ -3,7 +3,7 @@ import type { NaicsSector } from '$lib/domain/naics';
 
 describe('spending impact', () => {
   it('groups economic sectors by threshold', async () => {
-    const getSpendingImpactByAgency = spendingImpact.GetSpendingImpactByAgency({
+    const getAgencySectorImpacts = spendingImpact.GetAllAgencySectorImpacts({
       getNaics: () =>
         Promise.resolve([
           {

@@ -1,29 +1,27 @@
+import type { GetGhgImpactBySectorId } from '$lib/domain/ghg-impact';
 import type { GetNaics } from '$lib/domain/naics';
 
 import type * as usaSpending from '../adapters/usaspending';
-import type * as useeio from '../adapters/useeio';
 
 type Context = {
   getNaics: GetNaics;
-  getGhgImpactBySectorId: ReturnType<typeof useeio.GetGhgImpactBySectorId>;
+  getGhgImpactBySectorId: GetGhgImpactBySectorId;
   getAgencies: ReturnType<typeof usaSpending.GetAgencies>;
   getAgencySpendBySector: ReturnType<typeof usaSpending.GetAgencySpendBySector>;
 };
 
-export type SpendingImpactByAgency = {
-  agencies: {
+export type AgencySectorImpacts = {
+  name: string;
+  sectors: {
+    amount: number;
+    sector: string;
     name: string;
-    sectors: {
-      amount: number;
-      code: string;
-      name: string;
-      kgC02Eq: number;
-    }[];
+    kgC02Eq: number;
   }[];
 };
 
-export const GetSpendingImpactByAgency =
-  (ctx: Context) => async (): Promise<SpendingImpactByAgency> => {
+export const GetAllAgencySectorImpacts =
+  (ctx: Context) => async (): Promise<AgencySectorImpacts[]> => {
     const naicsCodes = ctx.getNaics();
     const impactBySectorPromise = ctx.getGhgImpactBySectorId();
     const agencyResults = await ctx.getAgencies();
@@ -38,19 +36,17 @@ export const GetSpendingImpactByAgency =
       }),
     ]);
 
-    return {
-      agencies: agencySpendsBySector.map((agencySpendBySector, index) => {
-        return {
-          name: agencyNames[index],
-          sectors: agencySpendBySector.map((sectorSpend) => {
-            return {
-              amount: sectorSpend.amount,
-              code: sectorSpend.code,
-              name: sectorSpend.name,
-              kgC02Eq: impactBySector[sectorSpend.code] * sectorSpend.amount,
-            };
-          }),
-        };
-      }),
-    };
+    return agencySpendsBySector.map((agencySpendBySector, index) => {
+      return {
+        name: agencyNames[index],
+        sectors: agencySpendBySector.map((sectorSpend) => {
+          return {
+            amount: sectorSpend.amount,
+            sector: sectorSpend.code,
+            name: sectorSpend.name,
+            kgC02Eq: impactBySector[sectorSpend.code] * sectorSpend.amount,
+          };
+        }),
+      };
+    });
   };

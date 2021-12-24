@@ -20,9 +20,7 @@ export const getNaics: GetNaics = memoizee(() => {
     NaicsSourceJson.decode(naics),
     fold(
       (errors) => {
-        const msg = errors.map((error) =>
-          error.context.map(({ key }) => key).join('.'),
-        );
+        const msg = errors.map((error) => error.context.map(({ key }) => key).join('.'));
         throw new Error(`Error decoding JSON: ${msg}`);
       },
       (naicsList) => naicsList,

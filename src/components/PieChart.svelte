@@ -21,9 +21,7 @@
   const width = 2 * outerRadius + margin.left + margin.right;
   const height = 2 * outerRadius + margin.top + margin.bottom;
 
-  const colorScale = scaleSequential()
-    .interpolator(interpolateCool)
-    .domain([0, data.length]);
+  const colorScale = scaleSequential().interpolator(interpolateCool).domain([0, data.length]);
   const createPie = pie<FuelTypeDatum>()
     .padAngle(0)
     .value((datum) => datum.value);
@@ -37,12 +35,7 @@
   <svg {width} {height}>
     <g transform={`translate(${width / 2}, ${height / 2})`}>
       {#each pieArcData as datum, index}
-        <path
-          d={pieArc(datum)}
-          fill={colorScale(index)}
-          stroke={'#ffffff'}
-          stroke-width="0"
-        />
+        <path d={pieArc(datum)} fill={colorScale(index)} stroke={'#ffffff'} stroke-width="0" />
         <text
           text-anchor="middle"
           alignment-baseline="middle"

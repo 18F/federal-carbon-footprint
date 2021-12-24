@@ -27,9 +27,7 @@ export const GetSpendingImpactByAgency =
     const naicsCodes = ctx.getNaics();
     const impactBySectorPromise = ctx.getGhgImpactBySectorId();
     const agencyResults = await ctx.getAgencies();
-    const agencyNames = agencyResults.results.map(
-      (agency) => agency.agency_name,
-    );
+    const agencyNames = agencyResults.results.map((agency) => agency.agency_name);
     const [impactBySector, ...agencySpendsBySector] = await Promise.all([
       impactBySectorPromise,
       ...agencyNames.map((agencyName) => {

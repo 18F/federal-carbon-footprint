@@ -19,9 +19,7 @@ const validateFuelTypeUsageSet = (input: unknown): FuelTypeUsageSet | null => {
     FuelTypeUsageSet.decode(input),
     fold(
       (errors) => {
-        const msg = errors.map((error) =>
-          error.context.map(({ key }) => key).join('.'),
-        );
+        const msg = errors.map((error) => error.context.map(({ key }) => key).join('.'));
         throw new Error(`Error decoding service response ${msg}`);
       },
       (value) => value,

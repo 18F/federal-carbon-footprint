@@ -30,15 +30,15 @@
   const marginLeft = 1;
 
   const createSankeyLayout = (links: SLink[]) => {
-    let sankeyLayout: d3Sankey.SankeyLayout<DAG, NodeExtra, LinkExtra> =
-      d3Sankey.sankey<DAG, NodeExtra, LinkExtra>();
+    let sankeyLayout: d3Sankey.SankeyLayout<DAG, NodeExtra, LinkExtra> = d3Sankey.sankey<
+      DAG,
+      NodeExtra,
+      LinkExtra
+    >();
 
     const linkSources = d3.map(links, ({ source }) => source);
     const linkTargets = d3.map(links, ({ target }) => target);
-    let nodes: NodeExtra[] = Array.from(
-      d3.union(linkSources, linkTargets),
-      (id) => ({ id }),
-    );
+    let nodes: NodeExtra[] = Array.from(d3.union(linkSources, linkTargets), (id) => ({ id }));
 
     sankeyLayout
       .nodeId((node) => node.id)
@@ -66,10 +66,7 @@
   const format = d3.format(',');
   const nodeGroups = d3.map(sankeyLayout.nodes, (n) => n.id);
   const color = d3.scaleOrdinal(nodeGroups, d3.schemeTableau10);
-  const nodeTitles = d3.map(
-    sankeyLayout.nodes,
-    (d) => `${d.id}\n${format(d.value)}`,
-  );
+  const nodeTitles = d3.map(sankeyLayout.nodes, (d) => `${d.id}\n${format(d.value)}`);
   const linkTitles = d3.map(
     sankeyLayout.links,
     (d) => `${d.source} → ${d.target}\n${format(d.value)}`,
@@ -118,14 +115,8 @@
           x2={castSankeyNode(link.target).x0}
         >
           <title>{link}</title>
-          <stop
-            offset={'0%'}
-            stop-color={color(nodeGroups[castSankeyNode(link.source).index])}
-          />
-          <stop
-            offset={'100%'}
-            stop-color={color(nodeGroups[castSankeyNode(link.target).index])}
-          />
+          <stop offset={'0%'} stop-color={color(nodeGroups[castSankeyNode(link.source).index])} />
+          <stop offset={'100%'} stop-color={color(nodeGroups[castSankeyNode(link.target).index])} />
         </linearGradient>
       {/if}
       <path
@@ -148,9 +139,7 @@
   <g font-family="sans-serif" font-size="10">
     {#each sankeyLayout.nodes as node, index}
       <text
-        x={node.x0 < width / 2
-          ? node.x1 + nodeLabelPadding
-          : node.x0 - nodeLabelPadding}
+        x={node.x0 < width / 2 ? node.x1 + nodeLabelPadding : node.x0 - nodeLabelPadding}
         y={(node.y1 + node.y0) / 2}
         dy="0.35em"
         text-anchor={node.x0 < width / 2 ? 'start' : 'end'}

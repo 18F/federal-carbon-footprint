@@ -58,24 +58,22 @@ type NaicsReference = t.TypeOf<typeof NaicsReference>;
 export const UsaSpendingGetNaics =
   (ctx: Context): GetNaics =>
   () => {
-    return fetchServiceData<NaicsReference>(ctx, '/references/naics/').then(
-      (results) => {
-        return results.results.map((result) => {
-          return {
-            code: result.naics,
-            description: result.naics_description,
-            /*parentCode:
+    return fetchServiceData<NaicsReference>(ctx, '/references/naics/').then((results) => {
+      return results.results.map((result) => {
+        return {
+          code: result.naics,
+          description: result.naics_description,
+          /*parentCode:
               result.naics.length > 2
                 ? (result.naics.slice(
                     0,
                     result.naics.length,
                   ) as unknown as NaicsCode)
                 : null,*/
-            parentCode: null,
-          };
-        });
-      },
-    );
+          parentCode: null,
+        };
+      });
+    });
   };
 
 export const validateNaics = (data: unknown): NaicsReference => {
@@ -83,9 +81,7 @@ export const validateNaics = (data: unknown): NaicsReference => {
     NaicsReference.decode(data),
     fold(
       (errors) => {
-        const msg = errors.map((error) =>
-          error.context.map(({ key }) => key).join('.'),
-        );
+        const msg = errors.map((error) => error.context.map(({ key }) => key).join('.'));
         throw new Error(`Error decoding service response ${msg}`);
       },
       (value) => value,
@@ -146,38 +142,30 @@ export const getSpendingByNaicsCategoryPage = (
   page: number,
 ): Promise<SpendingByNaicsCategoryPage> => {
   // https://github.com/fedspendingtransparency/usaspending-api/blob/master/usaspending_api/api_contracts/contracts/v2/search/spending_by_category/naics.md
-  return fetchServiceData<SpendingByNaicsCategoryPage>(
-    ctx,
-    '/search/spending_by_category/naics/',
-    {
-      filters: {
-        agencies: [
-          {
-            type: 'funding',
-            tier: 'toptier',
-            name: opts.agency,
-          },
-        ],
-        time_period: [rangeForFiscalYear(opts.fiscalYear)],
-        //naics_codes: opts.naicsCodes,
-      },
-      limit: 100,
-      page,
-      //subawards: true,  // prime awards or sub-awards
+  return fetchServiceData<SpendingByNaicsCategoryPage>(ctx, '/search/spending_by_category/naics/', {
+    filters: {
+      agencies: [
+        {
+          type: 'funding',
+          tier: 'toptier',
+          name: opts.agency,
+        },
+      ],
+      time_period: [rangeForFiscalYear(opts.fiscalYear)],
+      //naics_codes: opts.naicsCodes,
     },
-  );
+    limit: 100,
+    page,
+    //subawards: true,  // prime awards or sub-awards
+  });
 };
 
-export const validateSpendingByNaicsCategoryPage = (
-  data: unknown,
-): SpendingByNaicsCategoryPage => {
+export const validateSpendingByNaicsCategoryPage = (data: unknown): SpendingByNaicsCategoryPage => {
   return pipe(
     SpendingByNaicsCategoryPage.decode(data),
     fold(
       (errors) => {
-        const msg = errors.map((error) =>
-          error.context.map(({ key }) => key).join('.'),
-        );
+        const msg = errors.map((error) => error.context.map(({ key }) => key).join('.'));
         throw new Error(`Error decoding service response ${msg}`);
       },
       (value) => value,
@@ -186,9 +174,7 @@ export const validateSpendingByNaicsCategoryPage = (
 };
 
 export const GetAgencySpendBySector = (ctx: Context) =>
-  GetAllPages(ctx)<typeof getSpendingByNaicsCategoryPage>(
-    getSpendingByNaicsCategoryPage,
-  );
+  GetAllPages(ctx)<typeof getSpendingByNaicsCategoryPage>(getSpendingByNaicsCategoryPage);
 
 const UsaSpendingAgencyResults = t.type({
   results: t.array(
@@ -211,16 +197,12 @@ const UsaSpendingAgencyResults = t.type({
 });
 type UsaSpendingAgencyResults = t.TypeOf<typeof UsaSpendingAgencyResults>;
 
-export const validateAgencies = (
-  agencies: unknown,
-): UsaSpendingAgencyResults => {
+export const validateAgencies = (agencies: unknown): UsaSpendingAgencyResults => {
   return pipe(
     UsaSpendingAgencyResults.decode(agencies),
     fold(
       (errors) => {
-        const msg = errors.map((error) =>
-          error.context.map(({ key }) => key).join('.'),
-        );
+        const msg = errors.map((error) => error.context.map(({ key }) => key).join('.'));
         throw new Error(`Error decoding service response ${msg}`);
       },
       (value) => value,
@@ -228,12 +210,11 @@ export const validateAgencies = (
   );
 };
 
-export const GetAgencies =
-  (ctx: Context) => (): Promise<UsaSpendingAgencyResults> => {
-    return fetchServiceData<UsaSpendingAgencyResults>(
-      ctx,
-      // This is the sort order used by here: https://www.usaspending.gov/agency
-      // For speed purposes, use it, because the server appears to cache results.
-      '/references/toptier_agencies/?sort=percentage_of_total_budget_authority&order=desc',
-    );
-  };
+export const GetAgencies = (ctx: Context) => (): Promise<UsaSpendingAgencyResults> => {
+  return fetchServiceData<UsaSpendingAgencyResults>(
+    ctx,
+    // This is the sort order used by here: https://www.usaspending.gov/agency
+    // For speed purposes, use it, because the server appears to cache results.
+    '/references/toptier_agencies/?sort=percentage_of_total_budget_authority&order=desc',
+  );
+};

@@ -20,7 +20,7 @@ const fetch = makeFetchHappen.defaults({
 
 export const getSpendingImpactByAgency = GetSpendingImpactByAgency({
   getNaics,
-  getGhgImpactBySectorId: useeio.GetGhgImpactBySectorId({
+  getGhgImpactBySectorId: useeio.GetUseeioGhgImpactBySectorId({
     fetch,
     USEEIO_API_KEY,
   }),

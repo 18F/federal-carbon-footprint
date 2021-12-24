@@ -18,4 +18,4 @@
 <main>
   <slot />
 </main>
-<Footer githubBranchTreeUrl={githubBranchTreeUrl} />
+<Footer {githubBranchTreeUrl} />

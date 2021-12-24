@@ -15,7 +15,7 @@
 </script>
 
 <script lang="ts">
-  export let agencyDetails: {name: string; emissionData: unknown; };
+  export let agencyDetails: { name: string; emissionData: unknown };
 </script>
 
 <div class="grid-container">

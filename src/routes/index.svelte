@@ -43,9 +43,7 @@
   </div>
   <h1>Sample Sankey Diagram</h1>
   <Sankey data={$spendingImpact} />
-  <h1>
-    Federal Government Total Energy Consumption by Fuel Type (Trillion Btu)
-  </h1>
+  <h1>Federal Government Total Energy Consumption by Fuel Type (Trillion Btu)</h1>
   <PieChart />
   <h1>Agengies</h1>
   <ul>

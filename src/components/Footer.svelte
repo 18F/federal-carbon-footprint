@@ -13,22 +13,11 @@
       <div class="mobile-lg:grid-col-12">
         <nav class="usa-footer__nav" aria-label="Footer navigation,">
           <ul class="grid-row grid-gap">
-            <li
-              class="mobile-lg:grid-col-4 desktop:grid-col-auto usa-footer__primary-content"
-            >
-              <a class="usa-footer__primary-link" href="https://10x.gsa.gov/">
-                10x
-              </a>
+            <li class="mobile-lg:grid-col-4 desktop:grid-col-auto usa-footer__primary-content">
+              <a class="usa-footer__primary-link" href="https://10x.gsa.gov/"> 10x </a>
             </li>
-            <li
-              class="mobile-lg:grid-col-4 desktop:grid-col-auto usa-footer__primary-content"
-            >
-              <a
-                class="usa-footer__primary-link"
-                href={githubBranchTreeUrl}
-              >
-                Source code
-              </a>
+            <li class="mobile-lg:grid-col-4 desktop:grid-col-auto usa-footer__primary-content">
+              <a class="usa-footer__primary-link" href={githubBranchTreeUrl}> Source code </a>
             </li>
           </ul>
         </nav>
@@ -42,9 +31,7 @@
           <img class="usa-footer__logo-img" src={logoImg} alt="" />
         </div>
         <div class="grid-col-auto">
-          <p class="usa-footer__logo-heading">
-            General Services Administration
-          </p>
+          <p class="usa-footer__logo-heading">General Services Administration</p>
         </div>
       </div>
     </div>

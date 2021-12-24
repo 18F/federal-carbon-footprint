@@ -1,4 +1,4 @@
-<script context="module">;
+<script context="module">
   import { env } from '$context/frontend';
 
   export const hydrate = env.dev;
@@ -10,5 +10,4 @@
   <title>Fuel Type Usage</title>
 </svelte:head>
 
-<div class="grid-container">
-</div>
+<div class="grid-container" />

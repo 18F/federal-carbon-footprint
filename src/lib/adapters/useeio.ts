@@ -3,6 +3,8 @@ import { fold } from 'fp-ts/lib/Either.js';
 import { pipe } from 'fp-ts/lib/function.js';
 import memoizee from 'memoizee';
 
+import type { GetGhgImpactBySectorId } from '$lib/domain/ghg-impact';
+
 const BASE_URL = 'https://api.edap-cluster.com/useeio/api';
 const MODEL_NAME = 'USEEIOv1.2';
 
@@ -129,7 +131,9 @@ export const validateMatrixD = (data: unknown): MatrixD => {
   );
 };
 
-export const GetGhgImpactBySectorId = (ctx: Context) =>
+export const GetUseeioGhgImpactBySectorId = (
+  ctx: Context,
+): GetGhgImpactBySectorId =>
   memoizee(async () => {
     const [indicators, sectors, rows] = await Promise.all([
       getModelIndicators(ctx),

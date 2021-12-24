@@ -2,8 +2,8 @@ import reporter from 'io-ts-reporters';
 
 import * as naics from './naics';
 
-describe('naics domain', () => {
-  describe('code definition is valid', () => {
+describe('naics', () => {
+  describe('code definition', () => {
     it('must be a string', () => {
       const result = reporter.report(naics.NaicsCode.decode(1));
       expect(result.length).toEqual(1);

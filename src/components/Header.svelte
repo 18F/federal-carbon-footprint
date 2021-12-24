@@ -10,24 +10,17 @@
   const { page } = stores;
 </script>
 
-<div
-  on:click|preventDefault={() => (isOpen ? toggleOpen() : '')}
-  class="usa-overlay {visible}"
-/>
+<div on:click|preventDefault={() => (isOpen ? toggleOpen() : '')} class="usa-overlay {visible}" />
 
 <header class="usa-header usa-header--basic">
   <div class="usa-nav-container">
     <div class="usa-navbar">
       <div class="usa-logo" id="basic-logo">
         <em class="usa-logo__text">
-          <a href={getUrl('/')} title="Federal Carbon Footprint">
-            Federal Carbon Footprint
-          </a>
+          <a href={getUrl('/')} title="Federal Carbon Footprint"> Federal Carbon Footprint </a>
         </em>
       </div>
-      <button on:click|preventDefault={toggleOpen} class="usa-menu-btn">
-        Menu
-      </button>
+      <button on:click|preventDefault={toggleOpen} class="usa-menu-btn"> Menu </button>
     </div>
     <nav aria-label="Primary navigation" class="usa-nav {visible}">
       <button on:click|preventDefault={toggleOpen} class="usa-nav__close">

@@ -1,20 +1,18 @@
 <script context="module" lang="ts">
   import type { LoadInput } from '@sveltejs/kit';
 
+  import AgencyImpactFilterForm from '$components/AgencyImpactFilterForm.svelte';
   import PieChart from '$components/PieChart.svelte';
   import Sankey from '$components/Sankey.svelte';
-  import type { Data } from './index.json';
+  import { setAllAgencySectorImpacts } from '$lib/stores/agency-sector-impact';
 
   export const prerender = true;
-
-  import { writable } from 'svelte/store';
-  export const spendingImpact = writable<Data>({ agencies: [] });
 
   export const load = async ({ fetch }: LoadInput) => {
     const response = await fetch('index.json');
 
     if (response.ok) {
-      spendingImpact.set(await response.json());
+      setAllAgencySectorImpacts(await response.json());
       return {
         props: {
           status: 'loaded',
@@ -41,8 +39,15 @@
   <div class="text-italic margin-top-1">
     NOTE: All data in these visualizations are for test purposes only.
   </div>
-  <h1>Sample Sankey Diagram</h1>
-  <Sankey data={$spendingImpact} />
+  <h1>Federal Product and Services Greenhouse Gas Impact (kg CO<sup>2</sup> equivalent)</h1>
+  <div class="grid-row">
+    <div class="tablet:grid-col-3">
+      <AgencyImpactFilterForm />
+    </div>
+    <div class="tablet:grid-col-9">
+      <Sankey />
+    </div>
+  </div>
   <h1>Federal Government Total Energy Consumption by Fuel Type (Trillion Btu)</h1>
   <PieChart />
   <h1>Agengies</h1>

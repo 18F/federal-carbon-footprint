@@ -50,3 +50,32 @@ export const GetAllAgencySectorImpacts =
       };
     });
   };
+
+export const groupAgencyImpactsByThreshold = (
+  agencySectorImpacts: AgencySectorImpacts[],
+  threshold: number,
+) => {
+  return agencySectorImpacts.flatMap((agency) => {
+    return (
+      agency.sectors
+        // for now, rather than group, just filter out sectors less than the threshold.
+        .filter((sector) => sector.kgC02Eq > threshold)
+        .map((sector) => {
+          return {
+            source: agency.name,
+            target: sector.name || sector.sector,
+            value: sector.kgC02Eq,
+          };
+        })
+    );
+  });
+};
+
+export const filterAgencyImpacts = (
+  agencySectorImpacts: AgencySectorImpacts[],
+  filterText: string,
+) => {
+  return agencySectorImpacts.filter((agencySectorImpact) =>
+    agencySectorImpact.name.toLowerCase().includes(filterText.toLowerCase()),
+  );
+};

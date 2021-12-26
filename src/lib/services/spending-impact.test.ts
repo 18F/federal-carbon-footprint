@@ -2,7 +2,11 @@ import * as spendingImpact from './spending-impact';
 import type { NaicsSector } from '$lib/domain/naics';
 
 describe('spending impact', () => {
-  it('groups economic sectors by threshold', async () => {
+  it('groupAgencyImpactByThreshold', () => {
+    it('groups economic sectors by threshold', async () => {});
+    spendingImpact.groupAgencyImpactsByThreshold(MOCK_AGENCY_IMPACTS, 2000);
+  });
+  xit('getAllAgencySectorImpacts', async () => {
     const getAgencySectorImpacts = spendingImpact.GetAllAgencySectorImpacts({
       getNaics: () =>
         Promise.resolve([
@@ -61,3 +65,40 @@ describe('spending impact', () => {
     });
   });
 });
+
+const MOCK_AGENCY_IMPACTS = [
+  {
+    name: 'agency1',
+    sectors: [
+      {
+        amount: 100,
+        sector: '10',
+        name: 'agency1 name',
+        kgC02Eq: 1000,
+      },
+      {
+        amount: 100,
+        sector: '20',
+        name: 'agency1 name',
+        kgC02Eq: 1000,
+      },
+    ],
+  },
+  {
+    name: 'agency2',
+    sectors: [
+      {
+        amount: 2500,
+        sector: '20',
+        name: 'agency1 name',
+        kgC02Eq: 1000,
+      },
+      {
+        amount: 2500,
+        sector: '20',
+        name: 'agency1 name',
+        kgC02Eq: 1000,
+      },
+    ],
+  },
+];

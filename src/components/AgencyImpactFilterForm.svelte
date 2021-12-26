@@ -1,0 +1,38 @@
+<script lang="ts">
+  import { setFilterText } from '$lib/stores/agency-sector-impact';
+  import spriteImg from '../../node_modules/uswds/src/img/sprite.svg';
+
+  const onSubmit = (e: Event) => {
+    console.log(e.target);
+  };
+</script>
+
+<form class="usa-form padding-top-1" on:submit|preventDefault={onSubmit}>
+  <fieldset class="usa-fieldset">
+    <legend class="usa-legend text-base font-sans-md">Filter agency name</legend>
+    <div class="usa-search usa-search--small margin-top-1" role="search">
+      <label class="usa-sr-only" for="search-field">Search agency name</label>
+      <div class="usa-input-group">
+        <div class="usa-input-prefix" aria-hidden="true">
+          <svg aria-hidden="true" role="img" focusable="false" class="usa-icon"
+            ><use
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              xlink:href={`${spriteImg}#search`}
+            /></svg
+          >
+        </div>
+        <input
+          id="search-field"
+          type="search"
+          class="usa-input"
+          autocomplete="off"
+          placeholder="Search text..."
+          on:input={event => {
+            const text = event.currentTarget?.value || '';
+            setFilterText(text);
+          }}
+        />
+      </div>
+    </div>
+  </fieldset>
+</form>

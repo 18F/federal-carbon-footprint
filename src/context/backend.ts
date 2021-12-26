@@ -1,6 +1,6 @@
 /**
  * This application context is to be used for service endpoints.
- * It should should include dependencies that can only run during the build
+ * It should only include dependencies that can only run during the build
  * process; ie, services that return transformed source data.
  */
 

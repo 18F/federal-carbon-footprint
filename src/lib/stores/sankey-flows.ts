@@ -24,15 +24,22 @@ interface DAG {
 }
 
 export const SIZING = {
-  width: 800,
+  width: 1300,
   height: 2000,
   marginTop: 5,
   marginRight: 1,
   marginBottom: 5,
   marginLeft: 1,
+  nodeLabelPadding: 6,
+  linkStrokeOpacity: 0.5,
 };
 
-const createSankeyLayout = (links: SLink[]) => {
+/**
+ * Using the D3 constructor, create a Sankey layout.
+ * @param links
+ * @returns
+ */
+const createD3SankeyLayout = (links: SLink[]) => {
   let sankeyLayout: d3Sankey.SankeyLayout<DAG, NodeExtra, LinkExtra> = d3Sankey.sankey<
     DAG,
     NodeExtra,
@@ -55,22 +62,43 @@ const createSankeyLayout = (links: SLink[]) => {
   return sankeyLayout({ nodes, links });
 };
 
+const linkHorizontal = d3Sankey.sankeyLinkHorizontal();
+const format = d3.format(',');
+
+/**
+ * Wrap the D3-created Sankey layout with extra attributes needed to render the SVG.
+ */
 export const sankeyLayout = derived([visibleAgencySectorImpacts], ([agencySectorImpacts]) => {
-  const layout = createSankeyLayout(agencySectorImpacts);
-  const nodeGroups = d3.map(layout.nodes, (n) => n.id);
-  const format = d3.format(',');
+  const layout =
+    agencySectorImpacts.length > 0
+      ? createD3SankeyLayout(agencySectorImpacts)
+      : { nodes: [], links: [] };
+
+  const colorForNodeId = d3.scaleOrdinal(
+    d3.map(layout.nodes, (n) => n.id),
+    d3.schemeTableau10,
+  );
   return {
-    layout,
-    nodeIds: layout.nodes.map((n) => n.id),
-    linkHorizontal: d3Sankey.sankeyLinkHorizontal(),
-    format,
-    nodeGroups,
-    color: d3.scaleOrdinal(nodeGroups, d3.schemeTableau10),
-    nodeTitles: d3.map(layout.nodes, (d) => `${d.id}\n${format(d.value)}`),
-    linkTitles: d3.map(layout.links, (d) => `${d.source} → ${d.target}\n${format(d.value)}`),
-    nodeLabelPadding: 6,
-    linkStrokeOpacity: 0.5,
-    linkColor: 'source-target',
+    nodes: d3.map(layout.nodes, (node) => {
+      return {
+        ...node,
+        color: colorForNodeId(node.id),
+        title: `${node.id}\n${format(node.value)}`,
+      };
+    }),
+    links: d3.map(layout.links, (link) => {
+      return {
+        ...link,
+        colors: {
+          start: colorForNodeId(castSankeyNode(link.source).id),
+          end: colorForNodeId(castSankeyNode(link.target).id),
+        },
+        linkHorizontal: linkHorizontal(link),
+        title: `${castSankeyNode(link.source).id} → ${castSankeyNode(link.target).id}\n${format(
+          link.value,
+        )} kg CO2 equivalent`,
+      };
+    }),
   };
 });
 

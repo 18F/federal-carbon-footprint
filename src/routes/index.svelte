@@ -40,7 +40,7 @@
     NOTE: All data in these visualizations are for test purposes only.
   </div>
   <h1>Federal Product and Services Greenhouse Gas Impact (kg CO<sup>2</sup> equivalent)</h1>
-  <div class="grid-row">
+  <div class="grid-row grid-gap-lg">
     <div class="tablet:grid-col-3">
       <AgencyImpactFilterForm />
     </div>

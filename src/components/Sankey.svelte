@@ -9,59 +9,49 @@
   style="max-width: 100%; height: auto; height: intrinsic;"
 >
   <g stroke="currentColor">
-    {#each $sankeyLayout.layout.nodes as node, index}
+    {#each $sankeyLayout.nodes as node}
       <rect
         x={node.x0}
         y={node.y0}
         height={node.y1 - node.y0}
         width={node.x1 - node.x0}
-        fill={$sankeyLayout.color($sankeyLayout.nodeGroups[index])}
+        fill={node.color}
       >
-        <title>{$sankeyLayout.nodeTitles[index]}</title>
+        <title>{node.title}</title>
       </rect>
     {/each}
   </g>
-  <g fill="none" stroke-opacity={$sankeyLayout.linkStrokeOpacity}>
-    {#each $sankeyLayout.layout.links as link, index}
+  <g fill="none" stroke-opacity={SIZING.linkStrokeOpacity}>
+    {#each $sankeyLayout.links as link, index}
       <g mix-blend-mode="multiply" />
-      {#if $sankeyLayout.linkColor === 'source-target'}
         <linearGradient
           id={`link-${index}`}
           gradientUnits={'userSpaceOnUse'}
           x1={castSankeyNode(link.source).x1}
           x2={castSankeyNode(link.target).x0}
         >
-          <title>{link}</title>
-          <stop offset={'0%'} stop-color={$sankeyLayout.color($sankeyLayout.nodeGroups[castSankeyNode(link.source).index])} />
-          <stop offset={'100%'} stop-color={$sankeyLayout.color($sankeyLayout.nodeGroups[castSankeyNode(link.target).index])} />
+          <title>{link.title}</title>
+          <stop offset={'0%'} stop-color={link.colors.start} />
+          <stop offset={'100%'} stop-color={link.colors.end} />
         </linearGradient>
-      {/if}
       <path
-        d={$sankeyLayout.linkHorizontal(link)}
-        stroke={$sankeyLayout.linkColor === 'source-target'
-          ? `url(#link-${index})`
-          : $sankeyLayout.linkColor === 'source'
-          ? $sankeyLayout.color($sankeyLayout.nodeGroups[index])
-          : $sankeyLayout.linkColor === 'target'
-          ? $sankeyLayout.color($sankeyLayout.nodeGroups[index])
-          : $sankeyLayout.linkColor}
+        d={link.linkHorizontal}
+        stroke={`url(#link-${index})`}
         stroke-width={Math.max(1, link.width)}
       >
-        {#if $sankeyLayout.linkTitles}
-          <title>{$sankeyLayout.linkTitles[index]}</title>
-        {/if}
+        <title>{link.title}</title>
       </path>
     {/each}
   </g>
   <g font-family="sans-serif" font-size="10">
-    {#each $sankeyLayout.layout.nodes as node, index}
+    {#each $sankeyLayout.nodes as node}
       <text
-        x={node.x0 < SIZING.width / 2 ? node.x1 + $sankeyLayout.nodeLabelPadding : node.x0 - $sankeyLayout.nodeLabelPadding}
+        x={node.x0 < SIZING.width / 2 ? node.x1 + SIZING.nodeLabelPadding : node.x0 - SIZING.nodeLabelPadding}
         y={(node.y1 + node.y0) / 2}
         dy="0.35em"
         text-anchor={node.x0 < SIZING.width / 2 ? 'start' : 'end'}
       >
-        {$sankeyLayout.nodeIds[index]}
+        {node.id}
       </text>
     {/each}
   </g>

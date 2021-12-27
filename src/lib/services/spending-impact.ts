@@ -1,5 +1,6 @@
 import type { GetGhgImpactBySectorId } from '$lib/domain/ghg-impact';
 import type { GetNaics } from '$lib/domain/naics';
+import type { number } from 'fp-ts';
 
 import type * as usaSpending from '../adapters/usaspending';
 
@@ -18,6 +19,12 @@ export type AgencySectorImpacts = {
     name: string;
     kgC02Eq: number;
   }[];
+};
+
+export type AgenctSectorImpactLink = {
+  source: string;
+  target: string;
+  value: number;
 };
 
 export const GetAllAgencySectorImpacts =
@@ -54,7 +61,7 @@ export const GetAllAgencySectorImpacts =
 export const groupAgencyImpactsByThreshold = (
   agencySectorImpacts: AgencySectorImpacts[],
   threshold: number,
-) => {
+): AgenctSectorImpactLink[] => {
   return agencySectorImpacts.flatMap((agency) => {
     return (
       agency.sectors

@@ -1,57 +1,58 @@
 <script lang="ts">
-  import { castSankeyNode, sankeyLayout, SIZING } from '$lib/stores/sankey-flows';
+  import { sankeyLayout } from '$lib/stores/sankey-flows';
 </script>
 
 <svg
-  width={SIZING.width}
-  height={SIZING.height}
-  viewBox={`0 0 ${SIZING.width}, ${SIZING.height}`}
+  width={$sankeyLayout.svg.width}
+  height={$sankeyLayout.svg.height}
+  viewBox={$sankeyLayout.svg.viewBox}
   style="max-width: 100%; height: auto; height: intrinsic;"
 >
   <g stroke="currentColor">
     {#each $sankeyLayout.nodes as node}
       <rect
-        x={node.x0}
-        y={node.y0}
-        height={node.y1 - node.y0}
-        width={node.x1 - node.x0}
-        fill={node.color}
+        x={node.rect.x}
+        y={node.rect.y}
+        height={node.rect.height}
+        width={node.rect.width}
+        fill={node.rect.fill}
       >
-        <title>{node.title}</title>
+        <title>{node.rect.title}</title>
       </rect>
     {/each}
   </g>
-  <g fill="none" stroke-opacity={SIZING.linkStrokeOpacity}>
-    {#each $sankeyLayout.links as link, index}
-      <g mix-blend-mode="multiply" />
+  <g fill="none" stroke-opacity={$sankeyLayout.linkStrokeOpacity}>
+    {#each $sankeyLayout.links as link}
+      <g mix-blend-mode="multiply">
         <linearGradient
-          id={`link-${index}`}
+          id={link.gradient.id}
           gradientUnits={'userSpaceOnUse'}
-          x1={castSankeyNode(link.source).x1}
-          x2={castSankeyNode(link.target).x0}
+          x1={link.gradient.start.x}
+          x2={link.gradient.end.x}
         >
           <title>{link.title}</title>
-          <stop offset={'0%'} stop-color={link.colors.start} />
-          <stop offset={'100%'} stop-color={link.colors.end} />
+          <stop offset={'0%'} stop-color={link.gradient.start.color} />
+          <stop offset={'100%'} stop-color={link.gradient.end.color} />
         </linearGradient>
-      <path
-        d={link.linkHorizontal}
-        stroke={`url(#link-${index})`}
-        stroke-width={Math.max(1, link.width)}
-      >
-        <title>{link.title}</title>
-      </path>
+        <path
+          d={link.path.d}
+          stroke={link.path.stroke}
+          stroke-width={link.path.strokeWidth}
+        >
+          <title>{link.title}</title>
+        </path>
+      </g>
     {/each}
   </g>
   <g font-family="sans-serif" font-size="10">
     {#each $sankeyLayout.nodes as node}
       <text
-        x={node.x0 < SIZING.width / 2 ? node.x1 + SIZING.nodeLabelPadding : node.x0 - SIZING.nodeLabelPadding}
-        y={(node.y1 + node.y0) / 2}
-        dy="0.35em"
-        text-anchor={node.x0 < SIZING.width / 2 ? 'start' : 'end'}
+        x={node.label.x}
+        y={node.label.y}
+        dy={node.label.dy}
+        text-anchor={node.label.textAnchor}
       >
-        {node.id}
+        {node.label.text}
       </text>
     {/each}
   </g>

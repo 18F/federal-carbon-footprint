@@ -2,9 +2,88 @@ import * as spendingImpact from './spending-impact';
 import type { NaicsSector } from '$lib/domain/naics';
 
 describe('spending impact', () => {
-  it('groupAgencyImpactByThreshold', () => {
+  describe('getSankeyFlows', () => {
+    xit('groups sectors by common parents', async () => {
+      const flows = spendingImpact.getSankeyFlows(
+        [
+          {
+            name: 'Dept of Imagination',
+            sectors: [
+              {
+                amount: 100,
+                sector: '101',
+                name: 'fairy dust manufacturing',
+                kgC02Eq: 1000,
+              },
+              {
+                amount: 150,
+                sector: '102',
+                name: 'pixie dust manufacturing',
+                kgC02Eq: 1500,
+              },
+              {
+                amount: 150,
+                sector: '201',
+                name: 'hybrid tulips',
+                kgC02Eq: 225,
+              },
+            ],
+          },
+        ],
+        [
+          {
+            code: '10',
+            description: 'magic potions',
+            parentCode: null,
+          } as unknown as NaicsSector,
+          {
+            code: '101',
+            description: 'fairy dust manufacturing',
+            parentCode: '10',
+          } as unknown as NaicsSector,
+          {
+            code: '102',
+            description: 'pixie dust manufacturing',
+            parentCode: '10',
+          } as unknown as NaicsSector,
+          {
+            code: '20',
+            description: 'flower breeding',
+            parentCode: null,
+          } as unknown as NaicsSector,
+          {
+            code: '201',
+            description: 'hybrid tulips',
+            parentCode: '20',
+          } as unknown as NaicsSector,
+        ],
+      );
+      expect(flows).toEqual([
+        {
+          source: 'Dept of Imagination',
+          target: 'magic potions',
+          value: 250,
+        },
+        {
+          source: 'magic potions',
+          target: 'fairy dust manufacturing',
+          value: 100,
+        },
+        {
+          source: 'magic potions',
+          target: 'pixie dust manufacturing',
+          value: 150,
+        },
+        {
+          source: 'Dept of Imagination',
+          target: 'hybrid tulips',
+          value: 225,
+        },
+      ]);
+    });
+  });
+  xit('groupAgencyImpactByThreshold', () => {
     it('groups economic sectors by threshold', async () => {});
-    spendingImpact.groupAgencyImpactsByThreshold(MOCK_AGENCY_IMPACTS, 2000);
   });
   xit('getAllAgencySectorImpacts', async () => {
     const getAgencySectorImpacts = spendingImpact.GetAllAgencySectorImpacts({

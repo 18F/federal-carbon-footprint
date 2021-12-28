@@ -1,7 +1,7 @@
 import { derived, writable } from 'svelte/store';
 
 import type { AgencySectorImpacts } from '$lib/services/spending-impact';
-import { filterAgencyImpacts, groupAgencyImpactsByThreshold } from '$lib/services/spending-impact';
+import { filterAgencyImpacts, groupAgencySectorImpacts } from '$lib/services/spending-impact';
 
 type FilterOptions = {
   kgCO2Threshold: number;
@@ -16,7 +16,7 @@ export const filterOptions = writable<FilterOptions>({
 export const visibleAgencySectorImpacts = derived(
   [allAgencySectorImpacts, filterOptions],
   ([allAgencySectorImpacts, filterOptions]) => {
-    return groupAgencyImpactsByThreshold(
+    return groupAgencySectorImpacts(
       filterAgencyImpacts(allAgencySectorImpacts, filterOptions.filterText),
       filterOptions.kgCO2Threshold,
     );

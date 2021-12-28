@@ -1,6 +1,5 @@
 import type { GetGhgImpactBySectorId } from '$lib/domain/ghg-impact';
-import type { GetNaics } from '$lib/domain/naics';
-import type { number } from 'fp-ts';
+import type { GetNaics, NaicsSector } from '$lib/domain/naics';
 
 import type * as usaSpending from '../adapters/usaspending';
 
@@ -58,7 +57,7 @@ export const GetAllAgencySectorImpacts =
     });
   };
 
-export const groupAgencyImpactsByThreshold = (
+export const groupAgencySectorImpacts = (
   agencySectorImpacts: AgencySectorImpacts[],
   threshold: number,
 ): AgenctSectorImpactLink[] => {
@@ -75,6 +74,25 @@ export const groupAgencyImpactsByThreshold = (
           };
         })
     );
+  });
+};
+
+export const getSankeyFlows = (
+  agencySectorImpacts: AgencySectorImpacts[],
+  sectors: NaicsSector[],
+): AgenctSectorImpactLink[] => {
+  return agencySectorImpacts.flatMap((agency) => {
+    const sectorInputs = {};
+    agency.sectors.forEach((sector) => {
+      sectorInputs;
+    });
+    return agency.sectors.map((sector) => {
+      return {
+        source: agency.name,
+        target: sector.name || sector.sector,
+        value: sector.kgC02Eq,
+      };
+    });
   });
 };
 

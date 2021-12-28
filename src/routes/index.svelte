@@ -4,7 +4,7 @@
   import AgencyImpactFilterForm from '$components/AgencyImpactFilterForm.svelte';
   import PieChart from '$components/PieChart.svelte';
   import Sankey from '$components/Sankey.svelte';
-  import { setAllAgencySectorImpacts } from '$lib/stores/agency-sector-impact';
+  import { allAgencySectorImpacts } from '$lib/stores/agency-sector-impact';
 
   export const prerender = true;
 
@@ -12,7 +12,7 @@
     const response = await fetch('index.json');
 
     if (response.ok) {
-      setAllAgencySectorImpacts(await response.json());
+      allAgencySectorImpacts.set(await response.json());
       return {
         props: {
           status: 'loaded',

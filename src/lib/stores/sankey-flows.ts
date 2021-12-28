@@ -5,8 +5,6 @@ import * as sankeyService from '$lib/services/sankey-layout';
 import { visibleAgencySectorImpacts } from '$lib/stores/agency-sector-impact';
 import { derived } from 'svelte/store';
 
-export const SIZING = sankeyService.SIZING;
-
 /**
  * Wrap the D3-created Sankey layout with extra attributes needed to render the SVG.
  */

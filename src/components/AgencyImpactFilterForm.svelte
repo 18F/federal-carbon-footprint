@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { setFilterText } from '$lib/stores/agency-sector-impact';
+  import { filterOptions } from '$lib/stores/agency-sector-impact';
   import spriteImg from '../../node_modules/uswds/src/img/sprite.svg';
 
   const onSubmit = (e: Event) => {
@@ -11,7 +11,6 @@
   <fieldset class="usa-fieldset">
     <legend class="usa-legend text-base font-sans-md">Filter agency name</legend>
     <div class="usa-search usa-search--small margin-top-1" role="search">
-      <label class="usa-sr-only" for="search-field">Search agency name</label>
       <div class="usa-input-group">
         <div class="usa-input-prefix" aria-hidden="true">
           <svg aria-hidden="true" role="img" focusable="false" class="usa-icon"
@@ -27,12 +26,19 @@
           class="usa-input"
           autocomplete="off"
           placeholder="Search text..."
-          on:input={event => {
-            const text = event.currentTarget?.value || '';
-            setFilterText(text);
-          }}
+          bind:value={$filterOptions.filterText}
         />
       </div>
+    </div>
+    <legend class="usa-legend text-base font-sans-md">kg CO<sup>2</sup> threshold</legend>
+    <div class="usa-input-group">
+      <input
+        class="usa-input"
+        id="kg-co2-threshold"
+        name="kg-co2-threshold"
+        type="number"
+        bind:value={$filterOptions.kgCO2Threshold}
+      />
     </div>
   </fieldset>
 </form>

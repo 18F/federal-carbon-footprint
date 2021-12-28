@@ -14,11 +14,11 @@ interface LinkExtra {
   value: number;
 }
 
-type SNode = d3Sankey.SankeyNode<NodeExtra, LinkExtra>;
-type SLink = d3Sankey.SankeyLink<NodeExtra, LinkExtra>;
+type SankeyNode = d3Sankey.SankeyNode<NodeExtra, LinkExtra>;
+type SankeyLink = d3Sankey.SankeyLink<NodeExtra, LinkExtra>;
 interface DAG {
-  nodes: SNode[];
-  links: SLink[];
+  nodes: SankeyNode[];
+  links: SankeyLink[];
 }
 
 const SIZING = {
@@ -39,7 +39,7 @@ const SIZING = {
  * @param links
  * @returns
  */
-const createD3SankeyLayout = (links: SLink[]) => {
+const createD3SankeyLayout = (links: SankeyLink[]) => {
   let sankeyLayout: d3Sankey.SankeyLayout<DAG, NodeExtra, LinkExtra> = d3Sankey.sankey<
     DAG,
     NodeExtra,
@@ -64,15 +64,6 @@ const createD3SankeyLayout = (links: SLink[]) => {
 
 const linkHorizontal = d3Sankey.sankeyLinkHorizontal();
 const format = d3.format(',');
-
-// The Typescript type of link nodes is:
-//  `string & (string | number | d3Sankey.SankeyNode<NodeExtra, LinkExtra>`
-// This comes from the source and target types in `LinkExtra`, which are
-// set as string IDs for convenience. This casts to the node
-// type in a manner that can be used inside the Svelte markup.
-const castSankeyNode = (node: unknown) => {
-  return node as d3Sankey.SankeyNode<NodeExtra, LinkExtra>;
-};
 
 /**
  * Wrap the D3-created Sankey layout with extra attributes needed to render the SVG.
@@ -121,12 +112,12 @@ export const sankeyLayout = (agencySectorImpactLinks: AgenctSectorImpactLink[]) 
         gradient: {
           id: `link-${link.index}`,
           start: {
-            x: castSankeyNode(link.source).x1,
-            color: colorForNodeId(castSankeyNode(link.source).id),
+            x: (link.source as SankeyNode).x1,
+            color: colorForNodeId((link.source as SankeyNode).id),
           },
           end: {
-            x: castSankeyNode(link.target).x0,
-            color: colorForNodeId(castSankeyNode(link.target).id),
+            x: (link.target as SankeyNode).x0,
+            color: colorForNodeId((link.target as SankeyNode).id),
           },
         },
         path: {
@@ -134,7 +125,7 @@ export const sankeyLayout = (agencySectorImpactLinks: AgenctSectorImpactLink[]) 
           stroke: `url(#link-${index})`,
           strokeWidth: Math.max(1, link.width),
         },
-        title: `${castSankeyNode(link.source).id} → ${castSankeyNode(link.target).id}\n${format(
+        title: `${(link.source as SankeyNode).id} → ${(link.target as SankeyNode).id}\n${format(
           link.value,
         )} kg CO2 equivalent`,
       };

@@ -1,9 +1,9 @@
 import type { RequestHandler } from '@sveltejs/kit';
 
-import { getAgencySectorImpacts } from '$context/backend';
+import { getImpactData } from '$context/backend';
 
 export const get: RequestHandler = async () => {
-  const body = await getAgencySectorImpacts();
+  const body = await getImpactData();
   if (body) {
     return {
       body,
@@ -11,4 +11,4 @@ export const get: RequestHandler = async () => {
   }
 };
 
-export type Data = Awaited<ReturnType<typeof getAgencySectorImpacts>>;
+export type Data = Awaited<ReturnType<typeof getImpactData>>;

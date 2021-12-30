@@ -3,8 +3,6 @@ import { fold } from 'fp-ts/lib/Either.js';
 import { pipe } from 'fp-ts/lib/function.js';
 import memoizee from 'memoizee';
 
-import type { GetGhgImpactBySectorId } from '$lib/domain/ghg-impact';
-
 const BASE_URL = 'https://api.edap-cluster.com/useeio/api';
 const MODEL_NAME = 'USEEIOv1.2';
 
@@ -65,9 +63,7 @@ export const validateModelSectors = (data: unknown): ModelSectorList => {
     ModelSectorList.decode(data),
     fold(
       (errors) => {
-        const msg = errors.map((error) =>
-          error.context.map(({ key }) => key).join('.'),
-        );
+        const msg = errors.map((error) => error.context.map(({ key }) => key).join('.'));
         throw new Error(`Error decoding service response ${msg}`);
       },
       (value) => value,
@@ -87,11 +83,7 @@ const ModelIndicatorList = t.array(
 type ModelIndicatorList = t.TypeOf<typeof ModelIndicatorList>;
 
 export const getModelIndicators = memoizee(async (ctx: Context) => {
-  return await fetchServiceData<ModelIndicatorList>(
-    ctx,
-    MODEL_NAME,
-    'indicators',
-  );
+  return await fetchServiceData<ModelIndicatorList>(ctx, MODEL_NAME, 'indicators');
 });
 
 export const validateModelIndicators = (data: unknown): ModelIndicatorList => {
@@ -99,9 +91,7 @@ export const validateModelIndicators = (data: unknown): ModelIndicatorList => {
     ModelIndicatorList.decode(data),
     fold(
       (errors) => {
-        const msg = errors.map((error) =>
-          error.context.map(({ key }) => key).join('.'),
-        );
+        const msg = errors.map((error) => error.context.map(({ key }) => key).join('.'));
         throw new Error(`Error decoding service response ${msg}`);
       },
       (value) => value,
@@ -121,34 +111,10 @@ export const validateMatrixD = (data: unknown): MatrixD => {
     MatrixD.decode(data),
     fold(
       (errors) => {
-        const msg = errors.map((error) =>
-          error.context.map(({ key }) => key).join('.'),
-        );
+        const msg = errors.map((error) => error.context.map(({ key }) => key).join('.'));
         throw new Error(`Error decoding service response ${msg}`);
       },
       (value) => value,
     ),
   );
 };
-
-export const GetUseeioGhgImpactBySectorId = (
-  ctx: Context,
-): GetGhgImpactBySectorId =>
-  memoizee(async () => {
-    const [indicators, sectors, rows] = await Promise.all([
-      getModelIndicators(ctx),
-      getModelSectors(ctx),
-      getMatrixD(ctx),
-    ]);
-    const ghgIndicator = indicators.find(
-      (indicator) => indicator.code === 'GHG',
-    );
-    const sectorGhgImpactVector = rows[ghgIndicator.index];
-    return sectors.reduce<Record<string, number>>(
-      (ghgImpactBySectorId, sector) => {
-        ghgImpactBySectorId[sector.code] = sectorGhgImpactVector[sector.index];
-        return ghgImpactBySectorId;
-      },
-      {},
-    );
-  });

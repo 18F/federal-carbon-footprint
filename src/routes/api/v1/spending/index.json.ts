@@ -1,9 +1,9 @@
 import type { RequestHandler } from '@sveltejs/kit';
 
-import { getAgencySectorImpacts } from '$context/backend';
+import { getImpactData } from '$context/backend';
 
 export const get: RequestHandler = async () => {
-  const spendingImpact = await getAgencySectorImpacts();
+  const spendingImpact = await getImpactData();
   if (spendingImpact) {
     return {
       body: spendingImpact,

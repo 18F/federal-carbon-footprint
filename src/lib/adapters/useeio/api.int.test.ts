@@ -1,4 +1,4 @@
-import * as useeio from './useeio';
+import * as useeio from './api';
 
 const USEEIO_API_KEY = process.env.VITE_USEEIO_API_KEY;
 

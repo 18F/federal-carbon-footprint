@@ -4,18 +4,13 @@
 import * as d3 from 'd3';
 import * as d3Sankey from 'd3-sankey';
 
-import type { AgenctSectorImpactLink } from './spending-impact';
-interface NodeExtra {
+import type { AgencySectorImpactLink } from '$lib/services/spending-impact';
+interface NodeData {
   id: string;
 }
-interface LinkExtra {
-  source: string;
-  target: string;
-  value: number;
-}
 
-type SankeyNode = d3Sankey.SankeyNode<NodeExtra, LinkExtra>;
-type SankeyLink = d3Sankey.SankeyLink<NodeExtra, LinkExtra>;
+type SankeyNode = d3Sankey.SankeyNode<NodeData, AgencySectorImpactLink>;
+type SankeyLink = d3Sankey.SankeyLink<NodeData, AgencySectorImpactLink>;
 interface DAG {
   nodes: SankeyNode[];
   links: SankeyLink[];
@@ -40,15 +35,11 @@ const SIZING = {
  * @returns
  */
 const createD3SankeyLayout = (links: SankeyLink[]) => {
-  let sankeyLayout: d3Sankey.SankeyLayout<DAG, NodeExtra, LinkExtra> = d3Sankey.sankey<
-    DAG,
-    NodeExtra,
-    LinkExtra
-  >();
+  let sankeyLayout = d3Sankey.sankey<DAG, NodeData, AgencySectorImpactLink>();
 
   const linkSources = d3.map(links, ({ source }) => source);
   const linkTargets = d3.map(links, ({ target }) => target);
-  let nodes: NodeExtra[] = Array.from(d3.union(linkSources, linkTargets), (id) => ({ id }));
+  let nodes: NodeData[] = Array.from(d3.union(linkSources, linkTargets), (id) => ({ id }));
 
   sankeyLayout
     .nodeId((node) => node.id)
@@ -68,7 +59,7 @@ const format = d3.format(',');
 /**
  * Wrap the D3-created Sankey layout with extra attributes needed to render the SVG.
  */
-export const sankeyLayout = (agencySectorImpactLinks: AgenctSectorImpactLink[]) => {
+export const sankeyLayout = (agencySectorImpactLinks: AgencySectorImpactLink[]) => {
   const layout =
     agencySectorImpactLinks.length > 0
       ? createD3SankeyLayout(agencySectorImpactLinks)

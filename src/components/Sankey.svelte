@@ -34,11 +34,7 @@
           <stop offset={'0%'} stop-color={link.gradient.start.color} />
           <stop offset={'100%'} stop-color={link.gradient.end.color} />
         </linearGradient>
-        <path
-          d={link.path.d}
-          stroke={link.path.stroke}
-          stroke-width={link.path.strokeWidth}
-        >
+        <path d={link.path.d} stroke={link.path.stroke} stroke-width={link.path.strokeWidth}>
           <title>{link.title}</title>
         </path>
       </g>

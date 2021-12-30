@@ -2,19 +2,13 @@ import * as t from 'io-ts';
 import { fold } from 'fp-ts/lib/Either.js';
 import { pipe } from 'fp-ts/lib/function.js';
 
-import { GetNaics, NaicsCode } from '$lib/domain/naics';
-
 const API_BASE = 'https://api.usaspending.gov/api/v2';
 
 export type Context = {
   fetch: typeof fetch;
 };
 
-export const fetchServiceData = <T>(
-  ctx: Context,
-  endpoint: string,
-  payload?: object,
-): Promise<T> => {
+const fetchServiceData = <T>(ctx: Context, endpoint: string, payload?: object): Promise<T> => {
   return ctx
     .fetch(`${API_BASE}${endpoint}`, {
       method: payload ? 'POST' : 'GET',
@@ -26,67 +20,6 @@ export const fetchServiceData = <T>(
     .then((response) => {
       return response.json() as Promise<T>;
     });
-};
-
-export const getSpending = (ctx: Context) => () => {
-  // https://github.com/fedspendingtransparency/usaspending-api/blob/master/usaspending_api/api_contracts/contracts/v2/spending.md
-  return fetchServiceData(ctx, '/spending/', {
-    // federal_account, object_class, recipient, award, budget_function,
-    // budget_subfunction, agency, program_activity
-    type: 'agency',
-    //type: 'object_class',
-    filters: {
-      fy: '2020',
-      quarter: 4,
-    },
-  }).then((data) => {
-    return data;
-  });
-};
-
-const NaicsReference = t.type({
-  results: t.array(
-    t.type({
-      naics: NaicsCode,
-      naics_description: t.string,
-      count: t.number,
-    }),
-  ),
-});
-type NaicsReference = t.TypeOf<typeof NaicsReference>;
-
-export const UsaSpendingGetNaics =
-  (ctx: Context): GetNaics =>
-  () => {
-    return fetchServiceData<NaicsReference>(ctx, '/references/naics/').then((results) => {
-      return results.results.map((result) => {
-        return {
-          code: result.naics,
-          description: result.naics_description,
-          /*parentCode:
-              result.naics.length > 2
-                ? (result.naics.slice(
-                    0,
-                    result.naics.length,
-                  ) as unknown as NaicsCode)
-                : null,*/
-          parentCode: null,
-        };
-      });
-    });
-  };
-
-export const validateNaics = (data: unknown): NaicsReference => {
-  return pipe(
-    NaicsReference.decode(data),
-    fold(
-      (errors) => {
-        const msg = errors.map((error) => error.context.map(({ key }) => key).join('.'));
-        throw new Error(`Error decoding service response ${msg}`);
-      },
-      (value) => value,
-    ),
-  );
 };
 
 const rangeForFiscalYear = (fiscalYear: number) => {
@@ -210,7 +143,7 @@ export const validateAgencies = (agencies: unknown): UsaSpendingAgencyResults =>
   );
 };
 
-export const GetAgencies = (ctx: Context) => (): Promise<UsaSpendingAgencyResults> => {
+export const getAgencies = (ctx: Context): Promise<UsaSpendingAgencyResults> => {
   return fetchServiceData<UsaSpendingAgencyResults>(
     ctx,
     // This is the sort order used by here: https://www.usaspending.gov/agency
@@ -218,3 +151,64 @@ export const GetAgencies = (ctx: Context) => (): Promise<UsaSpendingAgencyResult
     '/references/toptier_agencies/?sort=percentage_of_total_budget_authority&order=desc',
   );
 };
+
+/*
+const getSpending = (ctx: Context) => () => {
+  // https://github.com/fedspendingtransparency/usaspending-api/blob/master/usaspending_api/api_contracts/contracts/v2/spending.md
+  return fetchServiceData(ctx, '/spending/', {
+    // federal_account, object_class, recipient, award, budget_function,
+    // budget_subfunction, agency, program_activity
+    type: 'agency',
+    //type: 'object_class',
+    filters: {
+      fy: '2020',
+      quarter: 4,
+    },
+  }).then((data) => {
+    return data;
+  });
+};
+
+const NaicsReference = t.type({
+  results: t.array(
+    t.type({
+      naics: NaicsCode,
+      naics_description: t.string,
+      count: t.number,
+    }),
+  ),
+});
+type NaicsReference = t.TypeOf<typeof NaicsReference>;
+
+const UsaSpendingGetNaics = (ctx: Context) => () => {
+  return fetchServiceData<NaicsReference>(ctx, '/references/naics/').then((results) => {
+    return results.results.map((result) => {
+      return {
+        code: result.naics,
+        description: result.naics_description,
+        // parentCode:
+        //       result.naics.length > 2
+        //         ? (result.naics.slice(
+        //             0,
+        //             result.naics.length,
+        //           ) as unknown as NaicsCode)
+        //         : null,
+        parentCode: null,
+      };
+    });
+  });
+};
+
+const validateNaics = (data: unknown): NaicsReference => {
+  return pipe(
+    NaicsReference.decode(data),
+    fold(
+      (errors) => {
+        const msg = errors.map((error) => error.context.map(({ key }) => key).join('.'));
+        throw new Error(`Error decoding service response ${msg}`);
+      },
+      (value) => value,
+    ),
+  );
+};
+*/

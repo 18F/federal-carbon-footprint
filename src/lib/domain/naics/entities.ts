@@ -20,4 +20,7 @@ export type NaicsSector = t.TypeOf<typeof NaicsSector>;
 export const NaicsSectorList = t.array(NaicsSector);
 export type NaicsSectorList = t.TypeOf<typeof NaicsSectorList>;
 
-export type GetNaics = () => Promise<NaicsSector[]>;
+export const NaicsSectorMap = t.record(t.string, NaicsSector);
+export type NaicsSectorMap = t.TypeOf<typeof NaicsSectorMap>;
+
+export type GetNaicsMap = () => Promise<NaicsSectorMap>;

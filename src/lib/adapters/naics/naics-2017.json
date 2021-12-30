@@ -1390,16 +1390,6 @@
     "parentCode": null
   },
   {
-    "code": "32",
-    "description": "Manufacturing",
-    "parentCode": null
-  },
-  {
-    "code": "33",
-    "description": "Manufacturing",
-    "parentCode": null
-  },
-  {
     "code": "311",
     "description": "Food Manufacturing",
     "parentCode": "31"
@@ -2142,7 +2132,7 @@
   {
     "code": "321",
     "description": "Wood Product Manufacturing",
-    "parentCode": "32"
+    "parentCode": "31"
   },
   {
     "code": "3211",
@@ -2257,7 +2247,7 @@
   {
     "code": "322",
     "description": "Paper Manufacturing",
-    "parentCode": "32"
+    "parentCode": "31"
   },
   {
     "code": "3221",
@@ -2362,7 +2352,7 @@
   {
     "code": "323",
     "description": "Printing and Related Support Activities",
-    "parentCode": "32"
+    "parentCode": "31"
   },
   {
     "code": "3231",
@@ -2402,7 +2392,7 @@
   {
     "code": "324",
     "description": "Petroleum and Coal Products Manufacturing",
-    "parentCode": "32"
+    "parentCode": "31"
   },
   {
     "code": "3241",
@@ -2452,7 +2442,7 @@
   {
     "code": "325",
     "description": "Chemical Manufacturing",
-    "parentCode": "32"
+    "parentCode": "31"
   },
   {
     "code": "3251",
@@ -2722,7 +2712,7 @@
   {
     "code": "326",
     "description": "Plastics and Rubber Products Manufacturing",
-    "parentCode": "32"
+    "parentCode": "31"
   },
   {
     "code": "3261",
@@ -2867,7 +2857,7 @@
   {
     "code": "327",
     "description": "Nonmetallic Mineral Product Manufacturing",
-    "parentCode": "32"
+    "parentCode": "31"
   },
   {
     "code": "3271",
@@ -3042,7 +3032,7 @@
   {
     "code": "331",
     "description": "Primary Metal Manufacturing",
-    "parentCode": "33"
+    "parentCode": "31"
   },
   {
     "code": "3311",
@@ -3207,7 +3197,7 @@
   {
     "code": "332",
     "description": "Fabricated Metal Product Manufacturing",
-    "parentCode": "33"
+    "parentCode": "31"
   },
   {
     "code": "3321",
@@ -3507,7 +3497,7 @@
   {
     "code": "333",
     "description": "Machinery Manufacturing",
-    "parentCode": "33"
+    "parentCode": "31"
   },
   {
     "code": "3331",
@@ -3797,7 +3787,7 @@
   {
     "code": "334",
     "description": "Computer and Electronic Product Manufacturing",
-    "parentCode": "33"
+    "parentCode": "31"
   },
   {
     "code": "3341",
@@ -3992,7 +3982,7 @@
   {
     "code": "335",
     "description": "Electrical Equipment, Appliance, and Component Manufacturing",
-    "parentCode": "33"
+    "parentCode": "31"
   },
   {
     "code": "3351",
@@ -4152,7 +4142,7 @@
   {
     "code": "336",
     "description": "Transportation Equipment Manufacturing",
-    "parentCode": "33"
+    "parentCode": "31"
   },
   {
     "code": "3361",
@@ -4402,7 +4392,7 @@
   {
     "code": "337",
     "description": "Furniture and Related Product Manufacturing",
-    "parentCode": "33"
+    "parentCode": "31"
   },
   {
     "code": "3371",
@@ -4507,7 +4497,7 @@
   {
     "code": "339",
     "description": "Miscellaneous Manufacturing",
-    "parentCode": "33"
+    "parentCode": "31"
   },
   {
     "code": "3391",

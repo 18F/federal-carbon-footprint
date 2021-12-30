@@ -1,8 +1,8 @@
 import reporter from 'io-ts-reporters';
 
-import * as naics from './naics';
+import * as naics from './entities';
 
-describe('naics', () => {
+describe('naics entities', () => {
   describe('code definition', () => {
     it('must be a string', () => {
       const result = reporter.report(naics.NaicsCode.decode(1));

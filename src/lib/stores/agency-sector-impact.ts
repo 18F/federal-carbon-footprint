@@ -5,7 +5,7 @@ import { getSankeyFlows } from '$lib/services/spending-impact';
 import type { NaicsSectorMap } from '$lib/domain/naics';
 
 type FilterOptions = {
-  filterText: string;
+  agencyName: string;
   kgCO2Threshold: number;
   sectorDepth: number;
 };
@@ -17,7 +17,7 @@ export const impactData = writable<{
   naics: {},
 });
 export const filterOptions = writable<FilterOptions>({
-  filterText: '',
+  agencyName: '',
   kgCO2Threshold: 1000,
   sectorDepth: 3,
 });

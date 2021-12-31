@@ -106,7 +106,7 @@ export const getSankeyFlows = (
   agencySectorImpacts: AgencySectorImpacts[],
   naics: NaicsSectorMap,
   filterOptions: {
-    filterText: string;
+    agencyName: string;
     kgCO2Threshold: number;
     sectorDepth: number;
   },
@@ -114,7 +114,10 @@ export const getSankeyFlows = (
   return (
     flattenImpactLinks(
       agencySectorImpacts
-        // Filter matching agency names.
+        // Filter out non-matching agency names.
+        .filter((agency) =>
+          agency.name.toLowerCase().includes(filterOptions.agencyName.toLowerCase()),
+        )
         .flatMap((agency) => {
           return agency.sectors.flatMap((sectorImpact) => {
             return getLinksForSectorImpact(
@@ -130,9 +133,6 @@ export const getSankeyFlows = (
       .filter((sectorImpact) => {
         return sectorImpact.value > filterOptions.kgCO2Threshold;
       })
-      .filter((agencySectorImpact) =>
-        agencySectorImpact.source.toLowerCase().includes(filterOptions.filterText.toLowerCase()),
-      )
   );
 };
 

@@ -26,7 +26,7 @@
           class="usa-input"
           autocomplete="off"
           placeholder="Search text..."
-          bind:value={$filterOptions.filterText}
+          bind:value={$filterOptions.agencyName}
         />
       </div>
     </div>

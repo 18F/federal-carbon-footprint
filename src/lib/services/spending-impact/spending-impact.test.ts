@@ -57,7 +57,7 @@ describe('spending impact', () => {
           } as unknown as NaicsSector,
         },
         {
-          filterText: '',
+          agencyName: '',
           kgCO2Threshold: 1000,
           sectorDepth: 3,
         },

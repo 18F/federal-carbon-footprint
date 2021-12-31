@@ -1,13 +1,14 @@
 import type { RequestHandler } from '@sveltejs/kit';
 
-import { getSpendingImpact } from '$data/transforms/spending';
-import * as ctx from './_context';
+import { getImpactData } from '$context/backend';
 
-export const get: RequestHandler = async ({ params }) => {
-  const spendingImpact = await getSpendingImpact({ ...ctx, fetch });
-  if (spendingImpact) {
+export const get: RequestHandler = async () => {
+  const body = await getImpactData();
+  if (body) {
     return {
-      body: spendingImpact,
+      body,
     };
   }
 };
+
+export type Data = Awaited<ReturnType<typeof getImpactData>>;

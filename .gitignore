@@ -7,3 +7,4 @@ build/
 _site
 .env
 NOTES.md
+fetch-cache/

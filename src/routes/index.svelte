@@ -1,32 +1,34 @@
 <script context="module" lang="ts">
   import type { LoadInput } from '@sveltejs/kit';
 
+  import AgencyImpactFilterForm from '$components/AgencyImpactFilterForm.svelte';
   import PieChart from '$components/PieChart.svelte';
   import Sankey from '$components/Sankey.svelte';
-  import type { get as getData } from './index.json';
+  import { impactData } from '$lib/stores/agency-sector-impact';
 
   export const prerender = true;
 
-  export const load = async ({ page, fetch }: LoadInput) => {
-    const data = await fetch('index.json').then((response) => response.json());
-    if (data) {
+  export const load = async ({ fetch }: LoadInput) => {
+    const response = await fetch('index.json');
+
+    if (response.ok) {
+      impactData.set(await response.json());
       return {
         props: {
-          data,
+          status: 'loaded',
         },
       };
     }
 
     return {
       status: 404,
-      error: new Error(`Could not load spending impact`),
+      error: new Error(`Could not load data`),
     };
   };
 </script>
 
 <script lang="ts">
-  export let data: ReturnType<typeof getData>;
-  import { base } from '$app/paths';
+  import { getUrl } from '$context/frontend';
 </script>
 
 <svelte:head>
@@ -34,16 +36,23 @@
 </svelte:head>
 
 <div class="grid-container">
-  <div class="text-italic margin-top-1">NOTE: All data in these visualizations are for test purposes only.</div>
-  <h1>Sample Sankey Diagram</h1>
-  <Sankey />
-  <h1>
-    Federal Government Total Energy Consumption by Fuel Type (Trillion Btu)
-  </h1>
+  <div class="text-italic margin-top-1">
+    NOTE: All data in these visualizations are for test purposes only.
+  </div>
+  <h1>Federal Product and Services Greenhouse Gas Impact (kg CO<sup>2</sup> equivalent)</h1>
+  <div class="grid-row grid-gap-lg">
+    <div class="tablet:grid-col-3">
+      <AgencyImpactFilterForm />
+    </div>
+    <div class="tablet:grid-col-9">
+      <Sankey />
+    </div>
+  </div>
+  <h1>Federal Government Total Energy Consumption by Fuel Type (Trillion Btu)</h1>
   <PieChart />
   <h1>Agengies</h1>
   <ul>
-    <li><a href="{base}/agencies/usgs">USGS Agency Page</a></li>
-    <li><a href="{base}/agencies/cms">CMS Agency Page</a></li>
+    <li><a href={getUrl('/agencies/usgs')}>USGS Agency Page</a></li>
+    <li><a href={getUrl('/agencies/cms')}>CMS Agency Page</a></li>
   </ul>
 </div>

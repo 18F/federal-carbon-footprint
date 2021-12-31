@@ -2,6 +2,7 @@ import type { GetGhgImpactBySectorId } from '$lib/domain/ghg-impact';
 import { getSectorHierarchy, NaicsSectorMap } from '$lib/domain/naics';
 import type { GetNaicsMap } from '$lib/domain/naics';
 import { getCanonicalSector, NaicsSector } from '$lib/domain/naics';
+import type { string } from 'fp-ts';
 
 export type SectorImpact = {
   amount: number;
@@ -114,23 +115,53 @@ export const getSankeyFlows = (
   filterOptions: {
     filterText: string;
     kgCO2Threshold: number;
-    c: 2;
+    sectorDepth: number;
   },
 ) => {
-  return flattenImpactLinks(
-    agencySectorImpacts
-      // Filter matching agency names.
-      .flatMap((agency) => {
-        return (
-          agency.sectors
-            .flatMap((sectorImpact) =>
-              getLinksForSectorImpact(naics, agency.name, sectorImpact, filterOptions.sectorDepth),
-            )
-            // for now, rather than group, just filter out sectors less than the threshold.
-            .filter((sectorImpact) => sectorImpact.value > filterOptions.kgCO2Threshold)
-        );
-      }),
-  ).filter((agencySectorImpact) =>
-    agencySectorImpact.source.toLowerCase().includes(filterOptions.filterText.toLowerCase()),
+  return (
+    flattenImpactLinks(
+      agencySectorImpacts
+        // Filter matching agency names.
+        .flatMap((agency) => {
+          return agency.sectors.flatMap((sectorImpact) =>
+            getLinksForSectorImpact(naics, agency.name, sectorImpact, filterOptions.sectorDepth),
+          );
+        }),
+    )
+      // for now, rather than group, just filter out sectors less than the threshold.
+      .filter((sectorImpact) => {
+        return sectorImpact.value > filterOptions.kgCO2Threshold;
+      })
+      .filter((agencySectorImpact) =>
+        agencySectorImpact.source.toLowerCase().includes(filterOptions.filterText.toLowerCase()),
+      )
+  );
+};
+
+const getEnterLinks = (sankeyFlows: AgencySectorImpactLink[], node: string) => {
+  const links = sankeyFlows.filter((flow) => flow.target === node);
+  return [...links, ...links.flatMap((link) => getEnterLinks(sankeyFlows, link.source))];
+};
+
+const getExitLinks = (sankeyFlows: AgencySectorImpactLink[], node: string) => {
+  const links = sankeyFlows.filter((flow) => flow.source === node);
+  return [...links, ...links.flatMap((link) => getExitLinks(sankeyFlows, link.target))];
+};
+
+// For a given link, return all links that flow into or out of ajacent nodes.
+export const getFlowsForLink = (
+  sankeyFlows: AgencySectorImpactLink[],
+  agencySectorImpactLink: AgencySectorImpactLink,
+) => {
+  return [
+    agencySectorImpactLink,
+    ...getEnterLinks(sankeyFlows, agencySectorImpactLink.source),
+    ...getExitLinks(sankeyFlows, agencySectorImpactLink.target),
+  ];
+};
+
+export const linkInFlow = (link: AgencySectorImpactLink, flows: AgencySectorImpactLink[]) => {
+  return flows.some(
+    (flowLink) => link.source === flowLink.source && flowLink.target === link.target,
   );
 };

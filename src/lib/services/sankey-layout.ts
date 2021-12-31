@@ -100,6 +100,8 @@ export const sankeyLayout = (agencySectorImpactLinks: AgencySectorImpactLink[]) 
     linkStrokeOpacity: SIZING.linkStrokeOpacity,
     links: d3.map(layout.links, (link, index) => {
       return {
+        index,
+        raw: link,
         gradient: {
           id: `link-${link.index}`,
           start: {

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { sankeyLayout } from '$lib/stores/sankey-flows';
+  import { hoverLink, linkActiveStates, sankeyLayout } from '$lib/stores/sankey-flows';
 </script>
 
 <svg
@@ -23,7 +23,11 @@
   </g>
   <g fill="none" stroke-opacity={$sankeyLayout.linkStrokeOpacity}>
     {#each $sankeyLayout.links as link}
-      <g mix-blend-mode="multiply">
+      <g
+        mix-blend-mode="multiply"
+        on:mouseenter={() => hoverLink.setHover(link.index)}
+        on:mouseleave={() => hoverLink.clear()}
+      >
         <linearGradient
           id={link.gradient.id}
           gradientUnits={'userSpaceOnUse'}
@@ -34,7 +38,13 @@
           <stop offset={'0%'} stop-color={link.gradient.start.color} />
           <stop offset={'100%'} stop-color={link.gradient.end.color} />
         </linearGradient>
-        <path d={link.path.d} stroke={link.path.stroke} stroke-width={link.path.strokeWidth}>
+        <path
+          d={link.path.d}
+          stroke={$linkActiveStates[link.index]
+            ? 'black'
+            : link.path.stroke}
+          stroke-width={link.path.strokeWidth}
+        >
           <title>{link.title}</title>
         </path>
       </g>

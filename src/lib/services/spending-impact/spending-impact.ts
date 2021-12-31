@@ -71,6 +71,7 @@ const getLinksForSectorImpact = (
   naics: NaicsSectorMap,
   agencyName: string,
   sectorImpact: SectorImpact,
+  sectorDepth: number,
 ): AgencySectorImpactLink[] => {
   const sectors = getSectorHierarchy(naics, sectorImpact.sector.code);
   const links = [
@@ -81,6 +82,9 @@ const getLinksForSectorImpact = (
     },
   ];
   for (const [index, sector] of sectors.entries()) {
+    if (index === sectorDepth) {
+      break;
+    }
     links.push({
       source: index === 0 ? agencyName : sectors[index - 1].description,
       target: sector.description,
@@ -108,29 +112,20 @@ export const getSankeyFlows = (
   agencySectorImpacts: AgencySectorImpacts[],
   naics: NaicsSectorMap,
   filterOptions: {
-    kgCO2Threshold: number;
     filterText: string;
+    kgCO2Threshold: number;
+    c: 2;
   },
 ) => {
-  // Get all agency impacts that flow to an individual sector.
-  /*
-  const sectorInputs: Record<string, SectorImpact[]> = {};
-  agencySectorImpacts.forEach((agencySectorImpact) => {
-    agencySectorImpact.sectors.forEach((agencySector) => {
-      sectorInputs[agencySector.sector] = sectorInputs[agencySector.sector] || [];
-      sectorInputs[agencySector.sector].push(agencySector);
-    });
-  });
-  */
-
-  // Get flows, working backward from target to source.
   return flattenImpactLinks(
     agencySectorImpacts
       // Filter matching agency names.
       .flatMap((agency) => {
         return (
           agency.sectors
-            .flatMap((sectorImpact) => getLinksForSectorImpact(naics, agency.name, sectorImpact))
+            .flatMap((sectorImpact) =>
+              getLinksForSectorImpact(naics, agency.name, sectorImpact, filterOptions.sectorDepth),
+            )
             // for now, rather than group, just filter out sectors less than the threshold.
             .filter((sectorImpact) => sectorImpact.value > filterOptions.kgCO2Threshold)
         );

@@ -30,7 +30,7 @@
         />
       </div>
     </div>
-    <legend class="usa-legend text-base font-sans-md">kg CO<sup>2</sup> threshold</legend>
+    <legend class="usa-legend text-base font-sans-md">Minimum kg CO<sup>2</sup> per-sector</legend>
     <div class="usa-input-group">
       <input
         class="usa-input"
@@ -38,6 +38,16 @@
         name="kg-co2-threshold"
         type="number"
         bind:value={$filterOptions.kgCO2Threshold}
+      />
+    </div>
+    <legend class="usa-legend text-base font-sans-md">Sector depth</legend>
+    <div class="usa-input-group">
+      <input
+        class="usa-input"
+        id="sector-depth"
+        name="sector-depth"
+        type="number"
+        bind:value={$filterOptions.sectorDepth}
       />
     </div>
   </fieldset>

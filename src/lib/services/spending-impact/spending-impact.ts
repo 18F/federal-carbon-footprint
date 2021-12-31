@@ -2,7 +2,6 @@ import type { GetGhgImpactBySectorId } from '$lib/domain/ghg-impact';
 import { getSectorHierarchy, NaicsSectorMap } from '$lib/domain/naics';
 import type { GetNaicsMap } from '$lib/domain/naics';
 import { getCanonicalSector, NaicsSector } from '$lib/domain/naics';
-import type { string } from 'fp-ts';
 
 export type SectorImpact = {
   amount: number;
@@ -75,13 +74,7 @@ const getLinksForSectorImpact = (
   sectorDepth: number,
 ): AgencySectorImpactLink[] => {
   const sectors = getSectorHierarchy(naics, sectorImpact.sector.code);
-  const links = [
-    {
-      source: agencyName,
-      target: sectors[0].description,
-      value: sectorImpact.kgC02Eq,
-    },
-  ];
+  const links = [];
   for (const [index, sector] of sectors.entries()) {
     if (index === sectorDepth) {
       break;
@@ -123,9 +116,14 @@ export const getSankeyFlows = (
       agencySectorImpacts
         // Filter matching agency names.
         .flatMap((agency) => {
-          return agency.sectors.flatMap((sectorImpact) =>
-            getLinksForSectorImpact(naics, agency.name, sectorImpact, filterOptions.sectorDepth),
-          );
+          return agency.sectors.flatMap((sectorImpact) => {
+            return getLinksForSectorImpact(
+              naics,
+              agency.name,
+              sectorImpact,
+              filterOptions.sectorDepth,
+            );
+          });
         }),
     )
       // for now, rather than group, just filter out sectors less than the threshold.

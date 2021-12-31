@@ -40,8 +40,26 @@ describe('spending impact', () => {
           },
         ],
         {
+          '101': {
+            code: '101',
+            description: 'fairy dust manufacturing',
+            parentCode: null,
+          } as unknown as NaicsSector,
+          '102': {
+            code: '102',
+            description: 'pixie dust manufacturing',
+            parentCode: null,
+          } as unknown as NaicsSector,
+          '201': {
+            code: '201',
+            description: 'hybrid tulips',
+            parentCode: null,
+          } as unknown as NaicsSector,
+        },
+        {
           filterText: '',
           kgCO2Threshold: 1000,
+          sectorDepth: 3,
         },
       );
       expect(flows).toEqual([

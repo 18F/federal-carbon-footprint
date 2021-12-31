@@ -17,9 +17,9 @@ export const impactData = writable<{
   naics: {},
 });
 export const filterOptions = writable<FilterOptions>({
-  agencyName: '',
-  kgCO2Threshold: 1000,
-  sectorDepth: 3,
+  agencyName: 'treasury',
+  kgCO2Threshold: 0,
+  sectorDepth: 5,
 });
 
 export const visibleAgencySectorImpacts = derived(

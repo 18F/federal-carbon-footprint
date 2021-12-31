@@ -18,7 +18,7 @@ interface DAG {
 
 const SIZING = {
   width: 1300,
-  height: 2000,
+  height: 1000,
   margin: {
     top: 5,
     right: 1,
@@ -84,7 +84,7 @@ export const sankeyLayout = (agencySectorImpactLinks: AgencySectorImpactLink[]) 
               : node.x0 - SIZING.nodeLabelPadding,
           y: (node.y1 + node.y0) / 2,
           dy: '0.35em',
-          text: `${node.id}\n${format(node.value)}`,
+          text: `${node.id}`,
           textAnchor: node.x0 < SIZING.width / 2 ? 'start' : 'end',
         },
         rect: {

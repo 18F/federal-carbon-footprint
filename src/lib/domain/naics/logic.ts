@@ -45,3 +45,14 @@ export const getCanonicalParentSector = (naics: NaicsSectorMap, code: string) =>
   }
   return getCanonicalSector(naics, sector.parentCode);
 };
+
+export const getSectorHierarchy = (naics: NaicsSectorMap, code: string) => {
+  let currentSector = getCanonicalSector(naics, code);
+  const sectors = [currentSector];
+  currentSector = getCanonicalParentSector(naics, currentSector.code);
+  while (currentSector !== null) {
+    sectors.push(currentSector);
+    currentSector = getCanonicalParentSector(naics, currentSector.code);
+  }
+  return sectors;
+};

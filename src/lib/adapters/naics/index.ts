@@ -3,7 +3,8 @@ import { fold } from 'fp-ts/lib/Either.js';
 import { pipe } from 'fp-ts/lib/function.js';
 import memoizee from 'memoizee';
 
-import { GetNaicsMap, NaicsCode } from '$lib/domain/naics';
+import { NaicsCode } from '$lib/domain/naics';
+import type { GetNaicsMap } from '$lib/domain/naics';
 
 import naics07 from './naics-2007.json';
 import naics12 from './naics-2012.json';

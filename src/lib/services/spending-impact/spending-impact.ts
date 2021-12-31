@@ -1,4 +1,5 @@
 import type { GetGhgImpactBySectorId } from '$lib/domain/ghg-impact';
+import { getSectorHierarchy, NaicsSectorMap } from '$lib/domain/naics';
 import type { GetNaicsMap } from '$lib/domain/naics';
 import { getCanonicalSector, NaicsSector } from '$lib/domain/naics';
 
@@ -36,7 +37,10 @@ export const GetImpactData =
     getGhgImpactBySectorId: GetGhgImpactBySectorId;
     getAgencySpendsBySector: GetAgencySpendsBySector;
   }) =>
-  async (): Promise<AgencySectorImpacts[]> => {
+  async (): Promise<{
+    agencySectorImpacts: AgencySectorImpacts[];
+    naics: NaicsSectorMap;
+  }> => {
     const naicsPromise = ctx.getNaicsMap();
     const impactBySectorPromise = ctx.getGhgImpactBySectorId();
     const agencySpendsBySectorPromise = ctx.getAgencySpendsBySector();
@@ -45,23 +49,64 @@ export const GetImpactData =
       impactBySectorPromise,
       agencySpendsBySectorPromise,
     ]);
-    return agencySpendsBySector.map((agencySpendBySector) => {
-      return {
-        name: agencySpendBySector.agencyName,
-        sectors: agencySpendBySector.sectorSpends.map((sectorSpend) => {
-          const sector = getCanonicalSector(naics, sectorSpend.sector);
-          return {
-            amount: sectorSpend.amount,
-            kgC02Eq: impactBySector[sector.code] * sectorSpend.amount,
-            sector,
-          };
-        }),
-      };
-    });
+    return {
+      agencySectorImpacts: agencySpendsBySector.map((agencySpendBySector) => {
+        return {
+          name: agencySpendBySector.agencyName,
+          sectors: agencySpendBySector.sectorSpends.map((sectorSpend) => {
+            const sector = getCanonicalSector(naics, sectorSpend.sector);
+            return {
+              amount: sectorSpend.amount,
+              kgC02Eq: impactBySector[sector.code] * sectorSpend.amount,
+              sector,
+            };
+          }),
+        };
+      }),
+      naics,
+    };
   };
+
+const getLinksForSectorImpact = (
+  naics: NaicsSectorMap,
+  agencyName: string,
+  sectorImpact: SectorImpact,
+): AgencySectorImpactLink[] => {
+  const sectors = getSectorHierarchy(naics, sectorImpact.sector.code);
+  const links = [
+    {
+      source: agencyName,
+      target: sectors[0].description,
+      value: sectorImpact.kgC02Eq,
+    },
+  ];
+  for (const [index, sector] of sectors.entries()) {
+    links.push({
+      source: index === 0 ? agencyName : sectors[index - 1].description,
+      target: sector.description,
+      value: sectorImpact.kgC02Eq,
+    });
+  }
+  return links;
+};
+
+const flattenImpactLinks = (impactLinks: AgencySectorImpactLink[]): AgencySectorImpactLink[] => {
+  const impactLinkValues: Record<string, AgencySectorImpactLink> = {};
+  impactLinks.forEach((impactLink) => {
+    const linkKey = `${impactLink.source}:${impactLink.target}`;
+    impactLinkValues[linkKey] = impactLinkValues[linkKey] || {
+      source: impactLink.source,
+      target: impactLink.target,
+      value: 0,
+    };
+    impactLinkValues[linkKey].value += impactLink.value;
+  });
+  return Object.values(impactLinkValues);
+};
 
 export const getSankeyFlows = (
   agencySectorImpacts: AgencySectorImpacts[],
+  naics: NaicsSectorMap,
   filterOptions: {
     kgCO2Threshold: number;
     filterText: string;
@@ -79,34 +124,18 @@ export const getSankeyFlows = (
   */
 
   // Get flows, working backward from target to source.
-  return (
+  return flattenImpactLinks(
     agencySectorImpacts
-      .filter((agencySectorImpact) =>
-        agencySectorImpact.name.toLowerCase().includes(filterOptions.filterText.toLowerCase()),
-      )
       // Filter matching agency names.
       .flatMap((agency) => {
         return (
           agency.sectors
+            .flatMap((sectorImpact) => getLinksForSectorImpact(naics, agency.name, sectorImpact))
             // for now, rather than group, just filter out sectors less than the threshold.
-            .filter((sector) => sector.kgC02Eq > filterOptions.kgCO2Threshold)
-            .map((sectorImpact) => {
-              return {
-                source: agency.name,
-                target: sectorImpact.sector.description,
-                value: sectorImpact.kgC02Eq,
-              };
-            })
+            .filter((sectorImpact) => sectorImpact.value > filterOptions.kgCO2Threshold)
         );
-      })
-  );
-};
-
-export const filterAgencyImpacts = (
-  agencySectorImpacts: AgencySectorImpacts[],
-  filterText: string,
-) => {
-  return agencySectorImpacts.filter((agencySectorImpact) =>
-    agencySectorImpact.name.toLowerCase().includes(filterText.toLowerCase()),
+      }),
+  ).filter((agencySectorImpact) =>
+    agencySectorImpact.source.toLowerCase().includes(filterOptions.filterText.toLowerCase()),
   );
 };

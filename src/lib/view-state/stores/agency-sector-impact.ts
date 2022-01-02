@@ -32,6 +32,13 @@ export const createAgencySectorImpactStore = () => {
   );
 
   return {
+    init: async ({ fetch }: { fetch: typeof window.fetch }) => {
+      const response = await fetch('/api/v1/spending-impact.json');
+      if (response.ok) {
+        impactData.set(await response.json());
+      }
+      return response.ok;
+    },
     filterOptions,
     impactData,
     visibleAgencySectorImpacts,

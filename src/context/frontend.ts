@@ -8,8 +8,8 @@
  */
 
 import { base } from '$app/paths';
-
 import * as github from '$lib/domain/github';
+import { createViewState } from '$lib/view-state';
 
 // expose SvelteKit exports on the context
 export * as env from '$app/env';
@@ -24,3 +24,5 @@ export const githubBranchTreeUrl = github.getBranchTreeUrl({
 export const getUrl = (path: `/${string}`) => {
   return `${base}${path}`;
 };
+
+export const viewState = createViewState();

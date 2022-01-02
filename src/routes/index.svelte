@@ -3,34 +3,22 @@
 
   import AgencyImpactFilterForm from '$components/AgencyImpactFilterForm.svelte';
   import Sankey from '$components/Sankey.svelte';
-  import { createAgencySectorImpactStore } from '$lib/stores/agency-sector-impact';
-  import { createSankeyFlowsStore } from '$lib/stores/sankey-flows';
+  import { getUrl, viewState } from '$context/frontend';
 
   export const prerender = true;
-  const agencySectorImpactStore = createAgencySectorImpactStore();
-  const sankeyFlowsStore = createSankeyFlowsStore(agencySectorImpactStore.visibleAgencySectorImpacts);
 
   export const load = async ({ fetch }: LoadInput) => {
-    const response = await fetch('/api/v1/spending-impact.json');
-
-    if (response.ok) {
-      agencySectorImpactStore.impactData.set(await response.json());
+    const loaded = await viewState.agencySectorImpact.init({ fetch });
+    if (!loaded) {
       return {
-        props: {
-          status: 'loaded',
-        },
+        status: 404,
+        error: new Error(`Could not load data`),
       };
     }
-
     return {
-      status: 404,
-      error: new Error(`Could not load data`),
+      status: 200,
     };
   };
-</script>
-
-<script lang="ts">
-  import { getUrl } from '$context/frontend';
 </script>
 
 <svelte:head>
@@ -44,15 +32,15 @@
   <h1>Federal Product and Services Greenhouse Gas Impact (kg CO<sup>2</sup> equivalent)</h1>
   <div class="grid-row grid-gap-lg">
     <div class="tablet:grid-col-3">
-      <AgencyImpactFilterForm filterOptions={agencySectorImpactStore.filterOptions} />
+      <AgencyImpactFilterForm filterOptions={viewState.agencySectorImpact.filterOptions} />
     </div>
     <div class="tablet:grid-col-9">
-      <Sankey {sankeyFlowsStore} />
+      <Sankey sankeyFlows={viewState.sankeyFlows} />
     </div>
   </div>
-  <h1>Agengies</h1>
+  <h1>Test Pages</h1>
   <ul>
-    <li><a href={getUrl('/agencies/usgs')}>USGS Agency Page</a></li>
-    <li><a href={getUrl('/agencies/cms')}>CMS Agency Page</a></li>
+    <li><a href={getUrl('/agencies/defense')}>Defense Dept. Page</a></li>
+    <li><a href={getUrl('/agencies/treasury')}>Treasury Page</a></li>
   </ul>
 </div>

@@ -4,7 +4,7 @@
 import { derived, writable } from 'svelte/store';
 
 import * as sankeyService from '$lib/services/sankey-layout';
-import type { AgencySectorImpactStore } from '$lib/stores/agency-sector-impact';
+import type { AgencySectorImpactStore } from '$lib/view-state/stores/agency-sector-impact';
 import { getFlowsForLink, linkInFlow } from '$lib/services/spending-impact/spending-impact';
 
 export const createSankeyFlowsStore = (

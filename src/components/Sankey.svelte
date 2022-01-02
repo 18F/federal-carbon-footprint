@@ -1,9 +1,9 @@
 <script lang="ts">
-  import type { SankeyFlowsStore } from '$lib/stores/sankey-flows';
-  export let sankeyFlowsStore: SankeyFlowsStore;
-  $: hoverLink = sankeyFlowsStore.hoverLink;
-  $: sankeyLayout = sankeyFlowsStore.sankeyLayout;
-  $: linkActiveStates = sankeyFlowsStore.linkActiveStates;
+  import type { SankeyFlowsStore } from '$lib/view-state/stores/sankey-flows';
+  export let sankeyFlows: SankeyFlowsStore;
+  $: hoverLink = sankeyFlows.hoverLink;
+  $: sankeyLayout = sankeyFlows.sankeyLayout;
+  $: linkActiveStates = sankeyFlows.linkActiveStates;
 </script>
 
 <svg
@@ -44,9 +44,7 @@
         </linearGradient>
         <path
           d={link.path.d}
-          stroke={$linkActiveStates[link.index]
-            ? 'black'
-            : link.path.stroke}
+          stroke={$linkActiveStates[link.index] ? 'black' : link.path.stroke}
           stroke-width={link.path.strokeWidth}
         >
           <title>{link.title}</title>

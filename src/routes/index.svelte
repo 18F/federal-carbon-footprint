@@ -2,14 +2,13 @@
   import type { LoadInput } from '@sveltejs/kit';
 
   import AgencyImpactFilterForm from '$components/AgencyImpactFilterForm.svelte';
-  import PieChart from '$components/PieChart.svelte';
   import Sankey from '$components/Sankey.svelte';
   import { impactData } from '$lib/stores/agency-sector-impact';
 
   export const prerender = true;
 
   export const load = async ({ fetch }: LoadInput) => {
-    const response = await fetch('index.json');
+    const response = await fetch('/api/v1/spending-impact.json');
 
     if (response.ok) {
       impactData.set(await response.json());
@@ -48,8 +47,6 @@
       <Sankey />
     </div>
   </div>
-  <h1>Federal Government Total Energy Consumption by Fuel Type (Trillion Btu)</h1>
-  <PieChart />
   <h1>Agengies</h1>
   <ul>
     <li><a href={getUrl('/agencies/usgs')}>USGS Agency Page</a></li>

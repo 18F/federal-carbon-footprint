@@ -4,33 +4,41 @@
 import { derived, writable } from 'svelte/store';
 
 import * as sankeyService from '$lib/services/sankey-layout';
-import { visibleAgencySectorImpacts } from '$lib/stores/agency-sector-impact';
+import type { AgencySectorImpactStore } from '$lib/stores/agency-sector-impact';
 import { getFlowsForLink, linkInFlow } from '$lib/services/spending-impact/spending-impact';
 
-const hoverLinkIndexStore = writable<number | null>(null);
-const hoverLinks = derived(
-  [visibleAgencySectorImpacts, hoverLinkIndexStore],
-  ([agencySectorImpacts, hoverLinkIndex]) => {
-    if (hoverLinkIndex === null) {
-      return [];
-    }
-    const hoverLink = agencySectorImpacts[hoverLinkIndex];
-    return getFlowsForLink(agencySectorImpacts, hoverLink);
-  },
-);
-export const linkActiveStates = derived(
-  [visibleAgencySectorImpacts, hoverLinks],
-  ([agencySectorImpacts, hoverLinks]) =>
-    agencySectorImpacts.map((link) => linkInFlow(link, hoverLinks)),
-);
-export const hoverLink = {
-  setHover: (index: number) => hoverLinkIndexStore.set(index),
-  clear: () => hoverLinkIndexStore.set(null),
+export const createSankeyFlowsStore = (
+  visibleAgencySectorImpacts: AgencySectorImpactStore['visibleAgencySectorImpacts'],
+) => {
+  const hoverLinkIndexStore = writable<number | null>(null);
+  const hoverLinks = derived(
+    [visibleAgencySectorImpacts, hoverLinkIndexStore],
+    ([agencySectorImpacts, hoverLinkIndex]) => {
+      if (hoverLinkIndex === null) {
+        return [];
+      }
+      const hoverLink = agencySectorImpacts[hoverLinkIndex];
+      return getFlowsForLink(agencySectorImpacts, hoverLink);
+    },
+  );
+
+  return {
+    hoverLink: {
+      setHover: (index: number) => hoverLinkIndexStore.set(index),
+      clear: () => hoverLinkIndexStore.set(null),
+    },
+    linkActiveStates: derived(
+      [visibleAgencySectorImpacts, hoverLinks],
+      ([agencySectorImpacts, hoverLinks]) =>
+        agencySectorImpacts.map((link) => linkInFlow(link, hoverLinks)),
+    ),
+    /**
+     * Wrap the D3-created Sankey layout with extra attributes needed to render the SVG.
+     */
+    sankeyLayout: derived([visibleAgencySectorImpacts], ([agencySectorImpacts]) => {
+      return sankeyService.sankeyLayout(agencySectorImpacts);
+    }),
+  };
 };
 
-/**
- * Wrap the D3-created Sankey layout with extra attributes needed to render the SVG.
- */
-export const sankeyLayout = derived([visibleAgencySectorImpacts], ([agencySectorImpacts]) => {
-  return sankeyService.sankeyLayout(agencySectorImpacts);
-});
+export type SankeyFlowsStore = ReturnType<typeof createSankeyFlowsStore>;

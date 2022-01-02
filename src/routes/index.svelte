@@ -3,15 +3,18 @@
 
   import AgencyImpactFilterForm from '$components/AgencyImpactFilterForm.svelte';
   import Sankey from '$components/Sankey.svelte';
-  import { impactData } from '$lib/stores/agency-sector-impact';
+  import { createAgencySectorImpactStore } from '$lib/stores/agency-sector-impact';
+  import { createSankeyFlowsStore } from '$lib/stores/sankey-flows';
 
   export const prerender = true;
+  const agencySectorImpactStore = createAgencySectorImpactStore();
+  const sankeyFlowsStore = createSankeyFlowsStore(agencySectorImpactStore.visibleAgencySectorImpacts);
 
   export const load = async ({ fetch }: LoadInput) => {
     const response = await fetch('/api/v1/spending-impact.json');
 
     if (response.ok) {
-      impactData.set(await response.json());
+      agencySectorImpactStore.impactData.set(await response.json());
       return {
         props: {
           status: 'loaded',
@@ -41,10 +44,10 @@
   <h1>Federal Product and Services Greenhouse Gas Impact (kg CO<sup>2</sup> equivalent)</h1>
   <div class="grid-row grid-gap-lg">
     <div class="tablet:grid-col-3">
-      <AgencyImpactFilterForm />
+      <AgencyImpactFilterForm filterOptions={agencySectorImpactStore.filterOptions} />
     </div>
     <div class="tablet:grid-col-9">
-      <Sankey />
+      <Sankey {sankeyFlowsStore} />
     </div>
   </div>
   <h1>Agengies</h1>

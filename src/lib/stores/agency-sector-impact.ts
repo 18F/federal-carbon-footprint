@@ -9,22 +9,33 @@ type FilterOptions = {
   kgCO2Threshold: number;
   sectorDepth: number;
 };
-export const impactData = writable<{
-  agencySectorImpacts: AgencySectorImpacts[];
-  naics: NaicsSectorMap;
-}>({
-  agencySectorImpacts: [],
-  naics: {},
-});
-export const filterOptions = writable<FilterOptions>({
-  agencyName: 'treasury',
-  kgCO2Threshold: 0,
-  sectorDepth: 5,
-});
 
-export const visibleAgencySectorImpacts = derived(
-  [impactData, filterOptions],
-  ([impactData, filterOptions]) => {
-    return getSankeyFlows(impactData.agencySectorImpacts, impactData.naics, filterOptions);
-  },
-);
+export const createAgencySectorImpactStore = () => {
+  const impactData = writable<{
+    agencySectorImpacts: AgencySectorImpacts[];
+    naics: NaicsSectorMap;
+  }>({
+    agencySectorImpacts: [],
+    naics: {},
+  });
+  const filterOptions = writable<FilterOptions>({
+    agencyName: 'treasury',
+    kgCO2Threshold: 0,
+    sectorDepth: 5,
+  });
+
+  const visibleAgencySectorImpacts = derived(
+    [impactData, filterOptions],
+    ([impactData, filterOptions]) => {
+      return getSankeyFlows(impactData.agencySectorImpacts, impactData.naics, filterOptions);
+    },
+  );
+
+  return {
+    filterOptions,
+    impactData,
+    visibleAgencySectorImpacts,
+  };
+};
+
+export type AgencySectorImpactStore = ReturnType<typeof createAgencySectorImpactStore>;

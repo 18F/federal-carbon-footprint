@@ -1,5 +1,9 @@
 <script lang="ts">
-  import { hoverLink, linkActiveStates, sankeyLayout } from '$lib/stores/sankey-flows';
+  import type { SankeyFlowsStore } from '$lib/stores/sankey-flows';
+  export let sankeyFlowsStore: SankeyFlowsStore;
+  $: hoverLink = sankeyFlowsStore.hoverLink;
+  $: sankeyLayout = sankeyFlowsStore.sankeyLayout;
+  $: linkActiveStates = sankeyFlowsStore.linkActiveStates;
 </script>
 
 <svg

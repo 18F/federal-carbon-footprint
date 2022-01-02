@@ -1,6 +1,8 @@
 <script lang="ts">
-  import { filterOptions } from '$lib/stores/agency-sector-impact';
+  import type { AgencySectorImpactStore } from '$lib/stores/agency-sector-impact';
   import spriteImg from '../../node_modules/uswds/src/img/sprite.svg';
+
+  export let filterOptions: AgencySectorImpactStore['filterOptions'];
 
   const onSubmit = (e: Event) => {
     console.log(e.target);

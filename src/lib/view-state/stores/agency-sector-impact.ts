@@ -4,6 +4,8 @@ import type { AgencySectorImpacts } from '$lib/services/spending-impact';
 import { getSankeyFlows } from '$lib/services/spending-impact';
 import type { NaicsSectorMap } from '$lib/domain/naics';
 
+import { getUrl } from '$context/frontend';
+
 type FilterOptions = {
   agencyName: string;
   kgCO2Threshold: number;
@@ -33,7 +35,7 @@ export const createAgencySectorImpactStore = () => {
 
   return {
     init: async ({ fetch }: { fetch: typeof window.fetch }) => {
-      const response = await fetch('/api/v1/spending-impact.json');
+      const response = await fetch(getUrl('/api/v1/spending-impact.json'));
       if (response.ok) {
         impactData.set(await response.json());
       }

@@ -39,7 +39,7 @@
   <h1>{agencyName}</h1>
   <div class="grid-row grid-gap-lg">
     <div class="tablet:grid-col-12">
-      <Sankey sankeyFlows={viewState.sankeyFlows} />
+      <Sankey agencySectorImpacts={viewState.agencySectorImpact.visibleAgencySectorImpacts} />
     </div>
   </div>
 </div>

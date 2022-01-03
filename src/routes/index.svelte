@@ -35,7 +35,7 @@
       <AgencyImpactFilterForm filterOptions={viewState.agencySectorImpact.filterOptions} />
     </div>
     <div class="tablet:grid-col-9">
-      <Sankey sankeyFlows={viewState.sankeyFlows} />
+      <Sankey agencySectorImpacts={viewState.agencySectorImpact.visibleAgencySectorImpacts} />
     </div>
   </div>
   <h1>Test Pages</h1>

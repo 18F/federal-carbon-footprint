@@ -1,6 +1,12 @@
 <script lang="ts">
-  import type { SankeyFlowsStore } from '$lib/view-state/stores/sankey-flows';
-  export let sankeyFlows: SankeyFlowsStore;
+  import type { Readable } from 'svelte/store';
+
+  import type { AgencySectorImpactLink } from '$lib/services/spending-impact';
+  import { createSankeyFlowsStore } from '$lib/view-state/stores/sankey-flows';
+
+  export let agencySectorImpacts: Readable<AgencySectorImpactLink[]>;
+
+  $: sankeyFlows = createSankeyFlowsStore(agencySectorImpacts);
   $: hoverLink = sankeyFlows.hoverLink;
   $: sankeyLayout = sankeyFlows.sankeyLayout;
   $: linkActiveStates = sankeyFlows.linkActiveStates;

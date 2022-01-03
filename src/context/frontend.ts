@@ -12,8 +12,9 @@ import * as github from '$lib/domain/github';
 import { createViewState } from '$lib/view-state';
 
 // expose SvelteKit exports on the context
-export * as env from '$app/env';
+import * as sveltKitEnv from '$app/env';
 export * as stores from '$app/stores';
+export const env = sveltKitEnv;
 
 export const githubBranchTreeUrl = github.getBranchTreeUrl({
   owner: import.meta.env.OWNER?.toString(),
@@ -22,6 +23,9 @@ export const githubBranchTreeUrl = github.getBranchTreeUrl({
 });
 
 export const getUrl = (path: `/${string}`) => {
+  if (!env.browser) {
+    return path;
+  }
   return `${base}${path}`;
 };
 

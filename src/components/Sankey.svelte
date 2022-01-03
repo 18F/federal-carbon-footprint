@@ -20,15 +20,17 @@
 >
   <g stroke="currentColor">
     {#each $sankeyLayout.nodes as node}
-      <rect
-        x={node.rect.x}
-        y={node.rect.y}
-        height={node.rect.height}
-        width={node.rect.width}
-        fill={node.rect.fill}
-      >
-        <title>{node.rect.title}</title>
-      </rect>
+      <a href={node.url}>
+        <rect
+          x={node.rect.x}
+          y={node.rect.y}
+          height={node.rect.height}
+          width={node.rect.width}
+          fill={node.rect.fill}
+        >
+          <title>{node.rect.title}</title>
+        </rect>
+      </a>
     {/each}
   </g>
   <g fill="none" stroke-opacity={$sankeyLayout.linkStrokeOpacity}>
@@ -60,14 +62,16 @@
   </g>
   <g font-family="sans-serif" font-size="10">
     {#each $sankeyLayout.nodes as node}
-      <text
-        x={node.label.x}
-        y={node.label.y}
-        dy={node.label.dy}
-        text-anchor={node.label.textAnchor}
-      >
-        {node.label.text}
-      </text>
+      <a href={node.url}>
+        <text
+          x={node.label.x}
+          y={node.label.y}
+          dy={node.label.dy}
+          text-anchor={node.label.textAnchor}
+        >
+          {node.label.text}
+        </text>
+      </a>
     {/each}
   </g>
 </svg>

@@ -2,7 +2,7 @@
   import type { Readable } from 'svelte/store';
 
   import type { AgencySectorImpactLink } from '$lib/services/spending-impact';
-  import { createSankeyFlowsStore } from '$lib/view-state/stores/sankey-flows';
+  import { createSankeyFlowsStore } from '$lib/view-state/sankey-flows';
 
   export let agencySectorImpacts: Readable<AgencySectorImpactLink[]>;
 

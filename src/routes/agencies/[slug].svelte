@@ -2,12 +2,14 @@
   import type { LoadInput } from '@sveltejs/kit';
 
   import Sankey from '$components/Sankey.svelte';
-  import { viewState } from '$context/frontend';
+  import { createAgencySectorImpactStore } from '$lib/view-state/agency-sector-impact';
 
   export const prerender = true;
 
+  const agencySectorImpact = createAgencySectorImpactStore();
+
   export const load = async ({ page, fetch }: LoadInput) => {
-    const loaded = await viewState.agencySectorImpact.init({ fetch });
+    const loaded = await agencySectorImpact.init({ fetch });
     if (!loaded) {
       return {
         status: 404,
@@ -16,7 +18,7 @@
     }
 
     const agencyName = page.params.slug;
-    viewState.agencySectorImpact.filterOptions.set({
+    agencySectorImpact.filterOptions.set({
       agencyName,
       kgCO2Threshold: 0,
       sectorDepth: 5,
@@ -39,7 +41,7 @@
   <h1>{agencyName}</h1>
   <div class="grid-row grid-gap-lg">
     <div class="tablet:grid-col-12">
-      <Sankey agencySectorImpacts={viewState.agencySectorImpact.visibleAgencySectorImpacts} />
+      <Sankey agencySectorImpacts={agencySectorImpact.visibleAgencySectorImpacts} />
     </div>
   </div>
 </div>

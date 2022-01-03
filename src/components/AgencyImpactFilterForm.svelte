@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { AgencySectorImpactStore } from '$lib/view-state/stores/agency-sector-impact';
+  import type { AgencySectorImpactStore } from '$lib/view-state/agency-sector-impact';
   import spriteImg from '../../node_modules/uswds/src/img/sprite.svg';
 
   export let filterOptions: AgencySectorImpactStore['filterOptions'];

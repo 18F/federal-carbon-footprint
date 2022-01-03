@@ -9,7 +9,6 @@
 
 import { base } from '$app/paths';
 import * as github from '$lib/domain/github';
-import { createViewState } from '$lib/view-state';
 
 // expose SvelteKit exports on the context
 import * as sveltKitEnv from '$app/env';
@@ -28,5 +27,3 @@ export const getUrl = (path: `/${string}`) => {
   }
   return `${base}${path}`;
 };
-
-export const viewState = createViewState();

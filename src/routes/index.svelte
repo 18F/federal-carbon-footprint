@@ -3,12 +3,14 @@
 
   import AgencyImpactFilterForm from '$components/AgencyImpactFilterForm.svelte';
   import Sankey from '$components/Sankey.svelte';
-  import { getUrl, viewState } from '$context/frontend';
+  import { createAgencySectorImpactStore } from '$lib/view-state/agency-sector-impact';
 
   export const prerender = true;
 
+  const agencySectorImpact = createAgencySectorImpactStore();
+
   export const load = async ({ fetch }: LoadInput) => {
-    const loaded = await viewState.agencySectorImpact.init({ fetch });
+    const loaded = await agencySectorImpact.init({ fetch });
     if (!loaded) {
       return {
         status: 404,
@@ -32,15 +34,10 @@
   <h1>Federal Product and Services Greenhouse Gas Impact (kg CO<sup>2</sup> equivalent)</h1>
   <div class="grid-row grid-gap-lg">
     <div class="tablet:grid-col-3">
-      <AgencyImpactFilterForm filterOptions={viewState.agencySectorImpact.filterOptions} />
+      <AgencyImpactFilterForm filterOptions={agencySectorImpact.filterOptions} />
     </div>
     <div class="tablet:grid-col-9">
-      <Sankey agencySectorImpacts={viewState.agencySectorImpact.visibleAgencySectorImpacts} />
+      <Sankey agencySectorImpacts={agencySectorImpact.visibleAgencySectorImpacts} />
     </div>
   </div>
-  <h1>Test Pages</h1>
-  <ul>
-    <li><a href={getUrl('/agencies/defense')}>Defense Dept. Page</a></li>
-    <li><a href={getUrl('/agencies/treasury')}>Treasury Page</a></li>
-  </ul>
 </div>

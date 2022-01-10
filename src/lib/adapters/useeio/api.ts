@@ -99,16 +99,16 @@ export const validateModelIndicators = (data: unknown): ModelIndicatorList => {
   );
 };
 
-const MatrixD = t.array(t.array(t.number));
-type MatrixD = t.TypeOf<typeof MatrixD>;
+const MatrixU = t.array(t.array(t.number));
+type MatrixU = t.TypeOf<typeof MatrixU>;
 
-export const getMatrixD = memoizee(async (ctx: Context) => {
-  return fetchServiceData<MatrixD>(ctx, MODEL_NAME, 'matrix/D');
+export const getMatrixU = memoizee(async (ctx: Context) => {
+  return fetchServiceData<MatrixU>(ctx, MODEL_NAME, 'matrix/U');
 });
 
-export const validateMatrixD = (data: unknown): MatrixD => {
+export const validateMatrixU = (data: unknown): MatrixU => {
   return pipe(
-    MatrixD.decode(data),
+    MatrixU.decode(data),
     fold(
       (errors) => {
         const msg = errors.map((error) => error.context.map(({ key }) => key).join('.'));

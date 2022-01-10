@@ -60,6 +60,7 @@
     "io-ts-reporters": "^2.0.0",
     "make-fetch-happen": "^9.1.0",
     "memoizee": "^0.4.15",
+    "slugify": "^1.6.5",
     "uswds": "^2.13.0"
   }
 }

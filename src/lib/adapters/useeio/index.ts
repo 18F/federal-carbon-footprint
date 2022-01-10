@@ -8,7 +8,7 @@ export const GetUseeioGhgImpactBySectorId = (ctx: api.Context): GetGhgImpactBySe
     const [indicators, sectors, rows] = await Promise.all([
       api.getModelIndicators(ctx),
       api.getModelSectors(ctx),
-      api.getMatrixD(ctx),
+      api.getMatrixU(ctx),
     ]);
     const ghgIndicator = indicators.find((indicator) => indicator.code === 'GHG');
     const sectorGhgImpactVector = rows[ghgIndicator.index];

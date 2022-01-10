@@ -1,8 +1,8 @@
 import { derived, writable } from 'svelte/store';
 
+import type { NaicsSectorMap } from '$lib/domain/naics';
 import type { AgencySectorImpacts } from '$lib/services/spending-impact';
 import { getSankeyFlows } from '$lib/services/spending-impact';
-import type { NaicsSectorMap } from '$lib/domain/naics';
 
 import { getUrl } from '$context/frontend';
 
@@ -42,7 +42,6 @@ export const createAgencySectorImpactStore = () => {
       return response.ok;
     },
     filterOptions,
-    impactData,
     visibleAgencySectorImpacts,
   };
 };

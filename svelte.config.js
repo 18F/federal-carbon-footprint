@@ -20,6 +20,12 @@ const config = {
   ],
 
   kit: {
+    prerender: {
+      crawl: true,
+      enabled: true,
+      onError: 'continue',
+      default: true,
+    },
     adapter: adapter({
       pages: 'build',
       assets: 'build',
@@ -29,7 +35,6 @@ const config = {
       base: process.env.BASEURL || '',
       //assets: process.env.BASEURL || '',
     },
-
     vite: {
       resolve: {
         alias: {

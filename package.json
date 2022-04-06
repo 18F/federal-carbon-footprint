@@ -9,7 +9,7 @@
     "check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
     "link:ui": "ln -sf ./build _site",
     "lint": "prettier --ignore-path .gitignore --check --plugin-search-dir=. . && eslint --ignore-path .gitignore .",
-    "federalist": "npm run build && npm run link:ui",
+    "federalist": "npm run build && npm run link:ui && ls -al ./_site/",
     "format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. .",
     "test": "jest",
     "test:integration": "jest --testPathPattern='.*\\.int\\.test\\.ts'",

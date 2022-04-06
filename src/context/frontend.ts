@@ -22,8 +22,5 @@ export const githubBranchTreeUrl = github.getBranchTreeUrl({
 });
 
 export const getUrl = (path: `/${string}`) => {
-  if (!env.browser) {
-    return path;
-  }
   return `${base}${path}`;
 };

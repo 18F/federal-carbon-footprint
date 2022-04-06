@@ -1,6 +1,4 @@
 <script context="module" lang="ts">
-  import type { LoadInput } from '@sveltejs/kit';
-
   import AgencyImpactFilterForm from '$components/AgencyImpactFilterForm.svelte';
   import Sankey from '$components/Sankey.svelte';
   import { createAgencySectorImpactStore } from '$lib/view-state/agency-sector-impact';
@@ -9,7 +7,8 @@
 
   const agencySectorImpact = createAgencySectorImpactStore();
 
-  export const load = async ({ fetch }: LoadInput) => {
+  /** @type {import('./[slug]').Load} */
+  export const load = async ({ fetch }) => {
     const loaded = await agencySectorImpact.init({ fetch });
     if (!loaded) {
       return {

@@ -1,6 +1,4 @@
 <script context="module" lang="ts">
-  import type { LoadInput } from '@sveltejs/kit';
-
   import Sankey from '$components/Sankey.svelte';
   import { createAgencySectorImpactStore } from '$lib/view-state/agency-sector-impact';
 

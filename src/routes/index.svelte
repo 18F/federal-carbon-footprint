@@ -1,34 +1,25 @@
 <script context="module" lang="ts">
-  import type { LoadInput } from '@sveltejs/kit';
-
   import AgencyImpactFilterForm from '$components/AgencyImpactFilterForm.svelte';
-  import PieChart from '$components/PieChart.svelte';
   import Sankey from '$components/Sankey.svelte';
-  import { impactData } from '$lib/stores/agency-sector-impact';
+  import { createAgencySectorImpactStore } from '$lib/view-state/agency-sector-impact';
 
   export const prerender = true;
 
-  export const load = async ({ fetch }: LoadInput) => {
-    const response = await fetch('index.json');
+  const agencySectorImpact = createAgencySectorImpactStore();
 
-    if (response.ok) {
-      impactData.set(await response.json());
+  /** @type {import('./[slug]').Load} */
+  export const load = async ({ fetch }) => {
+    const loaded = await agencySectorImpact.init({ fetch });
+    if (!loaded) {
       return {
-        props: {
-          status: 'loaded',
-        },
+        status: 404,
+        error: new Error(`Could not load data`),
       };
     }
-
     return {
-      status: 404,
-      error: new Error(`Could not load data`),
+      status: 200,
     };
   };
-</script>
-
-<script lang="ts">
-  import { getUrl } from '$context/frontend';
 </script>
 
 <svelte:head>
@@ -42,17 +33,10 @@
   <h1>Federal Product and Services Greenhouse Gas Impact (kg CO<sup>2</sup> equivalent)</h1>
   <div class="grid-row grid-gap-lg">
     <div class="tablet:grid-col-3">
-      <AgencyImpactFilterForm />
+      <AgencyImpactFilterForm filterOptions={agencySectorImpact.filterOptions} />
     </div>
     <div class="tablet:grid-col-9">
-      <Sankey />
+      <Sankey agencySectorImpacts={agencySectorImpact.visibleAgencySectorImpacts} />
     </div>
   </div>
-  <h1>Federal Government Total Energy Consumption by Fuel Type (Trillion Btu)</h1>
-  <PieChart />
-  <h1>Agengies</h1>
-  <ul>
-    <li><a href={getUrl('/agencies/usgs')}>USGS Agency Page</a></li>
-    <li><a href={getUrl('/agencies/cms')}>CMS Agency Page</a></li>
-  </ul>
 </div>

@@ -5,6 +5,7 @@
  */
 
 import makeFetchHappen from 'make-fetch-happen';
+import memoizee from 'memoizee';
 
 import { getNaicsMap } from '$lib/adapters/naics';
 import { UsaSpendingGetAgencySpendsBySector } from '$lib/adapters/usa-spending';
@@ -18,11 +19,13 @@ const fetch = makeFetchHappen.defaults({
   cachePath: './fetch-cache',
 }) as unknown as typeof global.fetch;
 
-export const getImpactData = GetImpactData({
-  getNaicsMap,
-  getGhgImpactBySectorId: useeio.GetUseeioGhgImpactBySectorId({
-    fetch,
-    USEEIO_API_KEY,
+export const getImpactData = memoizee(
+  GetImpactData({
+    getNaicsMap,
+    getGhgImpactBySectorId: useeio.GetUseeioGhgImpactBySectorId({
+      fetch,
+      USEEIO_API_KEY,
+    }),
+    getAgencySpendsBySector: UsaSpendingGetAgencySpendsBySector({ fetch }),
   }),
-  getAgencySpendsBySector: UsaSpendingGetAgencySpendsBySector({ fetch }),
-});
+);

@@ -24,13 +24,13 @@
     </div>
     <nav aria-label="Primary navigation" class="usa-nav {visible}">
       <button on:click|preventDefault={toggleOpen} class="usa-nav__close">
-        <img src={closeSvg} role="img" alt="Close" />
+        <img src={closeSvg} alt="Close" />
       </button>
       <ul class="usa-nav__primary usa-accordion">
         <li class="usa-nav__primary-item">
           <a
             class="usa-nav__link"
-            class:usa-current={$page.path === '/'}
+            class:usa-current={$page.url.pathname === '/'}
             sveltekit:prefetch
             href={getUrl('/')}>Home</a
           >
@@ -38,17 +38,17 @@
         <li class="usa-nav__primary-item">
           <a
             class="usa-nav__link"
-            class:usa-current={$page.path === '/about'}
+            class:usa-current={$page.url.pathname === '/about'}
             sveltekit:prefetch
-            href={getUrl('/about')}>About this site</a
+            href={getUrl('/about/')}>About this site</a
           >
         </li>
         <li class="usa-nav__primary-item">
           <a
             class="usa-nav__link"
-            class:usa-current={$page.path === '/api/v1'}
+            class:usa-current={$page.url.pathname === '/api/v1'}
             sveltekit:prefetch
-            href={getUrl('/api/v1')}>Data</a
+            href={getUrl('/api/v1/')}>Data</a
           >
         </li>
       </ul>

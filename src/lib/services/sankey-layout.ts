@@ -4,9 +4,12 @@
 import * as d3 from 'd3';
 import * as d3Sankey from 'd3-sankey';
 
+import { getUrl } from '$context/frontend';
 import type { AgencySectorImpactLink } from '$lib/services/spending-impact';
+
 interface NodeData {
   id: string;
+  url: string;
 }
 
 type SankeyNode = d3Sankey.SankeyNode<NodeData, AgencySectorImpactLink>;
@@ -39,7 +42,10 @@ const createD3SankeyLayout = (links: SankeyLink[]) => {
 
   const linkSources = d3.map(links, ({ source }) => source);
   const linkTargets = d3.map(links, ({ target }) => target);
-  let nodes: NodeData[] = Array.from(d3.union(linkSources, linkTargets), (id) => ({ id }));
+  let nodes: NodeData[] = Array.from(d3.union(linkSources, linkTargets), (id) => ({
+    id,
+    url: getUrl(`/agencies/${id as string}/`),
+  }));
 
   sankeyLayout
     .nodeId((node) => node.id)
@@ -77,6 +83,7 @@ export const sankeyLayout = (agencySectorImpactLinks: AgencySectorImpactLink[]) 
     },
     nodes: d3.map(layout.nodes, (node) => {
       return {
+        url: node.url,
         label: {
           x:
             node.x0 < SIZING.width / 2

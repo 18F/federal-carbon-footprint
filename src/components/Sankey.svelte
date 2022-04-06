@@ -1,5 +1,15 @@
 <script lang="ts">
-  import { hoverLink, linkActiveStates, sankeyLayout } from '$lib/stores/sankey-flows';
+  import type { Readable } from 'svelte/store';
+
+  import type { AgencySectorImpactLink } from '$lib/services/spending-impact';
+  import { createSankeyFlowsStore } from '$lib/view-state/sankey-flows';
+
+  export let agencySectorImpacts: Readable<AgencySectorImpactLink[]>;
+
+  $: sankeyFlows = createSankeyFlowsStore(agencySectorImpacts);
+  $: hoverLink = sankeyFlows.hoverLink;
+  $: sankeyLayout = sankeyFlows.sankeyLayout;
+  $: linkActiveStates = sankeyFlows.linkActiveStates;
 </script>
 
 <svg
@@ -10,15 +20,17 @@
 >
   <g stroke="currentColor">
     {#each $sankeyLayout.nodes as node}
-      <rect
-        x={node.rect.x}
-        y={node.rect.y}
-        height={node.rect.height}
-        width={node.rect.width}
-        fill={node.rect.fill}
-      >
-        <title>{node.rect.title}</title>
-      </rect>
+      <a href={node.url}>
+        <rect
+          x={node.rect.x}
+          y={node.rect.y}
+          height={node.rect.height}
+          width={node.rect.width}
+          fill={node.rect.fill}
+        >
+          <title>{node.rect.title}</title>
+        </rect>
+      </a>
     {/each}
   </g>
   <g fill="none" stroke-opacity={$sankeyLayout.linkStrokeOpacity}>
@@ -40,9 +52,7 @@
         </linearGradient>
         <path
           d={link.path.d}
-          stroke={$linkActiveStates[link.index]
-            ? 'black'
-            : link.path.stroke}
+          stroke={$linkActiveStates[link.index] ? 'black' : link.path.stroke}
           stroke-width={link.path.strokeWidth}
         >
           <title>{link.title}</title>
@@ -52,14 +62,16 @@
   </g>
   <g font-family="sans-serif" font-size="10">
     {#each $sankeyLayout.nodes as node}
-      <text
-        x={node.label.x}
-        y={node.label.y}
-        dy={node.label.dy}
-        text-anchor={node.label.textAnchor}
-      >
-        {node.label.text}
-      </text>
+      <a href={node.url}>
+        <text
+          x={node.label.x}
+          y={node.label.y}
+          dy={node.label.dy}
+          text-anchor={node.label.textAnchor}
+        >
+          {node.label.text}
+        </text>
+      </a>
     {/each}
   </g>
 </svg>

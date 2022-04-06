@@ -44,7 +44,7 @@ const createD3SankeyLayout = (links: SankeyLink[]) => {
   const linkTargets = d3.map(links, ({ target }) => target);
   let nodes: NodeData[] = Array.from(d3.union(linkSources, linkTargets), (id) => ({
     id,
-    url: getUrl(`/agencies/${id as string}`),
+    url: getUrl(`/agencies/${id as string}/`),
   }));
 
   sankeyLayout

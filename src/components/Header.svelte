@@ -40,7 +40,7 @@
             class="usa-nav__link"
             class:usa-current={$page.url.pathname === '/about'}
             sveltekit:prefetch
-            href={getUrl('/about')}>About this site</a
+            href={getUrl('/about/')}>About this site</a
           >
         </li>
         <li class="usa-nav__primary-item">
@@ -48,7 +48,7 @@
             class="usa-nav__link"
             class:usa-current={$page.url.pathname === '/api/v1'}
             sveltekit:prefetch
-            href={getUrl('/api/v1')}>Data</a
+            href={getUrl('/api/v1/')}>Data</a
           >
         </li>
       </ul>

@@ -18,8 +18,8 @@ const config = {
       },
     }),
   ],
-
   kit: {
+    trailingSlash: 'always',
     prerender: {
       crawl: true,
       enabled: true,

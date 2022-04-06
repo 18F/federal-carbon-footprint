@@ -8,7 +8,8 @@
 
   const agencySectorImpact = createAgencySectorImpactStore();
 
-  export const load = async ({ page, fetch }: LoadInput) => {
+  /** @type {import('./[slug]').Load} */
+  export const load = async ({ params, fetch }) => {
     const loaded = await agencySectorImpact.init({ fetch });
     if (!loaded) {
       return {
@@ -17,7 +18,7 @@
       };
     }
 
-    const agencyName = page.params.slug;
+    const agencyName = params.slug;
     agencySectorImpact.filterOptions.set({
       agencyName,
       kgCO2Threshold: 0,

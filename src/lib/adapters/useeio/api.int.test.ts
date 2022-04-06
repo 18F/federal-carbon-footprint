@@ -29,4 +29,3 @@ describe('useeio service integration', () => {
     useeio.validateMatrixU(matrixU);
   });
 });
-s;

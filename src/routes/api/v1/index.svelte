@@ -7,7 +7,7 @@
 </script>
 
 <svelte:head>
-  <title>Fuel Type Usage</title>
+  <title>API endpoints</title>
 </svelte:head>
 
 <div class="grid-container" />

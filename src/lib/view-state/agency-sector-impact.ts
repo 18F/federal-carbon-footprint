@@ -21,8 +21,8 @@ export const createAgencySectorImpactStore = () => {
     naics: {},
   });
   const filterOptions = writable<FilterOptions>({
-    agencyName: 'treasury',
-    kgCO2Threshold: 0,
+    agencyName: '',
+    kgCO2Threshold: 100000000,
     sectorDepth: 5,
   });
 

@@ -14,6 +14,17 @@ const config = {
       $styles: path.resolve('./src/styles'),
     },
   },
+  test: {
+    coverage: {
+      all: true,
+      exclude: ['src/**/*.svelte'],
+      include: ['src/**'],
+      reporter: ['text', 'json', 'html'],
+    },
+    deps: {
+      inline: ['whatwg-fetch'],
+    },
+  },
 };
 
 export default config;

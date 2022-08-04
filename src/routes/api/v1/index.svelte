@@ -26,13 +26,10 @@
         </thead>
         <tbody>
           <tr>
-            <td> Total aggregate fuel usage </td>
+            <td>Spending impact by agency</td>
             <td>
-              <a href={getUrl('/api/v1/fuel-type-usage.json')} target="_blank"
+              <a href={getUrl('/api/v1/spending-impact.json')} target="_blank"
                 ><span class="usa-tag bg-primary">JSON</span></a
-              >
-              <a href={getUrl('/api/v1/fuel-type-usage.csv')} target="_blank"
-                ><span class="usa-tag bg-primary">CSV</span></a
               >
             </td>
             <td>Annual</td>

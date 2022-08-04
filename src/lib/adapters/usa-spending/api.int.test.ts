@@ -1,10 +1,17 @@
+/**
+ * @vitest-environment jsdom
+ */
+
+import { describe, it } from 'vitest';
+import { fetch } from 'whatwg-fetch';
+
 import * as api from './api';
 
 describe('api.gov service integrates correctly', () => {
   it('with getSpendingByNaicsCategoryPage', async () => {
     const serviceData = await api.getSpendingByNaicsCategoryPage(
       {
-        fetch: window.fetch.bind(window),
+        fetch,
       },
       {
         agency: 'Securities and Exchange Commission',
@@ -18,7 +25,7 @@ describe('api.gov service integrates correctly', () => {
 
   it('with getAgencies', async () => {
     const serviceData = await api.getAgencies({
-      fetch: window.fetch.bind(window),
+      fetch,
     });
     // Validate shape of data.
     api.validateAgencies(serviceData);
@@ -26,7 +33,7 @@ describe('api.gov service integrates correctly', () => {
 
   /*it('with getNaics', async () => {
     const serviceData = api.UsaSpendingGetNaics({
-      fetch: window.fetch.bind(window),
+      fetch,
     });
     const serviceData = await getNaics();
     const result = reporter.report(NaicsSectorList.decode(serviceData));

@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import reporter from 'io-ts-reporters';
 
 import * as naics from './entities';

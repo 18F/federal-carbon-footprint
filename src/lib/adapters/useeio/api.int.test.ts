@@ -1,3 +1,10 @@
+/**
+ * @vitest-environment jsdom
+ */
+
+import { describe, it } from 'vitest';
+import { fetch } from 'whatwg-fetch';
+
 import * as useeio from './api';
 
 const USEEIO_API_KEY = process.env.VITE_USEEIO_API_KEY;
@@ -5,7 +12,7 @@ const USEEIO_API_KEY = process.env.VITE_USEEIO_API_KEY;
 describe('useeio service integration', () => {
   it('getModelSectors returns data', async () => {
     const sectors = await useeio.getModelSectors({
-      fetch: window.fetch.bind(window),
+      fetch,
       USEEIO_API_KEY,
     });
     useeio.validateModelSectors(sectors);
@@ -13,7 +20,7 @@ describe('useeio service integration', () => {
 
   it('getModelIndicators returns data', async () => {
     const modelIndicators = await useeio.getModelIndicators({
-      fetch: window.fetch.bind(window),
+      fetch,
       USEEIO_API_KEY,
     });
     // Validate shape of data.
@@ -22,7 +29,7 @@ describe('useeio service integration', () => {
 
   it('getMatrixU returns data', async () => {
     const matrixU = await useeio.getMatrixU({
-      fetch: window.fetch.bind(window),
+      fetch,
       USEEIO_API_KEY,
     });
     // Validate shape of data.

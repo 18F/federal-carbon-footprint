@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import { getCanonicalParentSector, getCanonicalSector } from '.';
 import type { NaicsSector, NaicsSectorMap } from './entities';
 

@@ -2,7 +2,7 @@ import type { RequestHandler } from '@sveltejs/kit';
 
 import { getFuelUsageDataFrame } from '$lib/services/fuel-usage';
 
-export const get: RequestHandler = async () => {
+export const GET: RequestHandler = async () => {
   const fuelUsage = await getFuelUsageDataFrame();
   if (fuelUsage) {
     return {

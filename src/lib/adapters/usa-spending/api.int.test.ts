@@ -2,33 +2,39 @@
  * @vitest-environment jsdom
  */
 
-import { describe, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { fetch } from 'whatwg-fetch';
 
 import * as api from './api';
 
-describe('api.gov service integrates correctly', () => {
+describe('integration: api.gov service integrates correctly', () => {
   it('with getSpendingByNaicsCategoryPage', async () => {
     const serviceData = await api.getSpendingByNaicsCategoryPage(
       {
         fetch,
       },
       {
-        agency: 'Securities and Exchange Commission',
+        agency: 'Department of Commerce',
         fiscalYear: 2021,
       },
       1,
     );
+    expect(serviceData.ok).toEqual(true);
     // Validate shape of data.
-    api.validateSpendingByNaicsCategoryPage(serviceData);
+    if (serviceData.ok) {
+      api.validateSpendingByNaicsCategoryPage(serviceData.value);
+    }
   });
 
   it('with getAgencies', async () => {
     const serviceData = await api.getAgencies({
       fetch,
     });
+    expect(serviceData.ok).toEqual(true);
     // Validate shape of data.
-    api.validateAgencies(serviceData);
+    if (serviceData.ok) {
+      api.validateAgencies(serviceData.value);
+    }
   });
 
   /*it('with getNaics', async () => {

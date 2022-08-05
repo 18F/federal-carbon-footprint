@@ -9,7 +9,7 @@ import type { AgencySectorImpactLink } from '$lib/services/spending-impact';
 
 interface NodeData {
   id: string;
-  url: string;
+  url: string | null;
 }
 
 type SankeyNode = d3Sankey.SankeyNode<NodeData, AgencySectorImpactLink>;
@@ -37,15 +37,26 @@ const SIZING = {
  * @param links
  * @returns
  */
-const createD3SankeyLayout = (links: SankeyLink[]) => {
+const createD3SankeyLayout = (links: AgencySectorImpactLink[]) => {
   let sankeyLayout = d3Sankey.sankey<DAG, NodeData, AgencySectorImpactLink>();
 
-  const linkSources = d3.map(links, ({ source }) => source);
-  const linkTargets = d3.map(links, ({ target }) => target);
-  let nodes: NodeData[] = Array.from(d3.union(linkSources, linkTargets), (id) => ({
-    id,
-    url: getUrl(`/agencies/${id as string}/`),
-  }));
+  const nodes = links.reduce<Record<string, NodeData>>((acc, link) => {
+    acc[link.source] =
+      link.sourceType === 'agency'
+        ? {
+            id: link.source,
+            url: getUrl(`/agencies/${link.source as string}/`),
+          }
+        : {
+            id: link.source,
+            url: null,
+          };
+    acc[link.target] = {
+      id: link.target,
+      url: null,
+    };
+    return acc;
+  }, {});
 
   sankeyLayout
     .nodeId((node) => node.id)
@@ -56,7 +67,10 @@ const createD3SankeyLayout = (links: SankeyLink[]) => {
       [SIZING.margin.left, SIZING.margin.top],
       [SIZING.width - SIZING.margin.right, SIZING.height - SIZING.margin.bottom],
     ]);
-  return sankeyLayout({ nodes, links });
+  return sankeyLayout({
+    nodes: Object.values(nodes),
+    links,
+  });
 };
 
 const linkHorizontal = d3Sankey.sankeyLinkHorizontal();

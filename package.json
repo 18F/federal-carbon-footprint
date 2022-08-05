@@ -13,8 +13,8 @@
     "federalist": "npm run build && npm run link:ui && ls -al ./_site/",
     "format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. .",
     "test": "vitest run",
-    "test:watch": "vitest watch",
-    "test:coverage": "vitest run --coverage && open ./coverage/index.html"
+    "test:coverage": "vitest run --coverage && open ./coverage/index.html",
+    "test:watch": "vitest watch"
   },
   "devDependencies": {
     "@fullhuman/postcss-purgecss": "^4.1.3",

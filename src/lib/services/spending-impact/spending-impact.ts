@@ -37,7 +37,9 @@ export const GetImpactData =
     getGhgImpactBySectorId: GetGhgImpactBySectorId;
     getAgencySpendsBySector: GetAgencySpendsBySector;
   }) =>
-  async (): Promise<{
+  async (
+    agencyName?: string,
+  ): Promise<{
     agencySectorImpacts: AgencySectorImpacts[];
     naics: NaicsSectorMap;
   }> => {
@@ -49,7 +51,7 @@ export const GetImpactData =
       impactBySectorPromise,
       agencySpendsBySectorPromise,
     ]);
-    return {
+    const result = {
       agencySectorImpacts: agencySpendsBySector.map((agencySpendBySector) => {
         return {
           name: agencySpendBySector.agencyName,
@@ -65,7 +67,19 @@ export const GetImpactData =
       }),
       naics,
     };
+    if (agencyName) {
+      return {
+        agencySectorImpacts: result.agencySectorImpacts.filter(
+          (impact) => impact.name === agencyName,
+        ),
+        naics,
+      };
+    } else {
+      return result;
+    }
   };
+
+export type ImpactData = Awaited<ReturnType<ReturnType<typeof GetImpactData>>>;
 
 const getLinksForSectorImpact = (
   naics: NaicsSectorMap,

@@ -4,7 +4,7 @@ import type { NaicsSectorMap } from '$lib/domain/naics';
 import type { AgencySectorImpacts } from '$lib/services/spending-impact';
 import { getSankeyFlows } from '$lib/services/spending-impact';
 
-import { getUrl } from '$context/frontend';
+import type { ImpactData } from '$lib/services/spending-impact/spending-impact';
 
 type FilterOptions = {
   agencyName: string;
@@ -34,12 +34,12 @@ export const createAgencySectorImpactStore = () => {
   );
 
   return {
-    init: async ({ fetch }: { fetch: typeof window.fetch }) => {
-      const response = await fetch(getUrl('/api/v1/spending-impact.json'));
-      if (response.ok) {
-        impactData.set(await response.json());
-      }
-      return response.ok;
+    init: async ({ data, filter }: { data: ImpactData; filter: Partial<FilterOptions> }) => {
+      impactData.set(data);
+      filterOptions.update((current) => ({
+        ...current,
+        ...filter,
+      }));
     },
     filterOptions,
     visibleAgencySectorImpacts,

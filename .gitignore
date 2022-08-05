@@ -1,10 +1,11 @@
-.vscode/
-node_modules/
-build/
 .svelte-kit/
+.vscode/
+build/
+coverage/
+fetch-cache/
+node_modules/
 .DS_Store
 *.code-workspace
 _site
 .env
 NOTES.md
-fetch-cache/

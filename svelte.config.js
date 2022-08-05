@@ -1,5 +1,3 @@
-import path from 'path';
-
 import adapter from '@sveltejs/adapter-static';
 import preprocess from 'svelte-preprocess';
 import sass from 'sass';
@@ -34,17 +32,6 @@ const config = {
     paths: {
       base: process.env.BASEURL || '',
       //assets: process.env.BASEURL || '',
-    },
-    vite: {
-      resolve: {
-        alias: {
-          $components: path.resolve('./src/components'),
-          $context: path.resolve('./src/context'),
-          $lib: path.resolve('./src/lib'),
-          $routes: path.resolve('./src/routes'),
-          $styles: path.resolve('./src/styles'),
-        },
-      },
     },
   },
 };

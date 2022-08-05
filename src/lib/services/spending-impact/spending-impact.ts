@@ -2,6 +2,7 @@ import type { GetGhgImpactBySectorId } from '$lib/domain/ghg-impact';
 import { getSectorHierarchy, NaicsSectorMap } from '$lib/domain/naics';
 import type { GetNaicsMap } from '$lib/domain/naics';
 import { getCanonicalSector, NaicsSector } from '$lib/domain/naics';
+import * as r from '$lib/result';
 
 export type SectorImpact = {
   amount: number;
@@ -14,22 +15,34 @@ export type AgencySectorImpacts = {
   sectors: SectorImpact[];
 };
 
+type AgencySectorImpactNodeType = 'sector' | 'agency';
+
 // Suitable for use by d3-sankey to represent the links between nodes.
 export type AgencySectorImpactLink = {
   source: string;
+  sourceType: AgencySectorImpactNodeType;
   target: string;
+  targetType: AgencySectorImpactNodeType;
   value: number;
 };
 
 export type GetAgencySpendsBySector = () => Promise<
-  {
-    agencyName: string;
-    sectorSpends: {
-      sector: string;
-      amount: number;
-    }[];
-  }[]
+  r.Result<
+    {
+      agencyName: string;
+      sectorSpends: {
+        sector: string;
+        amount: number;
+      }[];
+    }[],
+    Error
+  >
 >;
+
+export type ImpactData = {
+  agencySectorImpacts: AgencySectorImpacts[];
+  naics: NaicsSectorMap;
+};
 
 export const GetImpactData =
   (ctx: {
@@ -37,19 +50,20 @@ export const GetImpactData =
     getGhgImpactBySectorId: GetGhgImpactBySectorId;
     getAgencySpendsBySector: GetAgencySpendsBySector;
   }) =>
-  async (): Promise<{
-    agencySectorImpacts: AgencySectorImpacts[];
-    naics: NaicsSectorMap;
-  }> => {
+  async (agencyName?: string): Promise<r.Result<ImpactData, Error>> => {
     const naicsPromise = ctx.getNaicsMap();
     const impactBySectorPromise = ctx.getGhgImpactBySectorId();
     const agencySpendsBySectorPromise = ctx.getAgencySpendsBySector();
-    const [naics, impactBySector, agencySpendsBySector] = await Promise.all([
+    const [naics, impactBySector, agencySpendsBySectorResult] = await Promise.all([
       naicsPromise,
       impactBySectorPromise,
       agencySpendsBySectorPromise,
     ]);
-    return {
+    if (agencySpendsBySectorResult.ok == false) {
+      return r.Error(agencySpendsBySectorResult.error);
+    }
+    const agencySpendsBySector = agencySpendsBySectorResult.value;
+    const result = {
       agencySectorImpacts: agencySpendsBySector.map((agencySpendBySector) => {
         return {
           name: agencySpendBySector.agencyName,
@@ -65,6 +79,16 @@ export const GetImpactData =
       }),
       naics,
     };
+    if (agencyName) {
+      return r.Ok({
+        agencySectorImpacts: result.agencySectorImpacts.filter(
+          (impact) => impact.name === agencyName,
+        ),
+        naics,
+      });
+    } else {
+      return r.Ok(result);
+    }
   };
 
 const getLinksForSectorImpact = (
@@ -74,14 +98,23 @@ const getLinksForSectorImpact = (
   sectorDepth: number,
 ): AgencySectorImpactLink[] => {
   const sectors = getSectorHierarchy(naics, sectorImpact.sector.code);
-  const links = [];
+  const links: AgencySectorImpactLink[] = [];
   for (const [index, sector] of sectors.entries()) {
     if (index === sectorDepth) {
       break;
     }
     links.push({
-      source: index === 0 ? agencyName : sectors[index - 1].description,
+      ...(index === 0
+        ? {
+            sourceType: 'agency',
+            source: agencyName,
+          }
+        : {
+            sourceType: 'sector',
+            source: sectors[index - 1].description,
+          }),
       target: sector.description,
+      targetType: 'sector',
       value: sectorImpact.kgC02Eq,
     });
   }
@@ -93,8 +126,7 @@ const flattenImpactLinks = (impactLinks: AgencySectorImpactLink[]): AgencySector
   impactLinks.forEach((impactLink) => {
     const linkKey = `${impactLink.source}:${impactLink.target}`;
     impactLinkValues[linkKey] = impactLinkValues[linkKey] || {
-      source: impactLink.source,
-      target: impactLink.target,
+      ...impactLink,
       value: 0,
     };
     impactLinkValues[linkKey].value += impactLink.value;

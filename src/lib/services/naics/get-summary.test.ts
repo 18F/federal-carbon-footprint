@@ -1,11 +1,11 @@
 import { getNaicsMap } from '$lib/adapters/naics';
 import { describe, expect, it } from 'vitest';
-import { GetSummary } from './get-summary';
+import { GetSectorSummary } from './get-summary';
 
 describe('getSummary', () => {
   it('should return a description of the specified sector', async () => {
     const racetracksCode = "711212";
-    const getSummary = GetSummary({getNaicsMap})
+    const getSummary = GetSectorSummary({getNaicsMap})
 
     const result = await getSummary(racetracksCode);
 

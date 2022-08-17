@@ -4,17 +4,17 @@
   export const prerender = true;
 
 
-  /** @type {import('./[slug]').Load} */
+  /** @type {import('./[sectorCode]').Load} */
   export const load = async ({ params, fetch }) => {
-    const sectorSlug = params['slug'];
-    const url = getUrl(`/api/v1/sectors/${sectorSlug}.json`);
+    const sectorCode = params['sectorCode'];
+    const url = getUrl(`/api/v1/sectors/${sectorCode}.json`);
     const response = await fetch(url);
     if (response.ok) {
       const data = await response.json();
  
       return {
         status: 200,
-        props: { sectorSlug },
+        props: { sectorSummary: data },
       };
     }
     return {
@@ -25,9 +25,9 @@
 </script>
 
 <script lang="ts">
-  export let sectorSlug: string;
+  export let sectorSummary: string;
 </script>
 
 <div class="grid-container">
-  { sectorSlug }
+  { sectorSummary }
 </div>

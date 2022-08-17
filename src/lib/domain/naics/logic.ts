@@ -1,4 +1,5 @@
 import type { NaicsSector, NaicsSectorMap } from './entities';
+import * as r from '$lib/result';
 
 const getSector = (naics: NaicsSectorMap, code: string) => {
   const sector: NaicsSector = naics[code];
@@ -56,3 +57,18 @@ export const getSectorHierarchy = (naics: NaicsSectorMap, code: string) => {
   }
   return sectors;
 };
+
+export type SectorSummary = {
+  description: string;
+}
+
+export const getSectorSummaryByCode = (naics: NaicsSectorMap, sectorCode: string) : r.Result<SectorSummary, Error> => {
+  try {
+    const foundSector = getCanonicalSector(naics, sectorCode)
+    return r.Ok({
+      description: foundSector.description,
+    });
+  } catch(e) {
+    return r.Error(e);
+  }
+}

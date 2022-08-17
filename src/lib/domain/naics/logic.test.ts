@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { getCanonicalParentSector, getCanonicalSector } from '.';
+import { getCanonicalParentSector, getCanonicalSector, getSectorSummaryByCode } from '.';
 import type { NaicsSector, NaicsSectorMap } from './entities';
 
 describe('naics logic', () => {
@@ -21,6 +21,21 @@ describe('naics logic', () => {
     });
     it('traverses multiple parents and terminates at first unique parent', () => {
       expect(getCanonicalParentSector(MOCK_SECTORS, '201110').code).toEqual('201');
+    });
+  });
+  describe('getSectorSummaryByCode', () => {
+    it('should return a SectorSummary for the provided sector code', () => {
+      const result = getSectorSummaryByCode(MOCK_SECTORS, '201110');
+  
+      expect(result.ok ? result.value : null).toEqual({
+        "description": "xyz*",
+      });    
+    });
+    it('should return an error when a sector cannot be found for the provided sector code', () => {
+      const result = getSectorSummaryByCode(MOCK_SECTORS, '0');
+  
+      expect(result.ok).toBe(false);  
+      expect(result.ok === true ? null : result.error.message).toEqual("Unknown sector: 0");    
     });
   });
 });

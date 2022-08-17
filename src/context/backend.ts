@@ -11,6 +11,7 @@ import { getNaicsMap  } from '$lib/adapters/naics';
 import { UsaSpendingGetAgencySpendsBySector } from '$lib/adapters/usa-spending';
 import * as useeio from '$lib/adapters/useeio';
 import { GetImpactData } from '$lib/services/spending-impact';
+import { GetSummary } from '$lib/services/naics/get-summary';
 
 const USEEIO_API_KEY = import.meta.env.VITE_USEEIO_API_KEY.toString();
 
@@ -27,5 +28,11 @@ export const getImpactData = memoizee(
       USEEIO_API_KEY,
     }),
     getAgencySpendsBySector: UsaSpendingGetAgencySpendsBySector({ fetch }),
+  }),
+);
+
+export const getSectorSummary = memoizee(
+  GetSummary({
+    getNaicsMap,
   }),
 );

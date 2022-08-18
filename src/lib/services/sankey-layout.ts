@@ -4,7 +4,7 @@
 import * as d3 from 'd3';
 import * as d3Sankey from 'd3-sankey';
 
-import { getUrl } from '$context/frontend';
+import { getAgencyUrl } from '$context/frontend';
 import type { AgencySectorImpactLink } from '$lib/services/spending-impact';
 
 interface NodeData {
@@ -38,14 +38,14 @@ const SIZING = {
  * @returns
  */
 const createD3SankeyLayout = (links: AgencySectorImpactLink[]) => {
-  let sankeyLayout = d3Sankey.sankey<DAG, NodeData, AgencySectorImpactLink>();
+  const sankeyLayout = d3Sankey.sankey<DAG, NodeData, AgencySectorImpactLink>();
 
   const nodes = links.reduce<Record<string, NodeData>>((acc, link) => {
     acc[link.source] =
       link.sourceType === 'agency'
         ? {
             id: link.source,
-            url: getUrl(`/agencies/${link.source as string}/`),
+            url: getAgencyUrl(link.source),
           }
         : {
             id: link.source,

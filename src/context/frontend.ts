@@ -24,3 +24,7 @@ export const githubBranchTreeUrl = github.getBranchTreeUrl({
 export const getUrl = (path: `/${string}`) => {
   return `${base}${path}`;
 };
+
+export const getAgencyUrl = (agencyName: string) => {
+  return getUrl(`/agencies/${agencyName}/`)
+}

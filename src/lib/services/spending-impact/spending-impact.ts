@@ -91,6 +91,22 @@ export const GetImpactData =
     }
   };
 
+export type GetImpactData = ReturnType<typeof GetImpactData>;
+
+export const getAgencyImpactDataBySector = (impactData: ImpactData, sectorCode: string) => {
+  return impactData.agencySectorImpacts.map(impact => {
+    const matchingSector = impact.sectors.filter(sector =>
+      sector.sector.code === sectorCode
+    );
+
+    return {
+      name: impact.name,
+      sector: matchingSector.length > 0 ? matchingSector[0] : null,
+    } 
+  }).filter(impact => impact.sector)
+  .sort((a, b) => b.sector.kgC02Eq - a.sector.kgC02Eq);
+};
+
 const getLinksForSectorImpact = (
   naics: NaicsSectorMap,
   agencyName: string,

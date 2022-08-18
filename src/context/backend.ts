@@ -34,5 +34,6 @@ export const getImpactData = memoizee(
 export const getSectorSummary = memoizee(
   GetSectorSummary({
     getNaicsMap,
+    getImpactData
   }),
 );

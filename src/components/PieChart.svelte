@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { arc, pie, PieArcDatum } from 'd3-shape';
+  import { arc, pie, type PieArcDatum } from 'd3-shape';
   import { scaleSequential } from 'd3-scale';
   import { interpolateCool } from 'd3-scale-chromatic';
 

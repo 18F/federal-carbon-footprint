@@ -4,7 +4,7 @@ import { writable } from 'svelte/store';
 export const createSectorSummaryStore = () => {
   const sectorSummary = writable<SectorSummary>(null);
   return {
-    init: ({ data }: { data: SectorSummary; }) => {
+    init: ({ data }: { data: SectorSummary }) => {
       sectorSummary.set(data);
     },
     sectorSummary,

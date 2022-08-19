@@ -26,16 +26,16 @@ describe('naics logic', () => {
   describe('getSectorSummaryByCode', () => {
     it('should return a SectorSummary for the provided sector code', () => {
       const result = getSectorSummaryByCode(MOCK_SECTORS, '201110');
-  
+
       expect(result.ok ? result.value : null).toEqual({
-        "description": "xyz*",
-      });    
+        description: 'xyz*',
+      });
     });
     it('should return an error when a sector cannot be found for the provided sector code', () => {
       const result = getSectorSummaryByCode(MOCK_SECTORS, '0');
-  
-      expect(result.ok).toBe(false);  
-      expect(result.ok === true ? null : result.error.message).toEqual("Unknown sector: 0");    
+
+      expect(result.ok).toBe(false);
+      expect(result.ok === true ? null : result.error.message).toEqual('Unknown sector: 0');
     });
   });
 });

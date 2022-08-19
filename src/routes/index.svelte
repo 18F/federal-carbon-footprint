@@ -1,29 +1,29 @@
 <script context="module" lang="ts">
   import AgencyImpactFilterForm from '$components/AgencyImpactFilterForm.svelte';
   import Sankey from '$components/Sankey.svelte';
-import { getUrl } from '$context/frontend';
+  import { getUrl } from '$context/frontend';
   import { createAgencySectorImpactStore } from '$lib/view-state/agency-sector-impact';
 
   export const prerender = true;
 
   const agencySectorImpact = createAgencySectorImpactStore();
 
-  /** @type {import('./[slug]').Load} */
+  /** @type {import('./index').Load} */
   export const load = async ({ fetch }) => {
     const url = getUrl(`/api/v1/spending-impact.json`);
     const response = await fetch(url);
     if (response.ok) {
       const data = await response.json();
-      await agencySectorImpact.init({ data });
+      await agencySectorImpact.init({ data, filter: {} });
       return {
-        status: 200
+        status: 200,
       };
     }
     return {
       status: 404,
       error: new Error(`Could not load data`),
     };
-  }
+  };
 </script>
 
 <svelte:head>

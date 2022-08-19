@@ -7,7 +7,7 @@
 import makeFetchHappen from 'make-fetch-happen';
 import memoizee from 'memoizee';
 
-import { getNaicsMap  } from '$lib/adapters/naics';
+import { getNaicsMap } from '$lib/adapters/naics';
 import { UsaSpendingGetAgencySpendsBySector } from '$lib/adapters/usa-spending';
 import * as useeio from '$lib/adapters/useeio';
 import { GetImpactData } from '$lib/services/spending-impact';

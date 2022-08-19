@@ -15,7 +15,10 @@
     <div class="grid-col-auto">
       <table class="usa-table usa-table--borderless">
         <caption>
-          The data visualized on this site is available for download. <em>These links are samples to demonstrate the concept, but do not reflect the actual data used on this prototype.</em>
+          The data visualized on this site is available for download. <em
+            >These links are samples to demonstrate the concept, but do not reflect the actual data
+            used on this prototype.</em
+          >
         </caption>
         <thead>
           <tr>

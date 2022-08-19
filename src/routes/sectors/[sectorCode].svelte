@@ -6,7 +6,7 @@
   export const prerender = true;
 
   const sectorSummaryStore = createSectorSummaryStore();
-  
+
   /** @type {import('./[sectorCode]').Load} */
   export const load = async ({ params, fetch }) => {
     const sectorCode = params['sectorCode'];
@@ -14,11 +14,12 @@
     const response = await fetch(url);
     if (response.ok) {
       const data = await response.json();
-      sectorSummaryStore.init({ data })
+      console.log(data);
+      sectorSummaryStore.init({ data });
 
       return {
         status: 200,
-        props: {  },
+        props: {},
       };
     }
     return {

@@ -60,15 +60,18 @@ export const getSectorHierarchy = (naics: NaicsSectorMap, code: string) => {
 
 export type SectorSummary = {
   description: string;
-}
+};
 
-export const getSectorSummaryByCode = (naics: NaicsSectorMap, sectorCode: string) : r.Result<SectorSummary, Error> => {
+export const getSectorSummaryByCode = (
+  naics: NaicsSectorMap,
+  sectorCode: string,
+): r.Result<SectorSummary, Error> => {
   try {
-    const foundSector = getCanonicalSector(naics, sectorCode)
+    const foundSector = getCanonicalSector(naics, sectorCode);
     return r.Ok({
       description: foundSector.description,
     });
-  } catch(e) {
+  } catch (e) {
     return r.Error(e);
   }
-}
+};

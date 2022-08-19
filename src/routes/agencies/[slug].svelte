@@ -1,6 +1,6 @@
 <script context="module" lang="ts">
   import Sankey from '$components/Sankey.svelte';
-import { getUrl } from '$context/frontend';
+  import { getUrl } from '$context/frontend';
   import { createAgencySectorImpactStore } from '$lib/view-state/agency-sector-impact';
 
   export const prerender = true;
@@ -17,10 +17,10 @@ import { getUrl } from '$context/frontend';
       await agencySectorImpact.init({
         data,
         filter: {
-          agencyName, 
+          agencyName,
           kgCO2Threshold: 0,
-          sectorDepth: 5
-        }
+          sectorDepth: 5,
+        },
       });
       return {
         status: 200,

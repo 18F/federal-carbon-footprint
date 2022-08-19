@@ -4,4 +4,6 @@
   export let sectorSummary: SectorSummaryStore['sectorSummary'];
 </script>
 
-<div>{JSON.stringify(sectorSummary)}</div>
+<div>
+  <h1>{$sectorSummary.description}</h1>
+</div>

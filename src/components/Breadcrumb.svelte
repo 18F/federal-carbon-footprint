@@ -1,5 +1,5 @@
 <script lang="ts">
-  export let breadcrumbs: { label: string; link: string; }[];
+  export let breadcrumbs: { label: string; link: string }[];
 </script>
 
 <nav class="usa-breadcrumb" aria-label="Sector hierarchy breadcrumbs">

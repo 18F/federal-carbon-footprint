@@ -1,6 +1,10 @@
 import type { NaicsCode, NaicsSector, NaicsSectorMap } from './entities';
 import * as r from '$lib/result';
-import { getAgencyImpactDataBySector, type ImpactData, type SectorImpact } from '$lib/services/spending-impact/spending-impact';
+import {
+  getAgencyImpactDataBySector,
+  type ImpactData,
+  type SectorImpact,
+} from '$lib/services/spending-impact/spending-impact';
 
 const getSector = (naics: NaicsSectorMap, code: string) => {
   const sector: NaicsSector = naics[code];
@@ -82,7 +86,7 @@ export const getSectorSummaryByCode = (
     return r.Ok({
       description: foundSector.description,
       agencyImpactBySector,
-      sectorHierarchy: getSectorHierarchy(naics, sectorCode)
+      sectorHierarchy: getSectorHierarchy(naics, sectorCode),
     });
   } catch (e) {
     return r.Error(e);

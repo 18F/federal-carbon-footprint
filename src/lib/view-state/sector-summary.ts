@@ -14,18 +14,20 @@ export const createSectorSummaryStore = () => {
   };
 };
 
-const formatBreadcrumbs = (sectorHierarchy: {
-  code: string;
-  description: string;
-  parentCode: string;
-}[]) => {
-  return sectorHierarchy.reverse().map(item => {
+const formatBreadcrumbs = (
+  sectorHierarchy: {
+    code: string;
+    description: string;
+    parentCode: string;
+  }[],
+) => {
+  return sectorHierarchy.reverse().map((item) => {
     const link = getSectorUrl(item.code);
     return {
       label: item.description,
-      link
+      link,
     };
   });
-}
+};
 
 export type SectorSummaryStore = ReturnType<typeof createSectorSummaryStore>;

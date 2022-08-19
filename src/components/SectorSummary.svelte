@@ -1,12 +1,13 @@
 <script lang="ts">
-import { getAgencyUrl } from '$context/frontend';
-
+  import { getAgencyUrl } from '$context/frontend';
   import type { SectorSummaryStore } from '$lib/view-state/sector-summary';
+  import Breadcrumb from './Breadcrumb.svelte';
 
   export let sectorSummary: SectorSummaryStore['sectorSummary'];
 </script>
 
 <div>
+  <Breadcrumb breadcrumbs={$sectorSummary.sectorHierarchy.map(item => item.description)} />
   <h1>{$sectorSummary.description}</h1>
   <table class="usa-table usa-table--borderless">
     <thead>

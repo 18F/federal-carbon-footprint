@@ -61,12 +61,13 @@ export const getSectorHierarchy = (naics: NaicsSectorMap, code: string) => {
 
 export type SectorSummary = {
   description: string;
-  agencyImpactBySector: { name: string; sector: SectorImpact }[]
+  agencyImpactBySector: { name: string; sector: SectorImpact }[];
   sectorHierarchy: {
-    code: NaicsCode;
+    code: string;
     description: string;
-    parentCode: NaicsCode;
-}[]
+    parentCode: string;
+  }[];
+  breadcrumbs?: { link: string; label: string }[];
 };
 
 export const getSectorSummaryByCode = (

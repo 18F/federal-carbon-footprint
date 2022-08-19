@@ -7,7 +7,8 @@
 </script>
 
 <div>
-  <Breadcrumb breadcrumbs={$sectorSummary.sectorHierarchy.map(item => item.description)} />
+  <Breadcrumb breadcrumbs={$sectorSummary.breadcrumbs} />
+
   <h1>{$sectorSummary.description}</h1>
   <table class="usa-table usa-table--borderless">
     <thead>

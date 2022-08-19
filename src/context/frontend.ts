@@ -28,3 +28,7 @@ export const getUrl = (path: `/${string}`) => {
 export const getAgencyUrl = (agencyName: string) => {
   return getUrl(`/agencies/${agencyName}/`)
 }
+
+export const getSectorUrl = (sectorCode: string) => {
+  return getUrl(`/sectors/${sectorCode}/`)
+}

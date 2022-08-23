@@ -34,8 +34,14 @@ export const createAgencySectorImpactStore = () => {
   );
 
   return {
-    init: async ({ data, filter }: { data: ImpactData; filter: Partial<FilterOptions> }) => {
-      impactData.set(data);
+    init: async ({
+      spendingImpact,
+      filter,
+    }: {
+      spendingImpact: ImpactData;
+      filter: Partial<FilterOptions>;
+    }) => {
+      impactData.set(spendingImpact);
       filterOptions.update((current) => ({
         ...current,
         ...filter,

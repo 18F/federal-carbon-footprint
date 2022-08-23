@@ -3,7 +3,6 @@
 
   export const hydrate = env.dev;
   export const router = env.browser;
-  export const prerender = true;
 </script>
 
 <svelte:head>
@@ -31,7 +30,7 @@
           <tr>
             <td>Spending impact by agency</td>
             <td>
-              <a href={getUrl('/api/v1/spending-impact.json')} target="_blank"
+              <a href={getUrl('/api/v1/spending-impact')} target="_blank"
                 ><span class="usa-tag bg-primary">JSON</span></a
               >
             </td>

@@ -18,6 +18,7 @@ const USEEIO_API_KEY = import.meta.env.VITE_USEEIO_API_KEY.toString();
 // Fetch implementation that caches to the filesystem.
 const fetch = makeFetchHappen.defaults({
   cachePath: './fetch-cache',
+  timeout: 0,
 }) as unknown as typeof global.fetch;
 
 export const getImpactData = memoizee(

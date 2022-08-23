@@ -5,6 +5,7 @@ import {
   type ImpactData,
   type SectorImpact,
 } from '$lib/services/spending-impact/spending-impact';
+import { getSectorUrl } from '$context/frontend';
 
 const getSector = (naics: NaicsSectorMap, code: string) => {
   const sector: NaicsSector = naics[code];
@@ -63,15 +64,33 @@ export const getSectorHierarchy = (naics: NaicsSectorMap, code: string) => {
   return sectors;
 };
 
+export const getChildSectors = (naics: NaicsSectorMap, code: string) => {
+  return Object.values(naics)
+    .filter((sector) => sector.parentCode === code)
+    .sort((a, b) => a.code.localeCompare(b.code));
+};
+
 export type SectorSummary = {
   description: string;
   agencyImpactBySector: { name: string; sector: SectorImpact }[];
+  childSectors: { link: string; label: string }[];
+  breadcrumbs: { link: string; label: string }[];
+};
+
+const formatSummaryBreadcrumbs = (
   sectorHierarchy: {
     code: string;
     description: string;
     parentCode: string;
-  }[];
-  breadcrumbs?: { link: string; label: string }[];
+  }[],
+) => {
+  return sectorHierarchy.reverse().map((item) => {
+    const link = getSectorUrl(item.code);
+    return {
+      label: item.description,
+      link,
+    };
+  });
 };
 
 export const getSectorSummaryByCode = (
@@ -82,11 +101,15 @@ export const getSectorSummaryByCode = (
   try {
     const agencyImpactBySector = getAgencyImpactDataBySector(impactData, sectorCode);
     const foundSector = getCanonicalSector(naics, sectorCode);
-
+    const sectorHierarchy = getSectorHierarchy(naics, sectorCode);
     return r.Ok({
       description: foundSector.description,
       agencyImpactBySector,
-      sectorHierarchy: getSectorHierarchy(naics, sectorCode),
+      childSectors: getChildSectors(naics, sectorCode).map((sector) => ({
+        link: getSectorUrl(sector.code),
+        label: `${sector.code} - ${sector.description}`,
+      })),
+      breadcrumbs: formatSummaryBreadcrumbs(sectorHierarchy),
     });
   } catch (e) {
     return r.Error(e);

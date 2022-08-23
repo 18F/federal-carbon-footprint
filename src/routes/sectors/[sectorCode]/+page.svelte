@@ -1,6 +1,3 @@
-<script context="module" lang="ts">
-</script>
-
 <script lang="ts">
   import SectorSummary from '$components/SectorSummary.svelte';
   import { createSectorSummaryStore } from '$lib/view-state/sector-summary';

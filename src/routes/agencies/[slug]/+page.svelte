@@ -6,7 +6,7 @@
   export let data: PageData;
   
   const agencySectorImpact = createAgencySectorImpactStore();
-  agencySectorImpact.init({
+  $: agencySectorImpact.init({
     spendingImpact: data.spendingImpact,
     filter: data.filter,
   });

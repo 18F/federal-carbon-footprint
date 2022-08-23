@@ -5,7 +5,7 @@
   
   export let data: PageData;
   const sectorSummaryStore = createSectorSummaryStore();
-  sectorSummaryStore.init({ data: data.sectorSummary })
+  $: sectorSummaryStore.init({ data: data.sectorSummary })
 </script>
 
 <div class="grid-container">

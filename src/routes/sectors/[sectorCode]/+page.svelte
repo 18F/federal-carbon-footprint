@@ -1,12 +1,16 @@
 <script context="module" lang="ts">
-  import SectorSummary from '$components/SectorSummary.svelte';
 </script>
 
 <script lang="ts">
-  /** @type {import('./$types').PageData} */
-  export let data;
+  import SectorSummary from '$components/SectorSummary.svelte';
+  import { createSectorSummaryStore } from '$lib/view-state/sector-summary';
+  import type { PageData } from './$types';
+  
+  export let data: PageData;
+  const sectorSummaryStore = createSectorSummaryStore();
+  sectorSummaryStore.init({ data: data.sectorSummary })
 </script>
 
 <div class="grid-container">
-  <SectorSummary sectorSummary={data.sectorSummaryStore.sectorSummary} />
+  <SectorSummary sectorSummary={sectorSummaryStore.sectorSummary} />
 </div>

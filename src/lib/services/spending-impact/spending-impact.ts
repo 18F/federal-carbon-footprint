@@ -22,6 +22,7 @@ export type AgencySectorImpactLink = {
   source: string;
   sourceType: AgencySectorImpactNodeType;
   target: string;
+  targetCode: string;
   targetType: AgencySectorImpactNodeType;
   value: number;
 };
@@ -130,6 +131,7 @@ const getLinksForSectorImpact = (
             source: sectors[index - 1].description,
           }),
       target: sector.description,
+      targetCode: sector.code,
       targetType: 'sector',
       value: sectorImpact.kgC02Eq,
     });

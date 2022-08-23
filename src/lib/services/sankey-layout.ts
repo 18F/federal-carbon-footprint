@@ -4,7 +4,7 @@
 import * as d3 from 'd3';
 import * as d3Sankey from 'd3-sankey';
 
-import { getAgencyUrl } from '$context/frontend';
+import { getAgencyUrl, getSectorUrl } from '$context/frontend';
 import type { AgencySectorImpactLink } from '$lib/services/spending-impact';
 
 interface NodeData {
@@ -49,11 +49,11 @@ const createD3SankeyLayout = (links: AgencySectorImpactLink[]) => {
           }
         : {
             id: link.source,
-            url: null,
+            url: getSectorUrl(link.targetCode),
           };
     acc[link.target] = {
       id: link.target,
-      url: null,
+      url: getSectorUrl(link.targetCode),
     };
     return acc;
   }, {});

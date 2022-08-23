@@ -21,7 +21,7 @@
           <td>
             <a href={getAgencyUrl(impactForAgency.name)}>{impactForAgency.name}</a>
           </td>
-          <td>{impactForAgency.sector.kgC02Eq}</td>
+          <td>{impactForAgency.sector.kgC02Eq.toLocaleString()}</td>
         </tr>
       {/each}
     </tbody>

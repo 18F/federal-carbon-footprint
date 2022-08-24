@@ -17,21 +17,44 @@ const config = {
     }),
   ],
   kit: {
-    trailingSlash: 'always',
-    prerender: {
-      crawl: true,
-      enabled: true,
-      onError: 'continue',
-      default: true,
-    },
     adapter: adapter({
       pages: 'build',
       assets: 'build',
       fallback: null,
     }),
+    browser: {
+      hydrate: true,
+      router: true,
+    },
+    outDir: '.svelte-kit',
+
+    paths: {
+      //assets: process.env.BASEURL || '',
+      base: process.env.BASEURL || '',
+    },
+    prerender: {
+      /*
+      crawl: true,
+      enabled: true,
+      onError: 'continue',
+      default: true,
+      */
+      concurrency: 1,
+      crawl: true,
+      default: true,
+      enabled: true,
+      entries: ['*'],
+      onError: 'fail',
+      origin: 'http://sveltekit-prerender',
+    },
     paths: {
       base: process.env.BASEURL || '',
       //assets: process.env.BASEURL || '',
+    },
+    trailingSlash: 'always',
+    version: {
+      name: Date.now().toString(),
+      pollInterval: 0,
     },
   },
 };

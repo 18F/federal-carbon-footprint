@@ -4,7 +4,7 @@
 
   export let filterOptions: AgencySectorImpactStore['filterOptions'];
 
-  const onSubmit = (e: Event) => {};
+  const onSubmit = () => {};
 </script>
 
 <form class="usa-form padding-top-1" on:submit|preventDefault={onSubmit}>

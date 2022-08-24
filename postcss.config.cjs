@@ -15,7 +15,7 @@ const config = {
         useHash: true,
       },
     }),
-    !dev && autoprefixer(),
+    autoprefixer(),
     !dev &&
       purgecss({
         content: ['src/**/*.svelte', 'src/app.html'],
